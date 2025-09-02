@@ -1,0 +1,317 @@
+[
+  {
+    "id":"Exit West",
+    "name":"Exit West",
+    "location_type":"Point",
+    "description":null,
+    "activities":[
+      "International shipping",
+      "Deep sea fishing"
+    ],
+    "kind":"buoy",
+    "fish_species_present":null
+  },
+  {
+    "id":"Nav 3",
+    "name":"Nav 3",
+    "location_type":"Point",
+    "description":"Navigation in\/out of South Paackland",
+    "activities":[
+      "Navigation"
+    ],
+    "kind":"buoy",
+    "fish_species_present":null
+  },
+  {
+    "id":"Nav D",
+    "name":"Nav D",
+    "location_type":"Point",
+    "description":"Safe navigation around Nemo Reef",
+    "activities":[
+      "Navigation"
+    ],
+    "kind":"buoy",
+    "fish_species_present":null
+  },
+  {
+    "id":"Nav B",
+    "name":"Nav B",
+    "location_type":"Point",
+    "description":"Safe Navigation around Limpet Preserve",
+    "activities":[
+      "Navigation"
+    ],
+    "kind":"buoy",
+    "fish_species_present":null
+  },
+  {
+    "id":"Nav A",
+    "name":"Nav A",
+    "location_type":"Point",
+    "description":"Safe Navigation around Limpet Preserve",
+    "activities":[
+      "Navigation"
+    ],
+    "kind":"buoy",
+    "fish_species_present":null
+  },
+  {
+    "id":"Nav C",
+    "name":"Nav C",
+    "location_type":"Point",
+    "description":"Safe Navigation near Lomark",
+    "activities":[
+      "Navigation"
+    ],
+    "kind":"buoy",
+    "fish_species_present":null
+  },
+  {
+    "id":"Nav 2",
+    "name":"Nav 2",
+    "location_type":"Point",
+    "description":"Safe navigation near Ghoti Preserve and Paackland",
+    "activities":[
+      "Navigation"
+    ],
+    "kind":"buoy",
+    "fish_species_present":null
+  },
+  {
+    "id":"Nav 1",
+    "name":"Nav 1",
+    "location_type":"Point",
+    "description":"Navigation north of Ghoti Preserve",
+    "activities":[
+      "Navigation"
+    ],
+    "kind":"buoy",
+    "fish_species_present":null
+  },
+  {
+    "id":"Exit East",
+    "name":"Exit East",
+    "location_type":"Point",
+    "description":null,
+    "activities":[
+      "International shipping",
+      "Deep sea fishing"
+    ],
+    "kind":"buoy",
+    "fish_species_present":null
+  },
+  {
+    "id":"Exit South",
+    "name":"Exit South",
+    "location_type":"Point",
+    "description":null,
+    "activities":[
+      "International shipping",
+      "Deep sea fishing"
+    ],
+    "kind":"buoy",
+    "fish_species_present":null
+  },
+  {
+    "id":"Exit North",
+    "name":"Exit North",
+    "location_type":"Point",
+    "description":null,
+    "activities":[
+      "International shipping",
+      "Deep sea fishing"
+    ],
+    "kind":"buoy",
+    "fish_species_present":null
+  },
+  {
+    "id":"Nav E",
+    "name":"Nav E",
+    "location_type":"Point",
+    "description":"Safe Navigation",
+    "activities":[
+      "Navigation"
+    ],
+    "kind":"buoy",
+    "fish_species_present":null
+  },
+  {
+    "id":"Haacklee",
+    "name":"City of Haacklee",
+    "location_type":"City",
+    "description":null,
+    "activities":[
+      "Tourism",
+      "Local shipping"
+    ],
+    "kind":"city",
+    "fish_species_present":null
+  },
+  {
+    "id":"Lomark",
+    "name":"City of Lomark",
+    "location_type":"City",
+    "description":null,
+    "activities":[
+      "Deep sea fishing",
+      "Commercial fishing",
+      "Tourism",
+      "Shipping"
+    ],
+    "kind":"city",
+    "fish_species_present":null
+  },
+  {
+    "id":"Himark",
+    "name":"City of Himark",
+    "location_type":"City",
+    "description":null,
+    "activities":[
+      "Recreation, tourism"
+    ],
+    "kind":"city",
+    "fish_species_present":null
+  },
+  {
+    "id":"Paackland",
+    "name":"City of Paackland",
+    "location_type":"City",
+    "description":null,
+    "activities":[
+      "Industry",
+      "Fishing industry",
+      "Local shipping",
+      "Tourism",
+      "Research",
+      "Sport fishing"
+    ],
+    "kind":"city",
+    "fish_species_present":null
+  },
+  {
+    "id":"South Paackland",
+    "name":"City of South Paackland",
+    "location_type":"City",
+    "description":null,
+    "activities":[
+      "Industry",
+      "Fishing industry",
+      "Local shipping"
+    ],
+    "kind":"city",
+    "fish_species_present":null
+  },
+  {
+    "id":"Port Grove",
+    "name":"City of Port Grove",
+    "location_type":"City",
+    "description":null,
+    "activities":[
+      "Tourism",
+      "Research"
+    ],
+    "kind":"city",
+    "fish_species_present":null
+  },
+  {
+    "id":"Cod Table",
+    "name":"Cod Table",
+    "location_type":"Region",
+    "description":"",
+    "activities":[
+      "Commercial fishing"
+    ],
+    "kind":"Fishing Ground",
+    "fish_species_present":[
+      "Cod\/Gadus n.specificatae",
+      "Birdseye\/Pisces frigus",
+      "Beauvoir\/Habeas pisces"
+    ]
+  },
+  {
+    "id":"Ghoti Preserve",
+    "name":"Ghoti Preserve",
+    "location_type":"Region",
+    "description":"",
+    "activities":[
+      "Research",
+      "Tourism",
+      "Recreation"
+    ],
+    "kind":"Ecological Preserve",
+    "fish_species_present":[
+      "Wrasse\/Labridae n.refert",
+      "Beauvoir\/Habeas pisces",
+      "Helenaa\/Pisces satis",
+      "Offidiaa\/Piscis osseus"
+    ]
+  },
+  {
+    "id":"Wrasse Beds",
+    "name":"Wrasse Beds",
+    "location_type":"Region",
+    "description":"",
+    "activities":[
+      "Commercial fishing"
+    ],
+    "kind":"Fishing Ground",
+    "fish_species_present":[
+      "Wrasse\/Labridae n.refert",
+      "Birdseye\/Pisces frigus",
+      "Beauvoir\/Habeas pisces"
+    ]
+  },
+  {
+    "id":"Nemo Reef",
+    "name":"Nemo Reef",
+    "location_type":"Region",
+    "description":"",
+    "activities":[
+      "Recreation",
+      "Tourism"
+    ],
+    "kind":"Ecological Preserve",
+    "fish_species_present":[
+      "Wrasse\/Labridae n.refert",
+      "Tuna\/Thunnini n.vera",
+      "Birdseye\/Pisces frigus",
+      "Beauvoir\/Habeas pisces",
+      "Helenaa\/Pisces satis"
+    ]
+  },
+  {
+    "id":"Don Limpet Preserve",
+    "name":"Don Limpet Preserve",
+    "location_type":"Region",
+    "description":"",
+    "activities":[
+      "Recreation",
+      "Tourism"
+    ],
+    "kind":"Ecological Preserve",
+    "fish_species_present":[
+      "Tuna\/Thunnini n.vera",
+      "Birdseye\/Pisces frigus",
+      "Beauvoir\/Habeas pisces",
+      "Helenaa\/Pisces satis",
+      "Sockfish\/Pisces foetida"
+    ]
+  },
+  {
+    "id":"Tuna Shelf",
+    "name":"Tuna Shelf",
+    "location_type":"Region",
+    "description":"",
+    "activities":[
+      "Commercial fishing",
+      "Sport fishing"
+    ],
+    "kind":"Fishing Ground",
+    "fish_species_present":[
+      "Tuna\/Thunnini n.vera",
+      "Birdseye\/Pisces frigus",
+      "Beauvoir\/Habeas pisces",
+      "Harland\/Piscis sapidum"
+    ]
+  }
+]
