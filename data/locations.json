@@ -9,7 +9,9 @@
       "Deep sea fishing"
     ],
     "kind":"buoy",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Nav 3",
@@ -20,7 +22,9 @@
       "Navigation"
     ],
     "kind":"buoy",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Nav D",
@@ -31,7 +35,9 @@
       "Navigation"
     ],
     "kind":"buoy",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Nav B",
@@ -42,7 +48,9 @@
       "Navigation"
     ],
     "kind":"buoy",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Nav A",
@@ -53,7 +61,9 @@
       "Navigation"
     ],
     "kind":"buoy",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Nav C",
@@ -64,7 +74,9 @@
       "Navigation"
     ],
     "kind":"buoy",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Nav 2",
@@ -75,7 +87,9 @@
       "Navigation"
     ],
     "kind":"buoy",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Nav 1",
@@ -86,7 +100,9 @@
       "Navigation"
     ],
     "kind":"buoy",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Exit East",
@@ -98,7 +114,9 @@
       "Deep sea fishing"
     ],
     "kind":"buoy",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Exit South",
@@ -110,7 +128,9 @@
       "Deep sea fishing"
     ],
     "kind":"buoy",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Exit North",
@@ -122,7 +142,9 @@
       "Deep sea fishing"
     ],
     "kind":"buoy",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Nav E",
@@ -133,7 +155,9 @@
       "Navigation"
     ],
     "kind":"buoy",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Haacklee",
@@ -145,7 +169,9 @@
       "Local shipping"
     ],
     "kind":"city",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Lomark",
@@ -159,7 +185,9 @@
       "Shipping"
     ],
     "kind":"city",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Himark",
@@ -170,7 +198,9 @@
       "Recreation, tourism"
     ],
     "kind":"city",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Paackland",
@@ -186,7 +216,9 @@
       "Sport fishing"
     ],
     "kind":"city",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"South Paackland",
@@ -199,7 +231,9 @@
       "Local shipping"
     ],
     "kind":"city",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Port Grove",
@@ -211,7 +245,9 @@
       "Research"
     ],
     "kind":"city",
-    "fish_species_present":null
+    "fish_species_present":[
+
+    ]
   },
   {
     "id":"Cod Table",
@@ -223,9 +259,9 @@
     ],
     "kind":"Fishing Ground",
     "fish_species_present":[
-      "Cod\/Gadus n.specificatae",
-      "Birdseye\/Pisces frigus",
-      "Beauvoir\/Habeas pisces"
+      "gadusnspecificatae4ba",
+      "piscesfrigus900",
+      "habeaspisces4eb"
     ]
   },
   {
@@ -240,10 +276,10 @@
     ],
     "kind":"Ecological Preserve",
     "fish_species_present":[
-      "Wrasse\/Labridae n.refert",
-      "Beauvoir\/Habeas pisces",
-      "Helenaa\/Pisces satis",
-      "Offidiaa\/Piscis osseus"
+      "labridaenrefert9be",
+      "habeaspisces4eb",
+      "piscessatisb87",
+      "piscisosseusb6d"
     ]
   },
   {
@@ -256,9 +292,9 @@
     ],
     "kind":"Fishing Ground",
     "fish_species_present":[
-      "Wrasse\/Labridae n.refert",
-      "Birdseye\/Pisces frigus",
-      "Beauvoir\/Habeas pisces"
+      "labridaenrefert9be",
+      "piscesfrigus900",
+      "habeaspisces4eb"
     ]
   },
   {
@@ -272,11 +308,11 @@
     ],
     "kind":"Ecological Preserve",
     "fish_species_present":[
-      "Wrasse\/Labridae n.refert",
-      "Tuna\/Thunnini n.vera",
-      "Birdseye\/Pisces frigus",
-      "Beauvoir\/Habeas pisces",
-      "Helenaa\/Pisces satis"
+      "labridaenrefert9be",
+      "thunnininveradb7",
+      "piscesfrigus900",
+      "habeaspisces4eb",
+      "piscessatisb87"
     ]
   },
   {
@@ -290,11 +326,11 @@
     ],
     "kind":"Ecological Preserve",
     "fish_species_present":[
-      "Tuna\/Thunnini n.vera",
-      "Birdseye\/Pisces frigus",
-      "Beauvoir\/Habeas pisces",
-      "Helenaa\/Pisces satis",
-      "Sockfish\/Pisces foetida"
+      "thunnininveradb7",
+      "piscesfrigus900",
+      "habeaspisces4eb",
+      "piscessatisb87",
+      "piscesfoetidaae7"
     ]
   },
   {
@@ -308,10 +344,10 @@
     ],
     "kind":"Fishing Ground",
     "fish_species_present":[
-      "Tuna\/Thunnini n.vera",
-      "Birdseye\/Pisces frigus",
-      "Beauvoir\/Habeas pisces",
-      "Harland\/Piscis sapidum"
+      "thunnininveradb7",
+      "piscesfrigus900",
+      "habeaspisces4eb",
+      "piscissapidum9b7"
     ]
   }
 ]
