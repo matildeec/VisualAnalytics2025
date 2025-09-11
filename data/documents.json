@@ -180,18 +180,8 @@
     "commodity":"piscissapidum9b7"
   },
   {
-    "id":"cargo_2035_23992af5",
-    "qty_tons":-3.5,
-    "commodity":"piscissapidum9b7"
-  },
-  {
     "id":"cargo_2035_23993070",
     "qty_tons":25.375,
-    "commodity":"piscissapidum9b7"
-  },
-  {
-    "id":"cargo_2035_23994469",
-    "qty_tons":-4.375,
     "commodity":"piscissapidum9b7"
   },
   {
@@ -265,11 +255,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_24018829",
-    "qty_tons":-1.25,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_24019ac2",
     "qty_tons":0.25,
     "commodity":"gadusnspecificatae4ba"
@@ -302,11 +287,6 @@
   {
     "id":"cargo_2035_24031644",
     "qty_tons":0.75,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_240329d3",
-    "qty_tons":-1.25,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -685,11 +665,6 @@
     "commodity":"piscesfrigus900"
   },
   {
-    "id":"cargo_2035_24146b8e",
-    "qty_tons":-6.5,
-    "commodity":"piscesfrigus900"
-  },
-  {
     "id":"cargo_2035_24147edc",
     "qty_tons":50.375,
     "commodity":"piscesfrigus900"
@@ -950,11 +925,6 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_24218339",
-    "qty_tons":-2.0,
-    "commodity":"habeaspisces4eb"
-  },
-  {
     "id":"cargo_2035_24219a45",
     "qty_tons":20.0,
     "commodity":"habeaspisces4eb"
@@ -1027,11 +997,6 @@
   {
     "id":"cargo_2035_24253dc1",
     "qty_tons":60.5,
-    "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_2425453a",
-    "qty_tons":-5.5,
     "commodity":"habeaspisces4eb"
   },
   {
@@ -1235,11 +1200,6 @@
     "commodity":"piscesfoetidaae7"
   },
   {
-    "id":"cargo_2035_2432331f",
-    "qty_tons":-1.875,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
     "id":"cargo_2035_24324010",
     "qty_tons":11.25,
     "commodity":"piscesfoetidaae7"
@@ -1252,11 +1212,6 @@
   {
     "id":"cargo_2035_24326871",
     "qty_tons":12.5,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_243278e6",
-    "qty_tons":-0.625,
     "commodity":"piscesfoetidaae7"
   },
   {
@@ -1340,11 +1295,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_24347ad9",
-    "qty_tons":-2.625,
-    "commodity":"piscisosseusb6d"
-  },
-  {
     "id":"cargo_2035_24348b57",
     "qty_tons":34.125,
     "commodity":"piscisosseusb6d"
@@ -1410,11 +1360,6 @@
     "commodity":"piscisosseusb6d"
   },
   {
-    "id":"cargo_2035_243623c9",
-    "qty_tons":-2.625,
-    "commodity":"piscisosseusb6d"
-  },
-  {
     "id":"cargo_2035_2436308a",
     "qty_tons":23.625,
     "commodity":"piscisosseusb6d"
@@ -1450,16 +1395,6 @@
     "commodity":"piscisosseusb6d"
   },
   {
-    "id":"cargo_2035_24371185",
-    "qty_tons":-1.75,
-    "commodity":"piscisosseusb6d"
-  },
-  {
-    "id":"cargo_2035_2437257d",
-    "qty_tons":-2.625,
-    "commodity":"piscisosseusb6d"
-  },
-  {
     "id":"cargo_2035_24373741",
     "qty_tons":30.625,
     "commodity":"piscisosseusb6d"
@@ -1482,11 +1417,6 @@
   {
     "id":"cargo_2035_2437731d",
     "qty_tons":25.375,
-    "commodity":"piscisosseusb6d"
-  },
-  {
-    "id":"cargo_2035_2437902a",
-    "qty_tons":-3.5,
     "commodity":"piscisosseusb6d"
   },
   {
@@ -1545,11 +1475,6 @@
     "commodity":"piscisosseusb6d"
   },
   {
-    "id":"cargo_2035_243928ee",
-    "qty_tons":-0.875,
-    "commodity":"piscisosseusb6d"
-  },
-  {
     "id":"cargo_2035_243938c2",
     "qty_tons":24.5,
     "commodity":"piscisosseusb6d"
@@ -1603,11 +1528,6 @@
     "id":"cargo_2035_24416295",
     "qty_tons":30.625,
     "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_24417fcb",
-    "qty_tons":-3.5,
-    "commodity":"habeaspisces4eb"
   },
   {
     "id":"cargo_2035_24418bbc",
@@ -1695,11 +1615,6 @@
     "commodity":"piscesfoetidaae7"
   },
   {
-    "id":"cargo_2035_2445184b",
-    "qty_tons":-2.75,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
     "id":"cargo_2035_24452374",
     "qty_tons":17.875,
     "commodity":"piscesfoetidaae7"
@@ -1737,11 +1652,6 @@
   {
     "id":"cargo_2035_24459fc5",
     "qty_tons":23.375,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_2446072f",
-    "qty_tons":-1.375,
     "commodity":"piscesfoetidaae7"
   },
   {
@@ -1800,11 +1710,6 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_24477419",
-    "qty_tons":-1.5,
-    "commodity":"habeaspisces4eb"
-  },
-  {
     "id":"cargo_2035_244780a7",
     "qty_tons":9.375,
     "commodity":"habeaspisces4eb"
@@ -1837,11 +1742,6 @@
   {
     "id":"cargo_2035_24492b79",
     "qty_tons":27.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_24493cb3",
-    "qty_tons":-0.75,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -1990,11 +1890,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_245417aa",
-    "qty_tons":-1.5,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_245426d1",
     "qty_tons":52.5,
     "commodity":"labridaenrefert9be"
@@ -2007,11 +1902,6 @@
   {
     "id":"cargo_2035_24544d1b",
     "qty_tons":39.0,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_2454550a",
-    "qty_tons":-7.5,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -2305,11 +2195,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_24604736",
-    "qty_tons":-6.0,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_2460534f",
     "qty_tons":45.0,
     "commodity":"labridaenrefert9be"
@@ -2362,11 +2247,6 @@
   {
     "id":"cargo_2035_246159a6",
     "qty_tons":51.0,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_24620571",
-    "qty_tons":-3.0,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -2460,11 +2340,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_24650f4f",
-    "qty_tons":-0.625,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_246513cf",
     "qty_tons":13.125,
     "commodity":"gadusnspecificatae4ba"
@@ -2482,11 +2357,6 @@
   {
     "id":"cargo_2035_24654e34",
     "qty_tons":27.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_24655751",
-    "qty_tons":-0.625,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -2627,11 +2497,6 @@
   {
     "id":"cargo_2035_2469383e",
     "qty_tons":31.625,
-    "commodity":"oncorhynchusrosea790"
-  },
-  {
-    "id":"cargo_2035_246940bd",
-    "qty_tons":-6.875,
     "commodity":"oncorhynchusrosea790"
   },
   {
@@ -3070,11 +2935,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_248186f4",
-    "qty_tons":-8.125,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_24819223",
     "qty_tons":30.875,
     "commodity":"gadusnspecificatae4ba"
@@ -3092,11 +2952,6 @@
   {
     "id":"cargo_2035_24822f21",
     "qty_tons":47.125,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_2482365a",
-    "qty_tons":-8.125,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -3170,11 +3025,6 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_248396e1",
-    "qty_tons":-1.5,
-    "commodity":"habeaspisces4eb"
-  },
-  {
     "id":"cargo_2035_24841641",
     "qty_tons":20.25,
     "commodity":"habeaspisces4eb"
@@ -3237,11 +3087,6 @@
   {
     "id":"cargo_2035_24867838",
     "qty_tons":34.875,
-    "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_24869511",
-    "qty_tons":-2.25,
     "commodity":"habeaspisces4eb"
   },
   {
@@ -3342,11 +3187,6 @@
   {
     "id":"cargo_2035_2489871c",
     "qty_tons":14.875,
-    "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_248994de",
-    "qty_tons":-0.875,
     "commodity":"habeaspisces4eb"
   },
   {
@@ -3540,18 +3380,8 @@
     "commodity":"piscissapidum9b7"
   },
   {
-    "id":"cargo_2035_24956173",
-    "qty_tons":-3.375,
-    "commodity":"piscissapidum9b7"
-  },
-  {
     "id":"cargo_2035_2495734c",
     "qty_tons":22.5,
-    "commodity":"piscissapidum9b7"
-  },
-  {
-    "id":"cargo_2035_249586eb",
-    "qty_tons":-1.125,
     "commodity":"piscissapidum9b7"
   },
   {
@@ -3592,11 +3422,6 @@
   {
     "id":"cargo_2035_24966eac",
     "qty_tons":27.0,
-    "commodity":"piscissapidum9b7"
-  },
-  {
-    "id":"cargo_2035_24967a51",
-    "qty_tons":-2.25,
     "commodity":"piscissapidum9b7"
   },
   {
@@ -3715,11 +3540,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_249913f3",
-    "qty_tons":-5.625,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_24992d21",
     "qty_tons":32.625,
     "commodity":"labridaenrefert9be"
@@ -3728,11 +3548,6 @@
     "id":"cargo_2035_2499386c",
     "qty_tons":25.875,
     "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_249954f8",
-    "qty_tons":-5.625,
-    "commodity":"piscissapidum9b7"
   },
   {
     "id":"cargo_2035_25004e40",
@@ -3785,11 +3600,6 @@
     "commodity":"piscesfrigus900"
   },
   {
-    "id":"cargo_2035_2501441c",
-    "qty_tons":-2.25,
-    "commodity":"piscesfrigus900"
-  },
-  {
     "id":"cargo_2035_250151e9",
     "qty_tons":18.0,
     "commodity":"piscesfrigus900"
@@ -3832,11 +3642,6 @@
   {
     "id":"cargo_2035_25023899",
     "qty_tons":14.25,
-    "commodity":"piscesfrigus900"
-  },
-  {
-    "id":"cargo_2035_2502450d",
-    "qty_tons":-0.75,
     "commodity":"piscesfrigus900"
   },
   {
@@ -4225,11 +4030,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_25132413",
-    "qty_tons":-0.625,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_251339c6",
     "qty_tons":4.125,
     "commodity":"labridaenrefert9be"
@@ -4500,11 +4300,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_25187836",
-    "qty_tons":-0.375,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_251884aa",
     "qty_tons":2.5,
     "commodity":"labridaenrefert9be"
@@ -4517,11 +4312,6 @@
   {
     "id":"cargo_2035_251901b5",
     "qty_tons":3.75,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_2519114d",
-    "qty_tons":-0.5,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -4587,11 +4377,6 @@
   {
     "id":"cargo_2035_25213839",
     "qty_tons":44.0,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_25214b24",
-    "qty_tons":-5.5,
     "commodity":"piscesfoetidaae7"
   },
   {
@@ -4700,11 +4485,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_25236525",
-    "qty_tons":-6.875,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_25237e08",
     "qty_tons":24.75,
     "commodity":"labridaenrefert9be"
@@ -4778,16 +4558,6 @@
     "id":"cargo_2035_25251ce8",
     "qty_tons":11.0,
     "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_25252198",
-    "qty_tons":-6.875,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_25253bfc",
-    "qty_tons":-5.5,
-    "commodity":"labridaenrefert9be"
   },
   {
     "id":"cargo_2035_2525404e",
@@ -4925,11 +4695,6 @@
     "commodity":"piscesfoetidaae7"
   },
   {
-    "id":"cargo_2035_25307872",
-    "qty_tons":-1.5,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
     "id":"cargo_2035_25308546",
     "qty_tons":11.625,
     "commodity":"piscesfoetidaae7"
@@ -4945,11 +4710,6 @@
     "commodity":"piscesfoetidaae7"
   },
   {
-    "id":"cargo_2035_2531154d",
-    "qty_tons":-0.375,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
     "id":"cargo_2035_25312985",
     "qty_tons":10.125,
     "commodity":"piscesfoetidaae7"
@@ -4962,11 +4722,6 @@
   {
     "id":"cargo_2035_25314e13",
     "qty_tons":10.875,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_253157f8",
-    "qty_tons":-1.875,
     "commodity":"piscesfoetidaae7"
   },
   {
@@ -5045,11 +4800,6 @@
     "commodity":"piscesfoetidaae7"
   },
   {
-    "id":"cargo_2035_25331137",
-    "qty_tons":-0.375,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_253322d9",
     "qty_tons":10.125,
     "commodity":"labridaenrefert9be"
@@ -5090,11 +4840,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_253405d8",
-    "qty_tons":-1.5,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_25341bfe",
     "qty_tons":12.375,
     "commodity":"labridaenrefert9be"
@@ -5118,16 +4863,6 @@
     "id":"cargo_2035_25345a4d",
     "qty_tons":0.0,
     "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_253465e2",
-    "qty_tons":-0.75,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_25347cd5",
-    "qty_tons":-1.125,
-    "commodity":"labridaenrefert9be"
   },
   {
     "id":"cargo_2035_25348083",
@@ -5273,16 +5008,6 @@
     "id":"cargo_2035_25376780",
     "qty_tons":9.375,
     "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_253778c7",
-    "qty_tons":-1.5,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_25378b17",
-    "qty_tons":-1.5,
-    "commodity":"piscesfoetidaae7"
   },
   {
     "id":"cargo_2035_253797f7",
@@ -5470,11 +5195,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_25416e22",
-    "qty_tons":-2.25,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_25417114",
     "qty_tons":9.75,
     "commodity":"labridaenrefert9be"
@@ -5537,11 +5257,6 @@
   {
     "id":"cargo_2035_254292df",
     "qty_tons":29.25,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_25430b47",
-    "qty_tons":-1.5,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -5612,11 +5327,6 @@
   {
     "id":"cargo_2035_25456e6e",
     "qty_tons":25.0,
-    "commodity":"piscissapidum9b7"
-  },
-  {
-    "id":"cargo_2035_25457d1c",
-    "qty_tons":-2.5,
     "commodity":"piscissapidum9b7"
   },
   {
@@ -5805,11 +5515,6 @@
     "commodity":"piscesfrigus900"
   },
   {
-    "id":"cargo_2035_25520e56",
-    "qty_tons":-0.625,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_25521a67",
     "qty_tons":11.25,
     "commodity":"gadusnspecificatae4ba"
@@ -5885,11 +5590,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_2554852c",
-    "qty_tons":-3.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_25550e4c",
     "qty_tons":8.25,
     "commodity":"gadusnspecificatae4ba"
@@ -5950,11 +5650,6 @@
     "commodity":"piscesfrigus900"
   },
   {
-    "id":"cargo_2035_25573cc1",
-    "qty_tons":-1.25,
-    "commodity":"piscesfrigus900"
-  },
-  {
     "id":"cargo_2035_25574502",
     "qty_tons":41.25,
     "commodity":"piscesfrigus900"
@@ -5975,11 +5670,6 @@
     "commodity":"piscesfrigus900"
   },
   {
-    "id":"cargo_2035_2557937d",
-    "qty_tons":-6.25,
-    "commodity":"piscesfrigus900"
-  },
-  {
     "id":"cargo_2035_25580746",
     "qty_tons":40.0,
     "commodity":"gadusnspecificatae4ba"
@@ -5987,11 +5677,6 @@
   {
     "id":"cargo_2035_25581498",
     "qty_tons":38.75,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_25582e91",
-    "qty_tons":-2.5,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -6100,11 +5785,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_25613bab",
-    "qty_tons":-2.25,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_256144ef",
     "qty_tons":34.875,
     "commodity":"gadusnspecificatae4ba"
@@ -6115,11 +5795,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_25616d3d",
-    "qty_tons":-4.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_25617d8b",
     "qty_tons":27.0,
     "commodity":"gadusnspecificatae4ba"
@@ -6127,11 +5802,6 @@
   {
     "id":"cargo_2035_2561922c",
     "qty_tons":30.375,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_25620fa8",
-    "qty_tons":-1.125,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -6260,11 +5930,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_25664b65",
-    "qty_tons":-1.375,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_25666f7e",
     "qty_tons":31.625,
     "commodity":"gadusnspecificatae4ba"
@@ -6303,11 +5968,6 @@
     "id":"cargo_2035_25674e25",
     "qty_tons":30.25,
     "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_256835ef",
-    "qty_tons":-0.25,
-    "commodity":"piscesfrigus900"
   },
   {
     "id":"cargo_2035_2568402a",
@@ -6430,11 +6090,6 @@
     "commodity":"piscissapidum9b7"
   },
   {
-    "id":"cargo_2035_25717a6d",
-    "qty_tons":-4.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_2571805c",
     "qty_tons":20.0,
     "commodity":"gadusnspecificatae4ba"
@@ -6552,11 +6207,6 @@
   {
     "id":"cargo_2035_25744b77",
     "qty_tons":49.0,
-    "commodity":"piscisosseusb6d"
-  },
-  {
-    "id":"cargo_2035_25745d4d",
-    "qty_tons":-1.0,
     "commodity":"piscisosseusb6d"
   },
   {
@@ -6855,11 +6505,6 @@
     "commodity":"piscesfrigus900"
   },
   {
-    "id":"cargo_2035_25842aa1",
-    "qty_tons":-0.125,
-    "commodity":"piscesfrigus900"
-  },
-  {
     "id":"cargo_2035_25843a69",
     "qty_tons":3.125,
     "commodity":"piscesfrigus900"
@@ -6957,11 +6602,6 @@
   {
     "id":"cargo_2035_25870bc4",
     "qty_tons":17.5,
-    "commodity":"piscissapidum9b7"
-  },
-  {
-    "id":"cargo_2035_25871c08",
-    "qty_tons":-3.125,
     "commodity":"piscissapidum9b7"
   },
   {
@@ -7193,11 +6833,6 @@
     "id":"cargo_2035_259328a2",
     "qty_tons":37.125,
     "commodity":"piscissapidum9b7"
-  },
-  {
-    "id":"cargo_2035_259331b7",
-    "qty_tons":-2.25,
-    "commodity":"gadusnspecificatae4ba"
   },
   {
     "id":"cargo_2035_25934959",
@@ -7450,11 +7085,6 @@
     "commodity":"oncorhynchusrosea790"
   },
   {
-    "id":"cargo_2035_26007d29",
-    "qty_tons":-3.0,
-    "commodity":"oncorhynchusrosea790"
-  },
-  {
     "id":"cargo_2035_26008fc4",
     "qty_tons":0.0,
     "commodity":"oncorhynchusrosea790"
@@ -7585,11 +7215,6 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_260361c4",
-    "qty_tons":-5.625,
-    "commodity":"habeaspisces4eb"
-  },
-  {
     "id":"cargo_2035_26038f0e",
     "qty_tons":30.0,
     "commodity":"habeaspisces4eb"
@@ -7675,11 +7300,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_260613e8",
-    "qty_tons":-3.125,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
     "id":"cargo_2035_26062c3f",
     "qty_tons":18.125,
     "commodity":"piscesfoetidaae7"
@@ -7707,11 +7327,6 @@
   {
     "id":"cargo_2035_260670b8",
     "qty_tons":16.875,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_26068bef",
-    "qty_tons":-0.625,
     "commodity":"piscesfoetidaae7"
   },
   {
@@ -7895,11 +7510,6 @@
     "commodity":"piscissapidum9b7"
   },
   {
-    "id":"cargo_2035_26124625",
-    "qty_tons":-3.25,
-    "commodity":"piscissapidum9b7"
-  },
-  {
     "id":"cargo_2035_261252bc",
     "qty_tons":17.875,
     "commodity":"gadusnspecificatae4ba"
@@ -7980,11 +7590,6 @@
     "commodity":"piscisosseusb6d"
   },
   {
-    "id":"cargo_2035_2615277c",
-    "qty_tons":-0.625,
-    "commodity":"piscisosseusb6d"
-  },
-  {
     "id":"cargo_2035_261540db",
     "qty_tons":2.375,
     "commodity":"piscisosseusb6d"
@@ -8010,18 +7615,8 @@
     "commodity":"piscisosseusb6d"
   },
   {
-    "id":"cargo_2035_26161da5",
-    "qty_tons":-0.125,
-    "commodity":"piscisosseusb6d"
-  },
-  {
     "id":"cargo_2035_2616336b",
     "qty_tons":4.375,
-    "commodity":"piscisosseusb6d"
-  },
-  {
-    "id":"cargo_2035_26165f6e",
-    "qty_tons":-0.25,
     "commodity":"piscisosseusb6d"
   },
   {
@@ -8290,11 +7885,6 @@
     "commodity":"piscesfoetidaae7"
   },
   {
-    "id":"cargo_2035_262450d4",
-    "qty_tons":-3.375,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
     "id":"cargo_2035_26246ba6",
     "qty_tons":38.25,
     "commodity":"piscesfoetidaae7"
@@ -8308,16 +7898,6 @@
     "id":"cargo_2035_26251331",
     "qty_tons":41.625,
     "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_26252317",
-    "qty_tons":-4.5,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_26254355",
-    "qty_tons":-3.75,
-    "commodity":"piscesfrigus900"
   },
   {
     "id":"cargo_2035_26255681",
@@ -8390,18 +7970,8 @@
     "commodity":"piscesfrigus900"
   },
   {
-    "id":"cargo_2035_262704be",
-    "qty_tons":-2.5,
-    "commodity":"piscesfrigus900"
-  },
-  {
     "id":"cargo_2035_2627117e",
     "qty_tons":23.75,
-    "commodity":"piscesfrigus900"
-  },
-  {
-    "id":"cargo_2035_26272077",
-    "qty_tons":-5.0,
     "commodity":"piscesfrigus900"
   },
   {
@@ -8482,11 +8052,6 @@
   {
     "id":"cargo_2035_262984ba",
     "qty_tons":0.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_263004db",
-    "qty_tons":-3.75,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -8720,11 +8285,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_2635618b",
-    "qty_tons":-3.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_263576c0",
     "qty_tons":22.5,
     "commodity":"gadusnspecificatae4ba"
@@ -8792,11 +8352,6 @@
   {
     "id":"cargo_2035_26371891",
     "qty_tons":18.125,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_26372d91",
-    "qty_tons":-3.125,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -8960,11 +8515,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_264313d5",
-    "qty_tons":-2.25,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_264334c0",
     "qty_tons":22.75,
     "commodity":"gadusnspecificatae4ba"
@@ -9045,11 +8595,6 @@
     "commodity":"piscesfrigus900"
   },
   {
-    "id":"cargo_2035_26458bcb",
-    "qty_tons":-6.0,
-    "commodity":"piscesfrigus900"
-  },
-  {
     "id":"cargo_2035_26459649",
     "qty_tons":39.0,
     "commodity":"piscesfrigus900"
@@ -9057,11 +8602,6 @@
   {
     "id":"cargo_2035_26460e62",
     "qty_tons":30.0,
-    "commodity":"piscesfrigus900"
-  },
-  {
-    "id":"cargo_2035_26461c00",
-    "qty_tons":-3.0,
     "commodity":"piscesfrigus900"
   },
   {
@@ -9260,11 +8800,6 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_26511524",
-    "qty_tons":-3.5,
-    "commodity":"habeaspisces4eb"
-  },
-  {
     "id":"cargo_2035_2651961f",
     "qty_tons":31.5,
     "commodity":"piscesfrigus900"
@@ -9323,11 +8858,6 @@
     "id":"cargo_2035_2653076f",
     "qty_tons":28.875,
     "commodity":"piscesfrigus900"
-  },
-  {
-    "id":"cargo_2035_26531501",
-    "qty_tons":-1.75,
-    "commodity":"gadusnspecificatae4ba"
   },
   {
     "id":"cargo_2035_2653201c",
@@ -9425,11 +8955,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_2656385f",
-    "qty_tons":-5.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_2656444a",
     "qty_tons":17.0,
     "commodity":"gadusnspecificatae4ba"
@@ -9522,11 +9047,6 @@
   {
     "id":"cargo_2035_265952ed",
     "qty_tons":10.625,
-    "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_2659848c",
-    "qty_tons":-0.625,
     "commodity":"habeaspisces4eb"
   },
   {
@@ -9670,11 +9190,6 @@
     "commodity":"piscissapidum9b7"
   },
   {
-    "id":"cargo_2035_26657127",
-    "qty_tons":-2.25,
-    "commodity":"piscissapidum9b7"
-  },
-  {
     "id":"cargo_2035_2665850e",
     "qty_tons":19.5,
     "commodity":"piscissapidum9b7"
@@ -9745,11 +9260,6 @@
     "commodity":"piscissapidum9b7"
   },
   {
-    "id":"cargo_2035_26673478",
-    "qty_tons":-1.5,
-    "commodity":"piscissapidum9b7"
-  },
-  {
     "id":"cargo_2035_26674c75",
     "qty_tons":1.5,
     "commodity":"piscissapidum9b7"
@@ -9793,11 +9303,6 @@
     "id":"cargo_2035_26687f9d",
     "qty_tons":3.25,
     "commodity":"piscissapidum9b7"
-  },
-  {
-    "id":"cargo_2035_2669078b",
-    "qty_tons":-0.5,
-    "commodity":"gadusnspecificatae4ba"
   },
   {
     "id":"cargo_2035_26693379",
@@ -9855,11 +9360,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_26708634",
-    "qty_tons":-0.25,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_26709fdb",
     "qty_tons":4.125,
     "commodity":"gadusnspecificatae4ba"
@@ -9905,11 +9405,6 @@
     "commodity":"oncorhynchusrosea790"
   },
   {
-    "id":"cargo_2035_26718a11",
-    "qty_tons":-0.5,
-    "commodity":"oncorhynchusrosea790"
-  },
-  {
     "id":"cargo_2035_26719f2f",
     "qty_tons":3.625,
     "commodity":"oncorhynchusrosea790"
@@ -9943,11 +9438,6 @@
     "id":"cargo_2035_267258a3",
     "qty_tons":3.5,
     "commodity":"oncorhynchusrosea790"
-  },
-  {
-    "id":"cargo_2035_2672666b",
-    "qty_tons":-0.5,
-    "commodity":"piscissapidum9b7"
   },
   {
     "id":"cargo_2035_267276bb",
@@ -10165,11 +9655,6 @@
     "commodity":"thunnininveradb7"
   },
   {
-    "id":"cargo_2035_267790e5",
-    "qty_tons":-1.625,
-    "commodity":"piscissapidum9b7"
-  },
-  {
     "id":"cargo_2035_267800ea",
     "qty_tons":22.5,
     "commodity":"piscissapidum9b7"
@@ -10252,11 +9737,6 @@
   {
     "id":"cargo_2035_26805c8d",
     "qty_tons":20.25,
-    "commodity":"oncorhynchusrosea790"
-  },
-  {
-    "id":"cargo_2035_268068c1",
-    "qty_tons":-1.125,
     "commodity":"oncorhynchusrosea790"
   },
   {
@@ -10370,11 +9850,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_268370b6",
-    "qty_tons":-5.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_2683931b",
     "qty_tons":50.875,
     "commodity":"gadusnspecificatae4ba"
@@ -10402,16 +9877,6 @@
   {
     "id":"cargo_2035_2684910e",
     "qty_tons":29.25,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_26850d7c",
-    "qty_tons":-3.25,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_26851535",
-    "qty_tons":-6.5,
     "commodity":"piscesfoetidaae7"
   },
   {
@@ -10552,11 +10017,6 @@
   {
     "id":"cargo_2035_2688262f",
     "qty_tons":32.5,
-    "commodity":"piscesfrigus900"
-  },
-  {
-    "id":"cargo_2035_26883a06",
-    "qty_tons":-6.5,
     "commodity":"piscesfrigus900"
   },
   {
@@ -11035,11 +10495,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_27023cb7",
-    "qty_tons":-1.25,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_27024e87",
     "qty_tons":8.0,
     "commodity":"labridaenrefert9be"
@@ -11107,11 +10562,6 @@
   {
     "id":"cargo_2035_2703752e",
     "qty_tons":7.25,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_27038e62",
-    "qty_tons":-0.75,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -11350,11 +10800,6 @@
     "commodity":"piscesfrigus900"
   },
   {
-    "id":"cargo_2035_271025fb",
-    "qty_tons":-1.25,
-    "commodity":"piscesfrigus900"
-  },
-  {
     "id":"cargo_2035_27103e73",
     "qty_tons":42.5,
     "commodity":"piscesfrigus900"
@@ -11400,11 +10845,6 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_27115952",
-    "qty_tons":-1.0,
-    "commodity":"habeaspisces4eb"
-  },
-  {
     "id":"cargo_2035_271160b5",
     "qty_tons":9.5,
     "commodity":"piscisosseusb6d"
@@ -11417,11 +10857,6 @@
   {
     "id":"cargo_2035_271190c5",
     "qty_tons":17.0,
-    "commodity":"piscisosseusb6d"
-  },
-  {
-    "id":"cargo_2035_2712040b",
-    "qty_tons":-2.0,
     "commodity":"piscisosseusb6d"
   },
   {
@@ -11480,11 +10915,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_2714742a",
-    "qty_tons":-3.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_271481f4",
     "qty_tons":17.25,
     "commodity":"gadusnspecificatae4ba"
@@ -11498,11 +10928,6 @@
     "id":"cargo_2035_27156d7f",
     "qty_tons":21.0,
     "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_271584f3",
-    "qty_tons":-2.0,
-    "commodity":"piscissapidum9b7"
   },
   {
     "id":"cargo_2035_27159476",
@@ -11725,11 +11150,6 @@
     "commodity":"piscissapidum9b7"
   },
   {
-    "id":"cargo_2035_27223098",
-    "qty_tons":-1.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_27224e79",
     "qty_tons":7.75,
     "commodity":"gadusnspecificatae4ba"
@@ -11817,16 +11237,6 @@
   {
     "id":"cargo_2035_27259fbe",
     "qty_tons":8.25,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_27260cb3",
-    "qty_tons":-0.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_27261600",
-    "qty_tons":-0.5,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -12090,11 +11500,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_27335c02",
-    "qty_tons":-2.25,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_27340edb",
     "qty_tons":22.5,
     "commodity":"gadusnspecificatae4ba"
@@ -12232,11 +11637,6 @@
   {
     "id":"cargo_2035_27375e72",
     "qty_tons":0.75,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_27376018",
-    "qty_tons":-1.5,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -12530,11 +11930,6 @@
     "commodity":"piscissapidum9b7"
   },
   {
-    "id":"cargo_2035_27454b61",
-    "qty_tons":-2.25,
-    "commodity":"piscissapidum9b7"
-  },
-  {
     "id":"cargo_2035_2745588c",
     "qty_tons":49.5,
     "commodity":"piscissapidum9b7"
@@ -12617,11 +12012,6 @@
   {
     "id":"cargo_2035_27471938",
     "qty_tons":92.25,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_274729db",
-    "qty_tons":-9.0,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -12965,11 +12355,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_2756251f",
-    "qty_tons":-4.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_2756351e",
     "qty_tons":21.0,
     "commodity":"gadusnspecificatae4ba"
@@ -13007,11 +12392,6 @@
   {
     "id":"cargo_2035_275712ec",
     "qty_tons":30.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_27572a45",
-    "qty_tons":-4.5,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -13220,11 +12600,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_276187fe",
-    "qty_tons":-7.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_27620fc3",
     "qty_tons":58.5,
     "commodity":"gadusnspecificatae4ba"
@@ -13247,11 +12622,6 @@
   {
     "id":"cargo_2035_2762482e",
     "qty_tons":45.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_27625b9e",
-    "qty_tons":-4.5,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -13410,11 +12780,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_276599dd",
-    "qty_tons":-5.0,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_27660d39",
     "qty_tons":20.0,
     "commodity":"labridaenrefert9be"
@@ -13480,11 +12845,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_27673078",
-    "qty_tons":-4.0,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_27674b84",
     "qty_tons":28.0,
     "commodity":"labridaenrefert9be"
@@ -13497,11 +12857,6 @@
   {
     "id":"cargo_2035_276767bb",
     "qty_tons":28.0,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_276770f7",
-    "qty_tons":-3.0,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -13635,11 +12990,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_27704172",
-    "qty_tons":-1.0,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_27705adb",
     "qty_tons":2.0,
     "commodity":"labridaenrefert9be"
@@ -13752,11 +13102,6 @@
   {
     "id":"cargo_2035_27739bda",
     "qty_tons":39.875,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_277417b1",
-    "qty_tons":-1.375,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -14035,11 +13380,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_278194c4",
-    "qty_tons":-3.5,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_27820a1a",
     "qty_tons":26.25,
     "commodity":"labridaenrefert9be"
@@ -14057,11 +13397,6 @@
   {
     "id":"cargo_2035_27823265",
     "qty_tons":28.0,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_27824da1",
-    "qty_tons":-2.625,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -14087,16 +13422,6 @@
   {
     "id":"cargo_2035_27829110",
     "qty_tons":9.625,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_2783053a",
-    "qty_tons":-0.875,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_27831f8d",
-    "qty_tons":-1.75,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -14230,11 +13555,6 @@
     "commodity":"piscesfrigus900"
   },
   {
-    "id":"cargo_2035_27887a60",
-    "qty_tons":-3.75,
-    "commodity":"piscesfrigus900"
-  },
-  {
     "id":"cargo_2035_278887e9",
     "qty_tons":52.5,
     "commodity":"piscesfrigus900"
@@ -14242,11 +13562,6 @@
   {
     "id":"cargo_2035_278892bb",
     "qty_tons":56.25,
-    "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_27890a5f",
-    "qty_tons":-5.625,
     "commodity":"habeaspisces4eb"
   },
   {
@@ -14270,16 +13585,6 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_27896f85",
-    "qty_tons":-1.875,
-    "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_278978da",
-    "qty_tons":-1.875,
-    "commodity":"habeaspisces4eb"
-  },
-  {
     "id":"cargo_2035_27898201",
     "qty_tons":63.75,
     "commodity":"habeaspisces4eb"
@@ -14292,11 +13597,6 @@
   {
     "id":"cargo_2035_27909784",
     "qty_tons":33.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_27910a64",
-    "qty_tons":-3.0,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -15045,11 +14345,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_28107862",
-    "qty_tons":-2.25,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_28108922",
     "qty_tons":21.0,
     "commodity":"labridaenrefert9be"
@@ -15250,11 +14545,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_28148c12",
-    "qty_tons":-2.25,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_2814951a",
     "qty_tons":23.25,
     "commodity":"labridaenrefert9be"
@@ -15295,11 +14585,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_28157fe2",
-    "qty_tons":-0.75,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_2815837b",
     "qty_tons":18.75,
     "commodity":"labridaenrefert9be"
@@ -15313,11 +14598,6 @@
     "id":"cargo_2035_2816033b",
     "qty_tons":15.0,
     "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_2816107b",
-    "qty_tons":-2.0,
-    "commodity":"gadusnspecificatae4ba"
   },
   {
     "id":"cargo_2035_28170cdc",
@@ -15565,11 +14845,6 @@
     "commodity":"piscesfrigus900"
   },
   {
-    "id":"cargo_2035_28226a35",
-    "qty_tons":-0.5,
-    "commodity":"piscesfrigus900"
-  },
-  {
     "id":"cargo_2035_28227148",
     "qty_tons":12.5,
     "commodity":"piscesfrigus900"
@@ -15685,11 +14960,6 @@
     "commodity":"piscesfoetidaae7"
   },
   {
-    "id":"cargo_2035_28262978",
-    "qty_tons":-2.625,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
     "id":"cargo_2035_282632c3",
     "qty_tons":24.5,
     "commodity":"piscesfoetidaae7"
@@ -15757,16 +15027,6 @@
   {
     "id":"cargo_2035_28277bd0",
     "qty_tons":57.75,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_28278c6d",
-    "qty_tons":-1.75,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_2828097c",
-    "qty_tons":-5.25,
     "commodity":"piscesfoetidaae7"
   },
   {
@@ -15875,16 +15135,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_28309e4c",
-    "qty_tons":-4.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_28310ad6",
-    "qty_tons":-4.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_28311194",
     "qty_tons":52.0,
     "commodity":"gadusnspecificatae4ba"
@@ -15902,11 +15152,6 @@
   {
     "id":"cargo_2035_283147d7",
     "qty_tons":8.0,
-    "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_28315b12",
-    "qty_tons":-6.0,
     "commodity":"habeaspisces4eb"
   },
   {
@@ -15943,11 +15188,6 @@
     "id":"cargo_2035_28332486",
     "qty_tons":40.0,
     "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_28333e64",
-    "qty_tons":-10.0,
-    "commodity":"gadusnspecificatae4ba"
   },
   {
     "id":"cargo_2035_2833446c",
@@ -16070,11 +15310,6 @@
     "commodity":"piscissapidum9b7"
   },
   {
-    "id":"cargo_2035_28358a18",
-    "qty_tons":-1.5,
-    "commodity":"piscissapidum9b7"
-  },
-  {
     "id":"cargo_2035_28359b69",
     "qty_tons":43.5,
     "commodity":"piscissapidum9b7"
@@ -16107,11 +15342,6 @@
   {
     "id":"cargo_2035_28374b01",
     "qty_tons":43.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_28375a92",
-    "qty_tons":-1.5,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -16310,11 +15540,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_28415415",
-    "qty_tons":-0.75,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_284169b7",
     "qty_tons":7.5,
     "commodity":"labridaenrefert9be"
@@ -16360,16 +15585,6 @@
     "commodity":"piscesfoetidaae7"
   },
   {
-    "id":"cargo_2035_28435477",
-    "qty_tons":-1.125,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_28436303",
-    "qty_tons":-1.5,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
     "id":"cargo_2035_28437317",
     "qty_tons":24.5,
     "commodity":"gadusnspecificatae4ba"
@@ -16397,11 +15612,6 @@
   {
     "id":"cargo_2035_284427f0",
     "qty_tons":17.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_284437b9",
-    "qty_tons":-3.5,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -16458,11 +15668,6 @@
     "id":"cargo_2035_284544ab",
     "qty_tons":27.125,
     "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_28459c0f",
-    "qty_tons":-1.75,
-    "commodity":"gadusnspecificatae4ba"
   },
   {
     "id":"cargo_2035_28465e29",
@@ -16750,11 +15955,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_28533899",
-    "qty_tons":-4.5,
-    "commodity":"habeaspisces4eb"
-  },
-  {
     "id":"cargo_2035_285348cd",
     "qty_tons":24.75,
     "commodity":"labridaenrefert9be"
@@ -16817,11 +16017,6 @@
   {
     "id":"cargo_2035_285584e7",
     "qty_tons":11.25,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_28559bda",
-    "qty_tons":-0.75,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -16900,18 +16095,8 @@
     "commodity":"oncorhynchusrosea790"
   },
   {
-    "id":"cargo_2035_28577671",
-    "qty_tons":-2.25,
-    "commodity":"oncorhynchusrosea790"
-  },
-  {
     "id":"cargo_2035_2857892b",
     "qty_tons":21.0,
-    "commodity":"oncorhynchusrosea790"
-  },
-  {
-    "id":"cargo_2035_28579748",
-    "qty_tons":-0.75,
     "commodity":"oncorhynchusrosea790"
   },
   {
@@ -16942,11 +16127,6 @@
   {
     "id":"cargo_2035_28586159",
     "qty_tons":12.0,
-    "commodity":"oncorhynchusrosea790"
-  },
-  {
-    "id":"cargo_2035_2858710d",
-    "qty_tons":-1.5,
     "commodity":"oncorhynchusrosea790"
   },
   {
@@ -17107,11 +16287,6 @@
   {
     "id":"cargo_2035_28636034",
     "qty_tons":2.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_28637399",
-    "qty_tons":-0.5,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -17405,11 +16580,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_28698f37",
-    "qty_tons":-2.25,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_28699a97",
     "qty_tons":31.5,
     "commodity":"labridaenrefert9be"
@@ -17437,11 +16607,6 @@
   {
     "id":"cargo_2035_28704e2b",
     "qty_tons":19.125,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_28705cc9",
-    "qty_tons":-3.375,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -17685,11 +16850,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_2877517e",
-    "qty_tons":-4.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_28776ca4",
     "qty_tons":27.0,
     "commodity":"gadusnspecificatae4ba"
@@ -17725,11 +16885,6 @@
     "commodity":"piscesfrigus900"
   },
   {
-    "id":"cargo_2035_28784f9e",
-    "qty_tons":-6.5,
-    "commodity":"piscesfrigus900"
-  },
-  {
     "id":"cargo_2035_28785021",
     "qty_tons":24.375,
     "commodity":"piscesfrigus900"
@@ -17737,11 +16892,6 @@
   {
     "id":"cargo_2035_287866ed",
     "qty_tons":27.625,
-    "commodity":"piscesfrigus900"
-  },
-  {
-    "id":"cargo_2035_28787286",
-    "qty_tons":-1.625,
     "commodity":"piscesfrigus900"
   },
   {
@@ -17773,11 +16923,6 @@
     "id":"cargo_2035_28802eb0",
     "qty_tons":13.0,
     "commodity":"oncorhynchusrosea790"
-  },
-  {
-    "id":"cargo_2035_28804ee4",
-    "qty_tons":-3.25,
-    "commodity":"piscesfrigus900"
   },
   {
     "id":"cargo_2035_28805365",
@@ -17842,11 +16987,6 @@
   {
     "id":"cargo_2035_28819786",
     "qty_tons":2.5,
-    "commodity":"piscesfrigus900"
-  },
-  {
-    "id":"cargo_2035_28820904",
-    "qty_tons":-1.875,
     "commodity":"piscesfrigus900"
   },
   {
@@ -18242,11 +17382,6 @@
   {
     "id":"cargo_2035_2890936b",
     "qty_tons":66.5,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_28910be2",
-    "qty_tons":-3.5,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -18750,11 +17885,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_29055cb1",
-    "qty_tons":-3.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_29056147",
     "qty_tons":64.75,
     "commodity":"gadusnspecificatae4ba"
@@ -18792,11 +17922,6 @@
   {
     "id":"cargo_2035_29066efb",
     "qty_tons":0.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_29067509",
-    "qty_tons":-8.75,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -18987,11 +18112,6 @@
   {
     "id":"cargo_2035_29112e93",
     "qty_tons":1.0,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_2911340e",
-    "qty_tons":-1.0,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -19315,11 +18435,6 @@
     "commodity":"piscessatisb87"
   },
   {
-    "id":"cargo_2035_29190b6f",
-    "qty_tons":-2.625,
-    "commodity":"piscessatisb87"
-  },
-  {
     "id":"cargo_2035_2919150e",
     "qty_tons":27.125,
     "commodity":"piscessatisb87"
@@ -19430,11 +18545,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_29223e84",
-    "qty_tons":-1.375,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_292241dd",
     "qty_tons":42.625,
     "commodity":"gadusnspecificatae4ba"
@@ -19500,11 +18610,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_29244134",
-    "qty_tons":-5.5,
-    "commodity":"piscesfrigus900"
-  },
-  {
     "id":"cargo_2035_2924636c",
     "qty_tons":37.125,
     "commodity":"piscesfrigus900"
@@ -19537,16 +18642,6 @@
   {
     "id":"cargo_2035_29253538",
     "qty_tons":46.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_2925494a",
-    "qty_tons":-1.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_292552a0",
-    "qty_tons":-4.5,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -19602,11 +18697,6 @@
   {
     "id":"cargo_2035_2926731d",
     "qty_tons":45.0,
-    "commodity":"piscesfrigus900"
-  },
-  {
-    "id":"cargo_2035_29268cf5",
-    "qty_tons":-1.5,
     "commodity":"piscesfrigus900"
   },
   {
@@ -19675,11 +18765,6 @@
     "commodity":"piscesfrigus900"
   },
   {
-    "id":"cargo_2035_292841fc",
-    "qty_tons":-3.0,
-    "commodity":"piscesfrigus900"
-  },
-  {
     "id":"cargo_2035_29285c16",
     "qty_tons":39.0,
     "commodity":"piscesfrigus900"
@@ -19725,11 +18810,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_2931168f",
-    "qty_tons":-5.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_293121ae",
     "qty_tons":31.625,
     "commodity":"gadusnspecificatae4ba"
@@ -19742,11 +18822,6 @@
   {
     "id":"cargo_2035_29314166",
     "qty_tons":17.875,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_293167b0",
-    "qty_tons":-6.875,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -19875,11 +18950,6 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_29349db8",
-    "qty_tons":-0.75,
-    "commodity":"habeaspisces4eb"
-  },
-  {
     "id":"cargo_2035_29350a33",
     "qty_tons":15.0,
     "commodity":"habeaspisces4eb"
@@ -19912,11 +18982,6 @@
   {
     "id":"cargo_2035_29364bba",
     "qty_tons":52.25,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_29365506",
-    "qty_tons":-4.125,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -19970,18 +19035,8 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_29377e04",
-    "qty_tons":-1.375,
-    "commodity":"habeaspisces4eb"
-  },
-  {
     "id":"cargo_2035_293784e2",
     "qty_tons":49.5,
-    "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_2937914c",
-    "qty_tons":-6.875,
     "commodity":"habeaspisces4eb"
   },
   {
@@ -20017,11 +19072,6 @@
   {
     "id":"cargo_2035_29387eb6",
     "qty_tons":38.5,
-    "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_293881ea",
-    "qty_tons":-1.375,
     "commodity":"habeaspisces4eb"
   },
   {
@@ -20092,11 +19142,6 @@
   {
     "id":"cargo_2035_294043c3",
     "qty_tons":49.5,
-    "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_294052ec",
-    "qty_tons":-5.5,
     "commodity":"habeaspisces4eb"
   },
   {
@@ -20232,11 +19277,6 @@
   {
     "id":"cargo_2035_29440c93",
     "qty_tons":35.75,
-    "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_29441e3f",
-    "qty_tons":-1.375,
     "commodity":"habeaspisces4eb"
   },
   {
@@ -20385,11 +19425,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_29481145",
-    "qty_tons":-0.875,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_29482af8",
     "qty_tons":24.5,
     "commodity":"gadusnspecificatae4ba"
@@ -20407,11 +19442,6 @@
   {
     "id":"cargo_2035_2948675d",
     "qty_tons":5.25,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_2948814f",
-    "qty_tons":-3.5,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -20540,11 +19570,6 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_29526fa2",
-    "qty_tons":-1.875,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_29527a36",
     "qty_tons":12.75,
     "commodity":"labridaenrefert9be"
@@ -20603,11 +19628,6 @@
     "id":"cargo_2035_29538cf9",
     "qty_tons":11.625,
     "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_2953917e",
-    "qty_tons":-0.375,
-    "commodity":"habeaspisces4eb"
   },
   {
     "id":"cargo_2035_295407c8",
@@ -20940,11 +19960,6 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_29620fcc",
-    "qty_tons":-5.5,
-    "commodity":"habeaspisces4eb"
-  },
-  {
     "id":"cargo_2035_29621aac",
     "qty_tons":50.875,
     "commodity":"habeaspisces4eb"
@@ -21260,11 +20275,6 @@
     "commodity":"piscisosseusb6d"
   },
   {
-    "id":"cargo_2035_297151ee",
-    "qty_tons":-1.125,
-    "commodity":"piscisosseusb6d"
-  },
-  {
     "id":"cargo_2035_29716bb8",
     "qty_tons":34.875,
     "commodity":"piscisosseusb6d"
@@ -21287,11 +20297,6 @@
   {
     "id":"cargo_2035_29723c08",
     "qty_tons":36.0,
-    "commodity":"piscisosseusb6d"
-  },
-  {
-    "id":"cargo_2035_2972647f",
-    "qty_tons":-5.625,
     "commodity":"piscisosseusb6d"
   },
   {
@@ -21347,11 +20352,6 @@
   {
     "id":"cargo_2035_297499bc",
     "qty_tons":36.0,
-    "commodity":"oncorhynchusrosea790"
-  },
-  {
-    "id":"cargo_2035_29750053",
-    "qty_tons":-1.0,
     "commodity":"oncorhynchusrosea790"
   },
   {
@@ -21415,18 +20415,8 @@
     "commodity":"oncorhynchusrosea790"
   },
   {
-    "id":"cargo_2035_29773128",
-    "qty_tons":-4.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_297778e2",
     "qty_tons":33.75,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_2977952d",
-    "qty_tons":-2.25,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -21610,11 +20600,6 @@
     "commodity":"piscesfrigus900"
   },
   {
-    "id":"cargo_2035_29831d3f",
-    "qty_tons":-0.75,
-    "commodity":"piscesfrigus900"
-  },
-  {
     "id":"cargo_2035_2983203f",
     "qty_tons":14.25,
     "commodity":"piscesfrigus900"
@@ -21632,11 +20617,6 @@
   {
     "id":"cargo_2035_29835f38",
     "qty_tons":23.25,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_2983604c",
-    "qty_tons":-1.5,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -22175,18 +21155,8 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_300043df",
-    "qty_tons":-2.25,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_30008349",
     "qty_tons":30.375,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_300120af",
-    "qty_tons":-4.5,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -22287,11 +21257,6 @@
   {
     "id":"cargo_2035_3003289d",
     "qty_tons":25.875,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_30033354",
-    "qty_tons":-4.5,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -22635,11 +21600,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_30148b7b",
-    "qty_tons":-1.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_30149550",
     "qty_tons":8.25,
     "commodity":"gadusnspecificatae4ba"
@@ -22657,11 +21617,6 @@
   {
     "id":"cargo_2035_3015300c",
     "qty_tons":7.875,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_30154103",
-    "qty_tons":-0.75,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -22692,11 +21647,6 @@
   {
     "id":"cargo_2035_30169e6e",
     "qty_tons":42.75,
-    "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_30170a9f",
-    "qty_tons":-1.125,
     "commodity":"habeaspisces4eb"
   },
   {
@@ -22785,18 +21735,8 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_30191324",
-    "qty_tons":-4.5,
-    "commodity":"habeaspisces4eb"
-  },
-  {
     "id":"cargo_2035_30199635",
     "qty_tons":33.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_30200d30",
-    "qty_tons":-2.0,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -22828,11 +21768,6 @@
     "id":"cargo_2035_30207536",
     "qty_tons":25.0,
     "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_30208fbf",
-    "qty_tons":-1.0,
-    "commodity":"piscesfrigus900"
   },
   {
     "id":"cargo_2035_302112d3",
@@ -23195,11 +22130,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_302927d2",
-    "qty_tons":-4.5,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_3029376e",
     "qty_tons":24.75,
     "commodity":"labridaenrefert9be"
@@ -23290,11 +22220,6 @@
     "commodity":"piscesfrigus900"
   },
   {
-    "id":"cargo_2035_3032335e",
-    "qty_tons":-1.5,
-    "commodity":"piscesfrigus900"
-  },
-  {
     "id":"cargo_2035_30324068",
     "qty_tons":7.5,
     "commodity":"piscesfrigus900"
@@ -23370,11 +22295,6 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_3036119a",
-    "qty_tons":-1.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_303621df",
     "qty_tons":16.5,
     "commodity":"gadusnspecificatae4ba"
@@ -23425,18 +22345,8 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_3038132f",
-    "qty_tons":-0.875,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_30382ec6",
     "qty_tons":33.25,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_3038348f",
-    "qty_tons":-3.5,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -23468,11 +22378,6 @@
     "id":"cargo_2035_30389d17",
     "qty_tons":2.625,
     "commodity":"piscesfrigus900"
-  },
-  {
-    "id":"cargo_2035_30390aaf",
-    "qty_tons":-4.375,
-    "commodity":"gadusnspecificatae4ba"
   },
   {
     "id":"cargo_2035_30391c82",
@@ -23790,11 +22695,6 @@
     "commodity":"piscissapidum9b7"
   },
   {
-    "id":"cargo_2035_3046594a",
-    "qty_tons":-1.0,
-    "commodity":"piscissapidum9b7"
-  },
-  {
     "id":"cargo_2035_304664aa",
     "qty_tons":8.5,
     "commodity":"piscissapidum9b7"
@@ -23822,11 +22722,6 @@
   {
     "id":"cargo_2035_30471e77",
     "qty_tons":6.0,
-    "commodity":"piscissapidum9b7"
-  },
-  {
-    "id":"cargo_2035_304725ef",
-    "qty_tons":-0.75,
     "commodity":"piscissapidum9b7"
   },
   {
@@ -23970,11 +22865,6 @@
     "commodity":"oncorhynchusrosea790"
   },
   {
-    "id":"cargo_2035_305200c4",
-    "qty_tons":-6.5,
-    "commodity":"oncorhynchusrosea790"
-  },
-  {
     "id":"cargo_2035_3052181f",
     "qty_tons":40.625,
     "commodity":"oncorhynchusrosea790"
@@ -24015,11 +22905,6 @@
     "commodity":"oncorhynchusrosea790"
   },
   {
-    "id":"cargo_2035_30530a5a",
-    "qty_tons":-6.5,
-    "commodity":"oncorhynchusrosea790"
-  },
-  {
     "id":"cargo_2035_30536eb6",
     "qty_tons":32.5,
     "commodity":"piscesfrigus900"
@@ -24052,11 +22937,6 @@
   {
     "id":"cargo_2035_305429c3",
     "qty_tons":20.625,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_30543bf8",
-    "qty_tons":-3.75,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -24107,11 +22987,6 @@
   {
     "id":"cargo_2035_305538c2",
     "qty_tons":46.875,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_30554f50",
-    "qty_tons":-7.5,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -24235,11 +23110,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_30579407",
-    "qty_tons":-9.375,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_3058093b",
     "qty_tons":60.0,
     "commodity":"labridaenrefert9be"
@@ -24347,11 +23217,6 @@
   {
     "id":"cargo_2035_3061099f",
     "qty_tons":46.75,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_30611e58",
-    "qty_tons":-4.125,
     "commodity":"piscesfoetidaae7"
   },
   {
@@ -24540,11 +23405,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_3066427e",
-    "qty_tons":-1.75,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_30665466",
     "qty_tons":49.0,
     "commodity":"gadusnspecificatae4ba"
@@ -24582,11 +23442,6 @@
   {
     "id":"cargo_2035_3067488c",
     "qty_tons":45.0,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_3067552c",
-    "qty_tons":-4.5,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -24630,11 +23485,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_30684b3c",
-    "qty_tons":-7.5,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_3068585e",
     "qty_tons":33.0,
     "commodity":"gadusnspecificatae4ba"
@@ -24662,11 +23512,6 @@
   {
     "id":"cargo_2035_306906eb",
     "qty_tons":37.5,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_30691be0",
-    "qty_tons":-3.0,
     "commodity":"piscesfoetidaae7"
   },
   {
@@ -24790,11 +23635,6 @@
     "commodity":"piscesfoetidaae7"
   },
   {
-    "id":"cargo_2035_30740390",
-    "qty_tons":-5.625,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
     "id":"cargo_2035_30741521",
     "qty_tons":31.5,
     "commodity":"piscesfoetidaae7"
@@ -24825,11 +23665,6 @@
     "commodity":"piscesfoetidaae7"
   },
   {
-    "id":"cargo_2035_307479d8",
-    "qty_tons":-5.625,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
     "id":"cargo_2035_307485d2",
     "qty_tons":34.875,
     "commodity":"piscesfoetidaae7"
@@ -24845,11 +23680,6 @@
     "commodity":"piscesfoetidaae7"
   },
   {
-    "id":"cargo_2035_30752552",
-    "qty_tons":-4.5,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
     "id":"cargo_2035_30753949",
     "qty_tons":3.375,
     "commodity":"piscesfoetidaae7"
@@ -24862,11 +23692,6 @@
   {
     "id":"cargo_2035_3075590a",
     "qty_tons":30.375,
-    "commodity":"piscesfoetidaae7"
-  },
-  {
-    "id":"cargo_2035_30758cf7",
-    "qty_tons":-5.625,
     "commodity":"piscesfoetidaae7"
   },
   {
@@ -25295,11 +24120,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_30875d13",
-    "qty_tons":-1.75,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_30877215",
     "qty_tons":25.375,
     "commodity":"gadusnspecificatae4ba"
@@ -25620,11 +24440,6 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_30959c64",
-    "qty_tons":-4.5,
-    "commodity":"habeaspisces4eb"
-  },
-  {
     "id":"cargo_2035_30960cb1",
     "qty_tons":23.625,
     "commodity":"habeaspisces4eb"
@@ -25677,11 +24492,6 @@
   {
     "id":"cargo_2035_30983d6f",
     "qty_tons":12.25,
-    "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_30985367",
-    "qty_tons":-1.75,
     "commodity":"habeaspisces4eb"
   },
   {
@@ -26090,11 +24900,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_310926f0",
-    "qty_tons":-2.25,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_310938e9",
     "qty_tons":29.25,
     "commodity":"piscissapidum9b7"
@@ -26120,16 +24925,6 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_31098e2b",
-    "qty_tons":-2.25,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_3109983b",
-    "qty_tons":-5.625,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_31100fa8",
     "qty_tons":20.25,
     "commodity":"labridaenrefert9be"
@@ -26142,11 +24937,6 @@
   {
     "id":"cargo_2035_3110239d",
     "qty_tons":38.25,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_3110356d",
-    "qty_tons":-5.625,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -26170,18 +24960,8 @@
     "commodity":"labridaenrefert9be"
   },
   {
-    "id":"cargo_2035_31108bc0",
-    "qty_tons":-4.5,
-    "commodity":"labridaenrefert9be"
-  },
-  {
     "id":"cargo_2035_31109fa8",
     "qty_tons":33.75,
-    "commodity":"labridaenrefert9be"
-  },
-  {
-    "id":"cargo_2035_31110ab7",
-    "qty_tons":-1.125,
     "commodity":"labridaenrefert9be"
   },
   {
@@ -26265,18 +25045,8 @@
     "commodity":"piscissapidum9b7"
   },
   {
-    "id":"cargo_2035_3112923f",
-    "qty_tons":-6.875,
-    "commodity":"piscissapidum9b7"
-  },
-  {
     "id":"cargo_2035_31130f80",
     "qty_tons":31.625,
-    "commodity":"piscissapidum9b7"
-  },
-  {
-    "id":"cargo_2035_3113160d",
-    "qty_tons":-1.375,
     "commodity":"piscissapidum9b7"
   },
   {
@@ -26325,11 +25095,6 @@
     "commodity":"gadusnspecificatae4ba"
   },
   {
-    "id":"cargo_2035_31142cb2",
-    "qty_tons":-2.75,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
     "id":"cargo_2035_31143154",
     "qty_tons":8.25,
     "commodity":"gadusnspecificatae4ba"
@@ -26357,11 +25122,6 @@
   {
     "id":"cargo_2035_31149290",
     "qty_tons":34.375,
-    "commodity":"gadusnspecificatae4ba"
-  },
-  {
-    "id":"cargo_2035_31156e4e",
-    "qty_tons":-0.5,
     "commodity":"gadusnspecificatae4ba"
   },
   {
@@ -26445,11 +25205,6 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_311757d0",
-    "qty_tons":-1.0,
-    "commodity":"habeaspisces4eb"
-  },
-  {
     "id":"cargo_2035_31176568",
     "qty_tons":12.5,
     "commodity":"habeaspisces4eb"
@@ -26505,11 +25260,6 @@
     "commodity":"habeaspisces4eb"
   },
   {
-    "id":"cargo_2035_31189bb6",
-    "qty_tons":-2.0,
-    "commodity":"habeaspisces4eb"
-  },
-  {
     "id":"cargo_2035_3119010f",
     "qty_tons":10.0,
     "commodity":"habeaspisces4eb"
@@ -26517,11 +25267,6 @@
   {
     "id":"cargo_2035_3119118e",
     "qty_tons":15.0,
-    "commodity":"habeaspisces4eb"
-  },
-  {
-    "id":"cargo_2035_3119237c",
-    "qty_tons":-1.5,
     "commodity":"habeaspisces4eb"
   },
   {
