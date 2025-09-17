@@ -1,0 +1,24 @@
+/* Variabili CSS personalizzate per i colori */
+:root {
+	--main-deep-blue: #092C4C;
+	--main-dark: #403233;
+	--main-dark-grey: #677F90;
+	--main-white: #ffffff;
+	--main-smoke-white: #F5F5F5;
+
+  --plot-blue-shade-1: #023E8A;
+  --plot-blue-shade-2: #0077B6;
+  --plot-blue-shade-3: #0096C7;
+  --plot-blue-shade-4: #00B4D8;
+  --plot-blue-shade-5: #48CAE4;
+  --plot-blue-shade-6: #90E0EF;
+
+  --plot-red-shade-1: #9D0208;
+  --plot-red-shade-2: #D00000;
+  --plot-red-shade-3: #DC2F02;
+  --plot-red-shade-4: #E85D04;
+  --plot-red-shade-5: #F48C06;
+  --plot-red-shade-6: #FAA307;
+}
+
+@import 'tailwindcss';
