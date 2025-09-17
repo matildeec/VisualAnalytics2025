@@ -8,13 +8,12 @@
   </div>
   <div class="px-8 py-8 lg:px-16 lg:py-12">
     <div class="mt-8">
-      <TrajectoryPlot />
     </div>
   </div>
 </template>
 
 <script setup>
-import TrajectoryPlot from '../components/d3/TrajectoryPlot.vue';
+
 </script>
 
 <style scoped>

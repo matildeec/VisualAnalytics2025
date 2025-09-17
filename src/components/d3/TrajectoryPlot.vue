@@ -1,11 +1,13 @@
 <template>
-  <div ref="plotContainer" class="w-full h-96 bg-white rounded shadow relative"></div>
+  <div ref="plotContainer" class="w-full h-96 bg-white rounded shadow"></div>
+  <Tooltip v-bind="tooltip" />
 </template>
 
 <script setup>
 import * as d3 from 'd3'
-import { ref, onMounted, watch } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import { loadDocumentsMap, fishIcons } from './utils.js'
+import Tooltip from '../Tooltip.vue'
 
 function getColorPalette(n) {
   const d3scheme = d3.schemeTableau10 || d3.schemeCategory10
@@ -17,8 +19,30 @@ const plotContainer = ref(null)
 const props = defineProps({ selectedVesselId: String })
 
 const margin = { top: 30, right: 30, bottom: 80, left: 120 }
-const brushHeight = 40
 const highlightDate = '2035-05-14'
+
+// Tooltip reactive state
+const tooltip = reactive({
+  x: 0,
+  y: 0,
+  content: '',
+  contentDict: null,
+  visible: false
+})
+
+// Funzioni tooltip
+function showTooltip(event, dict) {
+  tooltip.x = event.clientX + 8
+  tooltip.y = event.clientY + 8
+  tooltip.content = ''
+  tooltip.contentDict = dict
+  tooltip.visible = true
+}
+
+function hideTooltip() {
+  tooltip.visible = false
+  tooltip.contentDict = null
+}
 
 async function renderChart() {
   if (!props.selectedVesselId) return
@@ -80,21 +104,6 @@ async function renderChart() {
     .attr('width', width)
     .attr('height', containerHeight)
 
-  // Tooltip
-  const tooltip = d3.select(plotContainer.value)
-    .append('div')
-    .style('position', 'absolute')
-    .style('background', 'white')
-    .style('border', '1px solid #ccc')
-    .style('border-radius', '6px')
-    .style('box-shadow', '0px 4px 12px rgba(0,0,0,0.15)')
-    .style('padding', '6px 10px')
-    .style('pointer-events', 'none')
-    .style('opacity', 0)
-    .style('font-size', '0.85rem')
-    .style('color', '#333')
-    .style('transition', 'opacity 0.2s ease, transform 0.1s ease')
-
   // Scales
   const xExtent = d3.extent([
     ...vesselData.map(d => d.time),
@@ -139,12 +148,13 @@ async function renderChart() {
     .attr('fill',d=>locationColors[d.source])
     .attr('opacity',0.85)
     .on('mouseover',(event,d)=>{
-      tooltip.transition().duration(100).style('opacity',0.95)
-      tooltip.html(`Location: ${d.source}<br>Start: ${d.time.toLocaleString()}<br>End: ${d.end_time.toLocaleString()}`)
-      tooltip.style('left',(event.offsetX+15)+'px')
-             .style('top',(event.offsetY+10)+'px')
+      showTooltip(event, {
+        'Location': d.source,
+        'Start': d.time.toLocaleString(),
+        'End': d.end_time.toLocaleString()
+      })
     })
-    .on('mouseout',()=>tooltip.transition().duration(200).style('opacity',0))
+    .on('mouseout', hideTooltip)
 
   // Reports
   gChart.selectAll('.report-bar')
@@ -158,12 +168,12 @@ async function renderChart() {
     .attr('fill',r=>`url(#lightstripe-${locations.indexOf(r.target)})`)
     .attr('opacity',0.7)
     .on('mouseover',(event,r)=>{
-      tooltip.transition().duration(100).style('opacity',0.95)
-      tooltip.html(`Report at: ${r.target}<br>Date: ${r.date.toLocaleDateString()}`)
-      tooltip.style('left',(event.offsetX+15)+'px')
-             .style('top',(event.offsetY+10)+'px')
+      showTooltip(event, {
+        'Report at': r.target,
+        'Date': r.date.toLocaleDateString()
+      })
     })
-    .on('mouseout',()=>tooltip.transition().duration(200).style('opacity',0))
+    .on('mouseout', hideTooltip)
 
   // Transaction markers
   gChart.selectAll('.trans-marker')
@@ -175,12 +185,13 @@ async function renderChart() {
     .attr('width',32).attr('height',32)
     .attr('href',t=>`/src/assets/${fishIcons[t.commodity]||fishIcons['default']}`)
     .on('mouseover',(event,t)=>{
-      tooltip.transition().duration(100).style('opacity',0.95)
-      tooltip.html(`Transaction at: ${t.target}<br>Date: ${t.date.toLocaleDateString()}<br>Commodity: ${t.commodity||'unknown'}`)
-      tooltip.style('left',(event.offsetX+15)+'px')
-             .style('top',(event.offsetY+10)+'px')
+      showTooltip(event, {
+        'Transaction at': t.target,
+        'Date': t.date.toLocaleDateString(),
+        'Commodity': t.commodity || 'unknown'
+      })
     })
-    .on('mouseout',()=>tooltip.transition().duration(200).style('opacity',0))
+    .on('mouseout', hideTooltip)
 
   // Highlight line
   gChart.append('line')
@@ -197,8 +208,7 @@ async function renderChart() {
     .attr('x', width/2)
     .attr('y', yOffset/2)
     .attr('text-anchor','middle')
-    .attr('font-size',16)
-    .attr('font-weight','bold')
+    .attr('font-size',12)
     .text(vesselId)
 
   // Zoom
