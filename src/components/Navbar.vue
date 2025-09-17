@@ -4,7 +4,10 @@ import Button from './Button.vue'
 
 <template>
 	<nav class="relative navbar px-4 py-3 flex items-center justify-between">
-		<div class="font-bold text-lg">FishEye</div>
+		<span class="inline-flex items-center gap-2 px-4 py-1 rounded-2xl text-white font-bold text-lg">
+			<img src="../assets/fisheye-icon.svg" alt='FishEye icon' class="w-8 h-8" />
+			FishEye International
+		</span>
 				<div class="flex gap-4">
 					<Button
 						to="/"
