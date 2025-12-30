@@ -28,7 +28,7 @@ pnpm-debug.log*
 *.swo
 *~
 
-# LaTeX auxiliary files
+# Temporary LaTeX files
 *.aux
 *.fdb_latexmk
 *.fls
