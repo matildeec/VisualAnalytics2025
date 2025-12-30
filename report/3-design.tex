@@ -1,0 +1,40 @@
+\section{Design and Architecture of the Visual Analytics Interface}
+
+The visual analytics interface was designed to support anomaly detection, pattern recognition, and hypothesis generation with the ultimate goal of answering the four research questions reported in Section~\ref{challenge_context}. Guided by established principles of visual encoding, interaction design, and narrative visualization\footnote{Wilke, C. (2019). \textit{Fundamentals of Data Visualization}. Available at \url{https://clauswilke.com/dataviz/}}, the design process consisted of three main stages.
+First, we surveyed the state-of-the-art tools to gain inspiration for tracking fishing vessels. Next, we identified the key visual variables necessary to address the research questions posed by the VAST Challenge. Finally, these design decisions were translated into a prototype using Figma, which then served as the blueprint for the implementation of the interactive system in JavaScript.
+
+This section provides a detailed account of the visual analytics system we developed. We begin by reviewing existing platforms that informed our design choices, then explain the rationale for structuring the interface into distinct pages and how this layout supports user exploration and narrative flow. Finally, we describe the content and visual variables of each page, illustrating how they work together to answer the challenge’s research questions.
+
+\subsection{State-of-the-Art Interfaces}
+
+To first gain inspiration, we explored existing platforms addressing similar challenges:
+
+\begin{itemize}
+    \item \textbf{VesselFinder}\footnote{Available at \url{https://www.vesselfinder.com/}}: a real-time vessel tracking platform that visualizes vessel locations worldwide using AIS data, providing an intuitive overview of maritime activity.
+    \item \textbf{GlobalFishingWatch}\footnote{Available at \url{https://globalfishingwatch.org/map}}: a platform for visualizing global fishing activity, allowing users to monitor vessel movements and identify potential illegal fishing operations.
+\end{itemize}
+
+These platforms shaped our initial thinking, particularly in how vessel routes could be represented on a geographic map. However, the structure of our dataset imposed important constraints that made it impossible to reproduce the same level of detailed route visualizations. Although we had geographic coordinates available to reconstruct a map of Oceanus (via the provided \texttt{.geojson} file of Oceanus), the vessel GPS pings did not form a continuous trajectory. Instead, they resembled a series of discrete points – often multiple pings from the same location – linked only by timestamps and dwell times. As a result, we lacked the granular path data necessary to accurately reconstruct “real ocean routes” between locations \textit{A, B}, and \textit{C}.
+
+Rather than forcing an incomplete or misleading geographic reconstruction of exact travel paths, we chose to design visualizations conceptually similar to the static plots created in our Jupyter Notebooks as part of EDA (see Section~\ref{eda}), focusing on patterns and trends in vessel pings – such as timing, frequency, and distribution. This approach allowed us to emphasize meaningful behavioral patterns over potentially inaccurate (and ultimately insignificant) geographic details.
+
+\subsection{Interface Structure and Narrative Flow}
+
+We explain why the interface was structured into two/three distinct pages, how each page supports a specific stage of the user’s analytical journey, and how this multi-page layout promotes clarity, overview, and progressive disclosure of detail.
+
+Interactive filtering, brushing, and zooming further enhanced the perceptual scalability of the tool, aligning with Shneiderman’s Visual Information-Seeking Mantra: \textit{“Overview first, zoom and filter, then details on demand”}\footnote{See \url{https://data.europa.eu/apps/data-visualisation-guide/}}.
+
+To support the investigative narrative of illegal fishing operations, we adopted the paradigm of \textbf{reader-driven narrative visualization}, as described in Segel and Heer’s taxonomy \cite{segel2010narrative}. This approach empowers users to explore the data at their own pace, guided by tools rather than a predefined story path. The key components include:
+
+\begin{itemize}
+    \item \textbf{Interactive Timelines:} Allow analysts to explore vessel behavior over time and detect anomalous sequences.
+    \item \textbf{Linked Views:} Harbor visit timelines, transaction plots, and geospatial maps are linked to enable coordinated interaction across multiple data dimensions.
+    \item \textbf{Dynamic Tooltips:} Provide contextual data (e.g., vessel metadata, transaction details) upon hovering, aiding micro-level analysis.
+    \item \textbf{Anomaly Highlighting:} Automatically flags suspicious patterns such as extended dwell in protected areas or unmatched cargo deliveries.
+\end{itemize}
+
+Although the platform is mostly reader-driven, we also integrated elements of \textbf{author-driven storytelling} in the form of preloaded bookmarks and filters highlighting the behavior of known violators (e.g., SouthSeafood Express Corp). This hybrid approach balances analyst freedom with investigative focus.
+
+\subsection{Visual Encoding and Interaction Design}
+
+We describe the key visual variables (color, shape, size, position, animation) and interaction mechanisms chosen for each page, explaining how these choices address the VAST Challenge research questions and support anomaly detection, pattern recognition, and hypothesis generation.

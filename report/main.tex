@@ -1,0 +1,97 @@
+\documentclass[10pt]{article} % per mettere il fontsize a 10pt
+\usepackage{graphicx} % Required for inserting images
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage[table]{xcolor}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage{soul}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{comment}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta}
+\usepackage{hyperref}
+\usepackage [english]{babel}
+\addto\captionsenglish{% Replace "english" with the language you use
+  \renewcommand{\contentsname}%
+    {Table Of Contents}%
+}
+\usepackage [autostyle, english = american]{csquotes}
+\usepackage{changepage}
+\MakeOuterQuote{"}
+\font\myfontheader=cmcsc10 at 12pt
+\font\myfont=cmcsc10 at 14pt
+\font\myfonts=cmr12 at 22pt
+\font\myfontnames=cmr12 at 12pt
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=18mm,
+ right=18mm,
+ top=26mm,
+ bottom=26mm
+ }
+ 
+\begin{document}
+\pagenumbering{gobble}
+
+\title{
+    \includegraphics[width=0.15\textwidth]{img/unipi.png}\\[0.2cm]
+    {\myfontheader University of Pisa}\\[0.3cm]
+    {\myfontheader Department of Computer Science}\\[1.3cm]
+    {\myfont Visual Analytics Final Project Report}\\[0.5cm]
+    {\myfonts Tracking Suspicious Fishing Activity:\\[0.1cm] 
+    Solving the VAST Challenge 2024}
+}
+
+\author{
+    {\myfontnames Matilde Contestabile}\\[0.1cm]
+    {\small Student ID: 639307}\\
+    {\small \texttt{m.contestabile1@studenti.unipi.it}}
+}
+\date{ }
+
+\maketitle
+
+\vspace{1.2cm}
+
+\begin{abstract}
+\begin{adjustwidth}{2cm}{2cm}
+    This report describes the design and implementation of an interactive visual analytics system developed for the VAST Challenge 2024 (Mini-challenge 2). The system enables exploration of vessel activity and fish transactions, allowing users to identify patterns, anomalies, and potential illegal behavior. We detail the dataset, the analytical approaches applied during exploratory data analysis, and the rationale behind the visual design choices, including color, layout, and interaction strategies. Through dynamic visual representations, the system supports both high-level overviews and detailed investigation, facilitating the discovery of insights and supporting analytical tasks in complex data.
+
+\end{adjustwidth}
+\end{abstract}
+
+\vfill % Spinge tutto il resto in fondo
+    
+\centering
+% --- FOOTER ---
+\rule{0.8\textwidth}{0.4pt}\\ % Linea orizzontale
+\vspace{0.4cm}
+\textit{Academic Year 2024/2025}
+
+\begin{adjustwidth}{1cm}{1cm}
+
+% ToC
+\newpage
+\tableofcontents
+\clearpage
+
+\input{0-introduction}
+\input{1-data-understanding}
+\input{2-eda}
+\input{3-design}
+\input{4-use-case}
+\input{5-questions}
+\input{6-conclusion}
+
+\end{adjustwidth}
+
+\end{document}

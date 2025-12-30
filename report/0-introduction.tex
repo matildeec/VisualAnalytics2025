@@ -1,0 +1,59 @@
+\pagenumbering{arabic}
+%---------------------------------------------------------------
+\section{Introduction}
+\subsection{Project Overview and VAST Challenge Context} \label{challenge_context}
+
+This project addresses the analytical goals of the \textbf{Mini-Challenge 2 (MC2)} from the \textbf{VAST Challenge 2024} (available for consultation at \url{https://vast-challenge.github.io/2024/index.html}). The VAST Challenge is a well-established international competition focusing on advanced visual analytics. The 2024 edition is set in the fictional nation of Oceanus, where a vibrant commercial fishing industry is facing threats from unethical practices by certain actors.
+The \textit{Challenge Overview} recites as follows:
+
+\begin{quote} \small
+    Welcome to Oceanus, an island nation with a healthy market for commercial fishing. Most companies in the region are united in following regulations and implementing sustainable fishing practices. But there are a few companies who are willing to cross ethical lines to increase their catch and their profits. Luckily, FishEye International maintains a watchful eye on fishing data. Their dedicated analysts have been processing data from various sources into a knowledge graph that they call CatchNet: the Oceanus Knowledge Graph.
+\end{quote}
+
+In this context, \textbf{Mini-Challenge 2 (MC2)} focuses on analyzing the behavior of vessels operating within Oceanus using multiple datasets, including transponder pings, harbor visit records, and transaction logs. The central goal is to investigate \textbf{illegal fishing behaviors} by the company \textbf{SouthSeafood Express Corp} and to develop visualizations that support \textbf{anomaly detection in vessel movements and supply chains}. Here's the \textit{overview} specific to the mini-challenge:
+
+\begin{quote} \small
+    In Oceanus, island life is defined by the coming and going of seafaring vessels, many of which are operated by commercial fishing companies. Typically, the movement of ships and goods are a sign of Oceanus’s healthy economy. But mundane routines can be disrupted by a major event.\vspace{0.3em}
+
+    FishEye International has discovered that SouthSeafood Express Corp was engaged in illegal fishing, prompting the need for advanced analysis. As part of this challenge, analysts must investigate this event using CatchNet data to uncover behavioral patterns, track fish product movements, and support future monitoring.
+\end{quote}
+
+More specifically, the mini-challenge requires to address the following research questions through a series of targeted visual workflows and analytical strategies, with an emphasis on interactivity and clarity:
+
+\begin{enumerate}
+    \item \textbf{Cargo Attribution:} Given the lack of direct vessel identifiers in port transaction records (due to wrong purchase of records by FishEye analysts), can we visually and analytically associate cargo deliveries with specific vessels? What seasonal or regional trends emerge in fish exports?
+
+    \item \textbf{Illegal Behavior Detection:} How do the trajectories and port interactions of SouthSeafood Express vessels differ from compliant vessels? When and where did violations occur?
+
+    \item \textbf{Behavioral Pattern Matching:} Are there other vessels whose behavior mirrors that of SouthSeafood Express? Can similar illegal activities be inferred?
+
+    \item \textbf{Post-Incident Trends:} Following the discovery of illegal fishing, have commercial fishing patterns across Oceanus shifted? Are new anomalies emerging?
+\end{enumerate}
+
+Answers are available at Section~\ref{research-questions}.
+
+%---------------------------------------------------------------
+\subsection{Repository and Resources}
+
+The full implementation is publicly available in the GitHub repository:
+\begin{quote}
+\url{https://github.com/matildeec/VisualAnalytics2025}
+\end{quote}
+
+The repository includes:
+\begin{itemize}
+    \item \texttt{data-understanding/} – Notebook-based data inspection and cleaning scripts
+    \item \texttt{platform/} – Visualization platform built with D3.js and Altair
+    \item \texttt{notebooks/} – Exploratory and analytical notebooks addressing each research question
+    \item \texttt{data/} – Cleaned and raw JSON graph files
+\end{itemize}
+
+To install, clone the repository and install the required dependencies:
+
+\begin{verbatim}
+git clone https://github.com/matildeec/VisualAnalytics2025.git
+cd VisualAnalytics2025
+pip install -r requirements.txt
+\end{verbatim}
+
+\noindent The project is fully reproducible and structured for modular exploration and extension.

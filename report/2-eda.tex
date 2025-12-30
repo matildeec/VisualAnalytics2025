@@ -1,0 +1,93 @@
+\section{Exploratory Data Analysis} \label{eda}
+
+We conducted an initial exploratory data analysis (EDA) on the cleaned data using a combination of Python libraries such as \texttt{pandas}, \texttt{matplotlib}, \texttt{altair}, and \texttt{seaborn}. The purpose of this analysis was to uncover patterns in vessel activity, identify potential anomalies, and provide a foundation for more sophisticated visualizations later on.
+
+\subsection{Analytical Analysis of vessel activity}
+
+To effectively interpret vessel behavior, it was first necessary to understand the geographical context of the dataset. Certain regions are in fact designated as ecological preserves, where fishing activity is strictly prohibited. Vessels, however, were observed operating across both legal fishing grounds and these protected zones. Additionally, the dataset provides the list of species present in every region, allowing us to identify which species are exclusive to protected preserves. Using this information, we derived an analytical classification of \emph{illegal species}, defined as those found exclusively within protected preserves. Table~\ref{tab:species-matrix} summarizes this mapping: species highlighted in red appear only in illegal zones and therefore serve as indicators of potential illegal fishing activity. 
+
+\begin{table}[H]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}       % reduce horizontal padding
+\renewcommand{\arraystretch}{0.95} % tighter rows
+\begin{tabular}{|l|c c c|>{\columncolor{red!5}}c|>{\columncolor{red!5}}c|>{\columncolor{red!5}}c|}
+\hline
+\textbf{Fish Species} & Cod Table & Wrasse Beds & Tuna Shelf & Ghoti Preserve & Nemo Reef & Don Limpet Preserve \\ \hline
+\texttt{gadusnspecificatae4ba}   & \checkmark &  &  &  &  &  \\ \hline
+\texttt{piscesfrigus900}         & \checkmark & \checkmark & \checkmark &  & \checkmark & \checkmark \\ \hline
+\texttt{habeaspisces4eb}         & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\ \hline
+\texttt{labridaenrefert9be}      &  & \checkmark &  & \checkmark & \checkmark &  \\ \hline
+\rowcolor{red!15} \texttt{piscessatisb87}   &  &  &  & \checkmark & \checkmark & \checkmark \\ \hline
+\rowcolor{red!15} \texttt{piscisosseusb6d}  &  &  &  & \checkmark &  &  \\ \hline
+\texttt{thunnininveradb7}        &  &  & \checkmark &  & \checkmark & \checkmark \\ \hline
+\rowcolor{red!15} \texttt{piscesfoetidaae7} &  &  &  &  &  & \checkmark \\ \hline
+\texttt{piscissapidum9b7}        &  &  & \checkmark &  &  &  \\ \hline
+\end{tabular}
+\caption{Matrix of fish species presence across regions. Rows in red indicate species found exclusively in ecological preserves (illegal). Shaded columns mark the illegal fishing zones.}
+\label{tab:species-matrix}
+\end{table}
+
+After establishing a clear mapping of legal versus illegal zones and species, we turned our attention to temporal patterns in vessel behavior. Specifically, we examined three features: \emph{dwell time} (how long a vessel remained near a given location), \emph{gaps between transponder pings}, and \emph{harbor visit frequencies}.
+
+The rationale was straightforward. Prolonged dwell times may signal suspicious activity, such as covert fishing or offloading. Unusual gaps in transponder signals could indicate attempts at evasion, while irregular harbor visits might point to atypical supply or unloading patterns.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{img/dwell-by-location.png}
+    \caption{Dwell time of fishing vessels by location.}
+    \label{fig:dwell-by-location}
+\end{figure}
+
+Of these features, however, the latter two proved less reliable as standalone indicators. Coverage gaps were common but did not consistently align with illegal fishing zones, and variations in harbor visit frequency were not necessarily suspicious when taken in isolation. By contrast, the dwell time analysis provided the clearest signals of anomalous vessel behavior and thus emerged as the most informative exploratory measure. Figure~\ref{fig:dwell-by-location} illustrates these dwell time patterns across different locations.
+
+The boxplots make clear that vessels indeed lingered significantly longer at certain locations than expected. While many values fell within a normal operational range, some extreme outliers stand out and warrant further investigation. This insight guided the direction of subsequent visualizations, where the emphasis shifted toward tracking how vessels move, where they pause, and how these behaviors align with known illegal regions.
+
+
+\subsection{Temporal Analysis of Fish Deliveries}
+To better grasp the scale of fish deliveries, we aggregated transaction records to track quantities over time. This allowed us to identify seasonal dynamics, peak transaction periods, and potential export trends as requested in Q1. Figure~\ref{fig:transaction-volume} illustrates total transaction volumes for South Paackland as an example case. Noticeable spikes suggest periods of heightened demand, which may align with peak fishing activity or, in some cases, potential illegal operations.
+
+In the visualization, illegal fish species are highlighted in shades of red, while legal species are shown in shades of blue, enabling a direct comparison of their relative contribution to overall trade flows. This perspective not only informed our analysis but also shaped the subsequent design of our visualization approach.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\linewidth]{img/imports_1.png}
+    \caption{Transaction volume over time, representing fish deliveries. Illegal species are shown in shades of red, while legal species are shown in shades of blue.}
+    \label{fig:transaction-volume}
+\end{figure}
+
+\subsection{Analytical Analysis of SouthSeafood Express Corp vessels}
+
+As part of our EDA, we conducted a focused investigation of the company identified as engaging in illegal activities, \textit{SouthSeafood Express Corp}, as requested by the challenge. Table~\ref{tab:southseafood} summarizes the two vessels associated with this company, including their vessel IDs, names, and tonnage.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lll}
+\textbf{Vessel ID} & \textbf{Name} & \textbf{Tonnage} \\
+\hline
+snappersnatcher7be & Snapper Snatcher & 100 \\
+roachrobberdb6     & Roach Robber     & 11,700 \\
+\end{tabular}
+\caption{Vessels associated with SouthSeafood Express Corp.}
+\label{tab:southseafood}
+\end{table}
+
+Both vessels were carefully examined for unusual patterns in their activity, including extended dwell times, abnormal harbor visit frequency, and irregular transaction volumes. 
+
+We first established the timeframe of activity prior to the discovery of illegal behavior: \textit{SouthSeafood Express Corp} vessel pings ranged from \texttt{2035-02-01} to \texttt{2035-05-14}. This period serves as a reference for analyzing changes in behavior, relevant to questions such as those in Q4 regarding post-incident trends: whether commercial fishing patterns across Oceanus have shifted and whether new anomalies are emerging.
+
+To assess whether dwell time and other features are indicative of illegal activity, we generated rankings of top dwellers, vessels with the longest ping gaps, and other relevant metrics. In the ranking of dwell times at illegal locations, \texttt{snappersnatcher7be} (Snapper Snatcher) ranked 76th, while \texttt{roachrobberdb6} (Roach Robber) did not appear among the top vessels. This suggests that although Snapper Snatcher spent time at potentially suspicious locations, it was not among the vessels with the longest dwell times, indicating that further analysis is required to determine whether this behavior is significant.  
+
+Similarly, in the analysis of ping gaps, Snapper Snatcher ranked 173rd and Roach Robber 175th. Neither vessel exhibited substantial gaps in their transponder signals, implying that ping gaps alone are not a reliable indicator of evasion or suspicious activity in this context.  
+
+More interesting insights emerged from examining vessel routes based on transponder pings. Snapper Snatcher made multiple visits to \textit{Exit East}, a region designated for deep-sea fishing. While this does not immediately stand out compared to general vessel activity, it raises questions about whether this route reflects typical operational behavior or unusual activity. Further investigation, particularly with complete route visualizations, will help clarify these patterns.  
+
+While detailed considerations of vessel behavior will be presented later as the full visualizations are presented, we provide the initial Altair plot that was generated to explore these routes.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{img/snappersnatcher7be.png}
+    \caption{Route of \texttt{Snapper Snatcher}}
+    \label{fig:snappersnatcher7be}
+\end{figure}

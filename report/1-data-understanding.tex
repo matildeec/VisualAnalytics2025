@@ -1,0 +1,202 @@
+\section{Data Understanding and Preprocessing}
+
+This section outlines the data exploration and cleaning process carried out for the VAST Challenge 2024 Mini-Challenge 2. Using a data mining approach and Python libraries, we prepared the knowledge graph dataset for visual exploration and anomaly detection, specifically, in a format suitable for JavaScript-based applications.
+
+\subsection{Data Sources and File Structure}
+
+The challenge dataset consists of multiple files, with the central one being a JSON-encoded knowledge graph representing vessel activities, harbor transactions, and commercial fishing behaviors. Supplementary files provide metadata and geospatial context.
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{p{5.2cm}p{8.8cm}}
+\hline
+\textbf{File Name} & \textbf{Description} \\
+\hline
+\texttt{mc2.json} & Main knowledge graph, structured as a multigraph with typed nodes and edges representing entities and events (e.g., vessels, ports, transactions, pings). \\
+\hline
+\texttt{Oceanus Geography Nodes.json} & Metadata for geographic locations (e.g., ports, reefs, regions). \\
+\hline
+\texttt{Oceanus Geography.geojson} & Geospatial file for mapping entities in Oceanus. \\
+\hline
+\end{tabular}
+\caption{Overview of provided data files}
+\end{table}
+
+To support understanding of the knowledge graph, the document \texttt{VAST2024 - MC2 Data Description.docx} is provided, detailing the graph structure and entity semantics.
+
+\subsection{Graph Structure Analysis and Preprocessing}
+
+The knowledge graph contained in \texttt{mc2.json} was imported using the \texttt{networkx} library, resulting in a directed multigraph. Nodes and edges include a \texttt{type} attribute, which was used to categorize and filter graph elements. Both nodes and edges were extracted into separate Pandas DataFrames to enable structured analysis.
+
+Initial preprocessing involved removing metadata fields irrelevant to downstream analysis, specifically: \texttt{[\_last\_edited\_by, \_last\_edited\_date, \_date\_added, \_raw\_source, \_algorithm]}. 
+
+Next, nodes (entities) and edges (events) were grouped by their \texttt{type}. Within each group, columns containing only missing values were discarded, and only relevant attributes were retained to support visualization and modeling tasks.
+
+A summary table of the cleaned data files intended for use in the JavaScript implementation is provided at the end of this section.
+
+\subsubsection{Node Overview and Distribution}
+
+The knowledge graph contains a diverse set of node types. Table~\ref{tab:nodes} summarizes the most relevant node types by category, showing the number of instances and representative attributes retained after cleaning.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}l >{\raggedright\arraybackslash}p{5.2cm} c >{\raggedright\arraybackslash}p{6.2cm}@{}}
+\toprule
+\textbf{Category} & \textbf{Node Type} & \textbf{Count} & \textbf{Attributes} \\
+\midrule
+Document
+  & Entity.Document.DeliveryReport & 5307 & \texttt{qty\_tons}, \texttt{date} \\
+\midrule
+\multirow{7}{*}{Vessel}
+  & Entity.Vessel.FishingVessel     & 178 & \texttt{name}, \texttt{flag\_country}, \texttt{company}, \texttt{tonnage}, \texttt{length\_overall} \\
+  & Entity.Vessel.CargoVessel       & 100 & \texttt{name}, \texttt{flag\_country}, \texttt{company}, \texttt{tonnage}, \texttt{length\_overall} \\
+  & Entity.Vessel.Ferry.Passenger   & 3   & \texttt{name}, \texttt{flag\_country} \\
+  & Entity.Vessel.Ferry.Cargo       & 2   & \texttt{name}, \texttt{flag\_country} \\
+  & Entity.Vessel.Tour              & 6   & \texttt{name}, \texttt{flag\_country} \\
+  & Entity.Vessel.Research          & 2   & \texttt{name}, \texttt{flag\_country} \\
+  & Entity.Vessel.Other             & 5   & \texttt{name}, \texttt{flag\_country}, \texttt{length\_overall} \\
+\midrule
+\multirow{3}{*}{Location}
+  & Entity.Location.Point           & 12  & \texttt{name}, \texttt{description}, \texttt{activities}, \texttt{kind} \\
+  & Entity.Location.City            & 6   & \texttt{name}, \texttt{activities}, \texttt{kind} \\
+  & Entity.Location.Region          & 6   & \texttt{name}, \texttt{description}, \texttt{activities}, \texttt{kind}, \texttt{fish\_species\_present} \\
+\midrule
+Commodity
+  & Entity.Commodity.Fish           & 10  & \texttt{name} \\
+\bottomrule
+\end{tabular}
+\caption{Updated Node Types with Attributes in the Knowledge Graph}
+\label{tab:nodes}
+\end{table}
+
+\subsubsection{Edge Types and Event Semantics}
+
+Edges in the knowledge graph represent interactions and events between entities, providing both temporal and relational context to the data. Table~\ref{tab:edges} summarizes the original edge types, including their counts, source and target entities, and retained attributes.
+
+% \textbf{Event.TransportEvent.TransponderPing} edges capture vessel GPS signals, including timestamps and dwell times, enabling us to reconstruct vessel movement patterns;  
+% \textbf{Event.HarborReport} edges represent port activity recorded by portmasters, including vessel arrivals and departures;  
+% \textbf{Event.Transaction} edges describe seafood deliveries to specific locations and link delivery reports to the commodities they contain.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{5.5cm} c >{\raggedright\arraybackslash}p{2.2cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{2.8cm}@{}}
+\toprule
+\textbf{Event Type} & \textbf{Count} & \textbf{Source} & \textbf{Target} & \textbf{Attributes} \\
+\midrule
+Event.TransportEvent.TransponderPing & 258,542 & Entity.Location & Entity.Vessel & \texttt{time}, \texttt{dwell} \\
+Event.Transaction                     & 5,307  & Entity.Document & Entity.Commodity & \texttt{date} \\
+Event.Transaction                     & 5,307  & Entity.Document & Entity.Location & \texttt{date} \\
+Event.HarborReport                   & 2,487  & Entity.Vessel  & Entity.Location  & \texttt{date}, \texttt{data\_author} \\
+\bottomrule
+\end{tabular}
+\caption{Original edge types with counts, sources, targets, and attributes.}
+\label{tab:edges}
+\end{table}
+
+From here, two critical issues become apparent that affect readability and understanding of the data.  
+First, for \textbf{Event.HarborReport}, the edge direction is counterintuitive: while the information originates from portmasters, the current structure connects vessels (sources) to ports (targets). Reversing this direction would better reflect data provenance and better match with \textbf{Event.TransportEvent.TransponderPing}.  
+Second, \textbf{Event.Transaction} edges are redundant: each delivery report is linked to both a location and a commodity via two separate edges, resulting in duplication and unnecessary complexity.
+
+To address these issues, we redesigned the schema. Information about commodities, including species and quantities, has been moved into the delivery report entity itself, while \textbf{Event.Transaction} edges now exclusively connect delivery reports (sources) to locations (targets).  
+The updated structure is summarized in Table~\ref{tab:edges-redesigned}.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{5.5cm} c >{\raggedright\arraybackslash}p{2.2cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{2.8cm}@{}}
+\toprule
+\textbf{Event Type} & \textbf{Count} & \textbf{Source} & \textbf{Target} & \textbf{Attributes} \\
+\midrule
+Event.TransportEvent.TransponderPing & 258,542 & Entity.Location & Entity.Vessel & \texttt{time}, \texttt{dwell} \\
+Event.Transaction                    & 5,307  & Entity.Document & Entity.Location & \texttt{date} \\
+Event.HarborReport                  & 2,487  & Entity.Location & Entity.Vessel  & \texttt{date}, \texttt{data\_author} \\
+\bottomrule
+\end{tabular}
+\caption{Updated edge types}
+\label{tab:edges-redesigned}
+\end{table}
+
+\subsubsection{Cargo Attribution via Suspected Vessels Tagging}
+
+To address the challenge of associating cargo deliveries with specific vessels despite missing direct identifiers in the port transaction records (see Question 1 in \ref{challenge_context}), we introduced an attribute called \texttt{suspected\_vessels} within the transactions dataset which was derived in an analytical way. This attribute records, for each transaction, a list of vessels potentially responsible for the cargo. The goal was to infer likely vessel–cargo associations based on spatiotemporal docking information and the presence of fish species in regions. The logic underlying this inference can be formalized as:
+{\small
+\[
+\begin{aligned}
+& \textit{Vessel is either `CargoVessel', `FishingVessel' or `Other' } \\
+& \wedge\ \textit{Vessel is docked in a harbor where a fish species was exported (within 1 day)} \\
+& \wedge\; \textit{The same species is present in a region earlier visited by the vessel} \\
+& \implies \textit{The fish species is likely the vessel's cargo.}
+\end{aligned}
+\]
+}
+
+Applying this rule, we flagged transactions meeting these conditions and annotated them with the corresponding \texttt{suspected\_vessels}. A visual summary of the logic is provided in Figure~\ref{fig:suspected_vessels_flowchart}.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[
+  node/.style={draw, rounded corners, align=center, minimum width=3cm, minimum height=0.8cm, font=\footnotesize},
+  arrow/.style={-{Stealth[scale=1]}, thick},
+  inferred/.style={-{Stealth[scale=1]}, thick, dashed},
+  node distance=1.8cm and 5cm
+]
+
+% Nodes
+\node[node] (fish) {Exported Fish};
+\node[node, below=of fish] (harbor) {Harbor};
+\node[node, left=of harbor] (vessel) {Vessel};
+\node[node, above=of vessel] (region) {Fishing Region};
+
+% Arrows with plain text labels
+\draw[arrow] (fish) -- (harbor) node[midway, right, font=\scriptsize, fill=white]{exported from};
+\draw[arrow] (fish) -- (region) node[midway, sloped, above, font=\scriptsize, fill=white]{caught in};
+\draw[arrow] (vessel) -- (harbor) node[midway, above, font=\scriptsize, fill=white]{docked in};
+\draw[arrow] (vessel) -- (region) node[midway, left, font=\scriptsize, fill=white]{visited};
+
+% Inferred diagonal arrow with plain text
+\draw[inferred] (vessel.north east) -- (fish.south west) 
+  node[midway, sloped, above, font=\scriptsize, fill=white]{Probable Cargo Attribution};
+
+\end{tikzpicture}
+\caption{
+Flowchart showing derivation of the \texttt{suspected\_vessels} attribute.
+}
+\label{fig:suspected_vessels_flowchart}
+\end{figure}
+
+\subsection{Resulting \texttt{.json} Files}
+
+Table~\ref{tab:cleaned-json-files} summarizes the cleaned and structured \texttt{.json} files generated from the original knowledge graph after preprocessing. These files are optimized for use in the JavaScript-based implementation and support efficient querying since together they construct a database with primary (underlined) and foreign keys.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}p{7.7cm}@{}}
+\toprule
+\textbf{File Name} & \textbf{Description} & \textbf{Keys} \\
+\midrule
+\texttt{vessels.json}           & Vessel entities        & \underline{\texttt{id}}, \texttt{vessel\_type}, \texttt{name}, \texttt{company}, \texttt{flag\_country}, \texttt{tonnage}, \texttt{length\_overall} \\
+\texttt{commodities.json}       & Traded fish            & \underline{\texttt{id}}, \texttt{name} \\
+\texttt{documents.json}         & Delivery reports       & \underline{\texttt{id}}, \texttt{commodity}, \texttt{qty\_tons} \\
+\texttt{locations.json}         & Locations & \underline{\texttt{id}}, \texttt{name}, \texttt{location\_type}, \texttt{kind}, \texttt{description}, \texttt{activities}, \texttt{fish\_species\_present} \\
+\texttt{transponder\_pings.json} & Vessel GPS logs       & \underline{\texttt{source}}, \underline{\texttt{target}}, \texttt{time}, \texttt{dwell} \\
+\texttt{harbor\_reports.json}   & Port-exit records     & \underline{\texttt{source}}, \underline{\texttt{target}}, \texttt{date}, \texttt{data\_author} \\
+\texttt{transactions.json}      & Cargo exchanges        & \underline{\texttt{source}}, \underline{\texttt{target}}, \texttt{date}, \texttt{suspected\_vessels} \\
+\bottomrule
+\end{tabular}
+\caption{Cleaned \texttt{.json} files and their key attributes. Underlined keys indicate primary identifiers.}
+\label{tab:cleaned-json-files}
+\end{table}
+
+To further facilitate the representation of vessel trajectories, a dedicated file named \texttt{trajectories.json} was created. It is structured as a dictionary, where the keys are vessel IDs and the values are ordered lists of transponder pings represented as JSON objects.
