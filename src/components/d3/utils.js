@@ -1,9 +1,7 @@
-// Utility per documenti e mapping
-
+// Utility
 export async function loadDocumentsMap() {
   const res = await fetch('/data/documents.json');
   const docs = await res.json();
-  // Crea una mappa id -> documento
   const docMap = {};
   for (const doc of docs) {
     docMap[doc.id] = doc;
@@ -11,7 +9,8 @@ export async function loadDocumentsMap() {
   return docMap;
 }
 
-// Mappa commodity -> nome file SVG (coerente con commodities.json)
+// Commodity -> SVG file
+/*
 export const fishIcons = {
   'gadusnspecificatae4ba': 'fish-icon-1.svg',
   'piscesfrigus900': 'fish-icon-2.svg',
@@ -23,6 +22,31 @@ export const fishIcons = {
   'piscisosseusb6d': 'fish-icon-8.svg',
   'oncorhynchusrosea790': 'fish-icon-9.svg',
   'piscessatisb87': 'fish-icon-10.svg',
-  // fallback
+  'default': 'fish-icon-default.svg'
+};*/
+
+export const fishIcons = {
+  'gadusnspecificatae4ba': 'fish-icon-default.svg',
+  'piscesfrigus900': 'fish-icon-default.svg',
+  'piscesfoetidaae7': 'fish-icon-3.svg',
+  'labridaenrefert9be': 'fish-icon-default.svg',
+  'habeaspisces4eb': 'fish-icon-default.svg',
+  'piscissapidum9b7': 'fish-icon-default.svg',
+  'thunnininveradb7': 'fish-icon-default.svg',
+  'piscisosseusb6d': 'fish-icon-8.svg',
+  'oncorhynchusrosea790': 'fish-icon-default.svg',
+  'piscessatisb87': 'fish-icon-10.svg',
   'default': 'fish-icon-default.svg'
 };
+
+export const illegalCommodities = new Set([
+  'piscesfoetidaae7', 
+  'piscisosseusb6d', 
+  'piscessatisb87'
+]);
+
+export const illegalFishingZones = new Set([
+  'Don Limpet Preserve',
+  'Nemo Reef',
+  'Ghoti Preserve'
+]);

@@ -1,5 +1,5 @@
 <template>
-  <div class="m-8 pb-4 flex-col flex lg:flex-row items-start lg:items-center gap-2 mb-2 min-h-12 border-b-2 border-gray-200">
+  <div class="m-8 mt-4 pb-4 flex-col flex lg:flex-row items-start lg:items-center gap-2 mb-2 min-h-12 border-b-2 border-gray-200">
     <h1 class="text-xl font-bold">Harbor Activity</h1>
     <span class="flex text-xs text-gray-400 gap-2 flex-end">
       <img src="../assets/icon-info.svg" alt="info" class="w-4 h-4 inline-block" />

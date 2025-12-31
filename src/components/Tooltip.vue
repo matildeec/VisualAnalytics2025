@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div v-if="visible" :style="tooltipStyle" class="tooltip">
+    <div v-if="visible" :style="positionStyle" class="tooltip-box" :class="variantClass">
       <table v-if="contentDict">
         <tr v-for="(value, key) in contentDict" :key="key">
           <td class="tooltip-key">{{ key }}</td>
@@ -18,42 +18,73 @@ const props = defineProps({
   x: Number,
   y: Number,
   contentDict: Object,
-  visible: Boolean
+  visible: Boolean,
+  // New prop to control styling theme
+  variant: {
+    type: String,
+    default: 'default', // 'default' or 'danger'
+    validator: (value) => ['default', 'danger'].includes(value)
+  }
 })
 
-const tooltipStyle = computed(() => ({
-  position: 'absolute',       // fixed funziona meglio con SVG e scroll
+// We separate positioning logic (inline styles) from theming logic (css classes)
+const positionStyle = computed(() => ({
+  position: 'fixed',
   left: props.x + 'px',
   top: props.y + 'px',
-  background: 'white',
-  border: '1px solid #ccc',
-  borderRadius: '6px',
-  boxShadow: '0px 4px 12px rgba(0,0,0,0.15)',
-  padding: '6px 10px',
-  pointerEvents: 'none',
-  fontSize: '0.75rem',
-  color: '#333',
-  opacity: props.visible ? 0.95 : 0,
-  transition: 'opacity 0.2s ease, transform 0.1s ease',
-  whiteSpace: 'nowrap'
+  zIndex: 9999,
+  pointerEvents: 'none'
 }))
+
+// compute the class name based on the prop
+const variantClass = computed(() => `tooltip-${props.variant}`)
 </script>
 
 <style scoped>
+/* Base styles for the box */
+.tooltip-box {
+  border-radius: 6px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+}
+
+/* --- Default Theme (White/Blue) --- */
+.tooltip-default {
+  background: white;
+  border: 1px solid #ccc;
+  color: #333;
+}
+.tooltip-default .tooltip-key {
+  color: var(--main-deep-blue, #0056b3); /* Fallback color added */
+}
+
+/* --- Danger Theme (Red) --- */
+.tooltip-danger {
+  background: #fef2f2; /* Very light red background */
+  border: 2px solid #ef4444; /* Strong red border */
+  color: #7f1d1d; /* Dark red text */
+}
+/* Make the keys bold red in danger mode */
+.tooltip-danger .tooltip-key {
+  color: #dc2626; 
+}
+
+/* Shared Table Styles */
 .tooltip-key {
-  color: var(--main-deep-blue);
   font-weight: bold;
   font-size: 0.70rem;
   text-transform: uppercase;
-  padding-right: 0.5em;
+  padding-right: 0.8em;
+  text-align: right;
 }
 .tooltip-value {
-  color: #333;
+  font-weight: 500;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-}
+
+/* Transitions */
+.fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
 </style>
