@@ -16,7 +16,7 @@ function handleSelectSlot2(id) { selectedVesselId2.value = id }
   <div class="h-full flex flex-col overflow-hidden bg-gray-100">
     
     <div class="m-8 mt-4 pb-4 flex-col flex lg:flex-row items-start lg:items-center gap-2 mb-2 min-h-12 border-b-2 border-gray-200">
-      <h1 class="text-lg font-bold tracking-tight">Trajectory Comparison</h1>
+      <h1 class="text-lg font-bold tracking-tight uppercase">Trajectory Comparison</h1>
       <span class="flex text-xs text-gray-400 gap-2 flex-end">
         <img src="../assets/icon-info.svg" alt="info" class="w-4 h-4 inline-block" />
         Compare the trajectories of two vessels side by side. Select vessels from the filters to visualize their paths.
@@ -50,10 +50,3 @@ function handleSelectSlot2(id) { selectedVesselId2.value = id }
     </div>
   </div>
 </template>
-
-<style scoped>
-h1 {
-  color: var(--main-deep-blue);
-  text-transform: uppercase;
-}
-</style>

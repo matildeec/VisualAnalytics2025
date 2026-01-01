@@ -1,3 +1,29 @@
+<script setup>
+import { computed } from 'vue'
+
+const props = defineProps({
+  x: Number,
+  y: Number,
+  contentDict: Object,
+  visible: Boolean,
+  variant: {
+    type: String,
+    default: 'default',
+    validator: (value) => ['default', 'danger'].includes(value)
+  }
+})
+
+const positionStyle = computed(() => ({
+  position: 'fixed',
+  left: props.x + 'px',
+  top: props.y + 'px',
+  zIndex: 9999,
+  pointerEvents: 'none'
+}))
+
+const variantClass = computed(() => `tooltip-${props.variant}`)
+</script>
+
 <template>
   <transition name="fade">
     <div v-if="visible" :style="positionStyle" class="tooltip-box" :class="variantClass">
@@ -10,35 +36,6 @@
     </div>
   </transition>
 </template>
-
-<script setup>
-import { computed } from 'vue'
-
-const props = defineProps({
-  x: Number,
-  y: Number,
-  contentDict: Object,
-  visible: Boolean,
-  // New prop to control styling theme
-  variant: {
-    type: String,
-    default: 'default', // 'default' or 'danger'
-    validator: (value) => ['default', 'danger'].includes(value)
-  }
-})
-
-// We separate positioning logic (inline styles) from theming logic (css classes)
-const positionStyle = computed(() => ({
-  position: 'fixed',
-  left: props.x + 'px',
-  top: props.y + 'px',
-  zIndex: 9999,
-  pointerEvents: 'none'
-}))
-
-// compute the class name based on the prop
-const variantClass = computed(() => `tooltip-${props.variant}`)
-</script>
 
 <style scoped>
 /* Base styles for the box */
@@ -67,12 +64,10 @@ const variantClass = computed(() => `tooltip-${props.variant}`)
   border: 2px solid #ef4444; /* Strong red border */
   color: #7f1d1d; /* Dark red text */
 }
-/* Make the keys bold red in danger mode */
 .tooltip-danger .tooltip-key {
   color: #dc2626; 
 }
 
-/* Shared Table Styles */
 .tooltip-key {
   font-weight: bold;
   font-size: 0.70rem;

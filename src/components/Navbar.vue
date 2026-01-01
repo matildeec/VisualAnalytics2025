@@ -11,6 +11,12 @@ import Button from './Button.vue'
 				<div class="flex gap-4">
 					<Button
 						to="/"
+						icon="/src/assets/map-icon.svg"
+						label="See Map"
+					/>
+
+					<Button
+						to="/inspectharbor"
 						icon="/src/assets/anchor-icon.svg"
 						label="Inspect Harbor"
 					/>

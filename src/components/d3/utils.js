@@ -27,13 +27,13 @@ export const fishIcons = {
 
 export const fishIcons = {
   'gadusnspecificatae4ba': 'fish-icon-default.svg',
-  'piscesfrigus900': 'fish-icon-default.svg',
-  'piscesfoetidaae7': 'fish-icon-3.svg',
-  'labridaenrefert9be': 'fish-icon-default.svg',
-  'habeaspisces4eb': 'fish-icon-default.svg',
+  'piscesfrigus900': 'fish-icon-1.svg',
+  'piscesfoetidaae7': 'fish-icon-10.svg',
+  'labridaenrefert9be': 'fish-icon-1.svg',
+  'habeaspisces4eb': 'fish-icon-1.svg',
   'piscissapidum9b7': 'fish-icon-default.svg',
-  'thunnininveradb7': 'fish-icon-default.svg',
-  'piscisosseusb6d': 'fish-icon-8.svg',
+  'thunnininveradb7': 'fish-icon-1.svg',
+  'piscisosseusb6d': 'fish-icon-10.svg',
   'oncorhynchusrosea790': 'fish-icon-default.svg',
   'piscessatisb87': 'fish-icon-10.svg',
   'default': 'fish-icon-default.svg'

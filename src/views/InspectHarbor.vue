@@ -12,9 +12,10 @@ const handleHarborsLoaded = (harbors) => {
 
 <template>
   <div class="h-full flex flex-col overflow-hidden bg-gray-50">
-    <div class="mx-8 mt-6 pb-4 flex flex-col lg:flex-row items-start lg:items-center justify-between border-b-2 border-gray-200 gap-4">
-      <div class="flex flex-col gap-1">
-        <h1 class="text-xl font-bold tracking-tight">Harbor Activity</h1>
+    <div class="m-8 mt-4 pb-4 flex-col flex justify-between lg:flex-row items-start lg:items-center gap-2 mb-2 min-h-12 border-b-2 border-gray-200">
+      
+      <div class="flex flex-row gap-2">
+        <h1 class="text-lg font-bold tracking-tight uppercase">Harbor Activity</h1>
         <div class="flex items-center text-xs text-gray-400 gap-2">
           <img src="../assets/icon-info.svg" alt="info" class="w-4 h-4" />
           <span>Daily cargo departure and vessel arrivals. Filter by harbor to investigate local trends.</span>
@@ -39,7 +40,7 @@ const handleHarborsLoaded = (harbors) => {
         <p class="text-gray-400 font-medium uppercase tracking-widest text-sm">Select a harbor from the list above</p>
       </div>
 
-      <div class="flex-grow bg-white p-6 rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+      <div>
         <HarborActivityChart 
           :selected-harbor="selectedHarbor" 
           @harbors-loaded="handleHarborsLoaded" 
@@ -51,13 +52,6 @@ const handleHarborsLoaded = (harbors) => {
 </template>
 
 <style scoped>
-h1 {
-  /* Using your design tokens */
-  color: var(--main-deep-blue, #1e3a8a);
-  text-transform: uppercase;
-}
-
-/* Custom dropdown arrow for a cleaner look */
 select {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
   background-position: right 0.5rem center;
