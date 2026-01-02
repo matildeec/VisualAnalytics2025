@@ -355,7 +355,7 @@ watch([hiddenCommodities, hiddenVesselTypes], renderChart, { deep: true });
 <template>
   <div class="w-full h-full flex flex-col gap-4 overflow-hidden p-2 bg-slate-50">
     
-    <div class="flex flex-col gap-2 p-3 bg-white border border-gray-200 rounded-xl shadow-sm shrink-0">
+    <div class="flex flex-col gap-2 p-3 bg-white border border-gray-200 rounded-xl shadow-sm">
       <div class="flex flex-nowrap items-center gap-2 overflow-x-auto no-scrollbar pb-2 border-b border-gray-50">
         <span class="text-[10px] font-black text-gray-400 uppercase shrink-0">Cargo</span>
         <div v-for="id in [...new Set(rawCargo.map(d => d.commodity))].sort()" :key="id"
@@ -379,13 +379,13 @@ watch([hiddenCommodities, hiddenVesselTypes], renderChart, { deep: true });
 
     <div class="flex-grow flex gap-4 min-h-0">
       
-      <div class="flex-[3] relative bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+      <div class="flex-[3] relative bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
         <div ref="chartContainer" class="w-full h-full cursor-crosshair"></div>
         <Tooltip v-bind="tooltip" />
       </div>
 
       <div ref="sidebarRef" 
-        class="flex-[1] flex flex-col h-full min-w-[260px] relative select-none"
+        class="flex-[1] flex flex-col h-full min-w-[260px] relative select-none overflow-hidden"
       >
         <div v-if="isResizing" 
           class="fixed inset-0 z-[9999] cursor-row-resize"
@@ -395,7 +395,7 @@ watch([hiddenCommodities, hiddenVesselTypes], renderChart, { deep: true });
 
         <div 
           class="flex flex-col bg-white rounded-t-xl border border-gray-200 shadow-sm overflow-hidden min-h-0"
-          :style="{ height: topBoxHeight + '%' }" 
+          :style="{ height: topBoxHeight + '%', maxHeight: topBoxHeight + '%' }" 
         >
           <div class="p-3 border-b border-gray-100 bg-slate-50/50 flex justify-between items-center shrink-0">
             <h3 class="text-[10px] font-black uppercase text-slate-600">Cargo in View</h3>
@@ -463,7 +463,7 @@ watch([hiddenCommodities, hiddenVesselTypes], renderChart, { deep: true });
         <div 
           @mousedown.prevent="startResizing"
           @dblclick="topBoxHeight = 50"
-          class="h-1.5 w-full hover:bg-blue-400 cursor-row-resize flex items-center justify-center transition-colors group bg-gray-50 border-x border-gray-200 shrink-0"
+          class="h-1.5 w-full hover:bg-blue-400 cursor-row-resize flex items-center justify-center transition-colors group bg-gray-50 border-x border-gray-200"
           :class="{ 'bg-blue-600': isResizing }"
           title="Drag to resize, Double-click to reset (50/50)"
         >
@@ -471,8 +471,8 @@ watch([hiddenCommodities, hiddenVesselTypes], renderChart, { deep: true });
         </div>
 
         <div 
-          class="flex flex-col bg-white rounded-b-xl border border-gray-200 shadow-sm overflow-hidden min-h-0 shrink-0"
-          :style="{ height: (100 - topBoxHeight) + '%' }"
+          class="flex flex-col bg-white rounded-b-xl border border-gray-200 shadow-sm overflow-hidden min-h-0"
+          :style="{ height: (100 - topBoxHeight) + '%', maxHeight: (100 - topBoxHeight) + '%' }"
         > 
           <div class="p-3 border-b border-gray-100 bg-slate-50/50 flex justify-between items-center shrink-0">
             <h3 class="text-[10px] font-black uppercase text-slate-600">Vessels in View</h3>
@@ -489,10 +489,12 @@ watch([hiddenCommodities, hiddenVesselTypes], renderChart, { deep: true });
                 class="p-2.5 rounded-lg border border-slate-100 bg-white shadow-sm shrink-0">
               <div class="flex justify-between items-start mb-1">
 
-                <div class="flex items-center gap-1">
+                <div class="flex flex-wrap items-center gap-1">
                   <span class="text-[10px] font-black text-slate-800 truncate ">{{ vessel.name }}</span>
-                  <div class="w-1.5 h-1.5 rounded-full" :style="{ backgroundColor: vesselColorMap[vessel.vessel_type] }"></div>
-                  <span class="text-[8px] font-bold text-slate-500 uppercase">{{ vessel.vessel_type }}</span>
+                  <div class="flex items-center gap-1">
+                    <div class="w-1.5 h-1.5 rounded-full" :style="{ backgroundColor: vesselColorMap[vessel.vessel_type] }"></div>
+                    <span class="text-[8px] font-bold text-slate-500 uppercase">{{ vessel.vessel_type }}</span>
+                  </div>
                 </div>
                 
                 <span class="text-[8px] font-mono text-slate-400">{{ vessel.date.toLocaleDateString() }}</span>

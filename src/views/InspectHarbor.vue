@@ -12,7 +12,7 @@ const handleHarborsLoaded = (harbors) => {
 
 <template>
   <div class="h-full flex flex-col overflow-hidden bg-gray-50">
-    <div class="m-8 mt-4 pb-4 flex-col flex justify-between lg:flex-row items-start lg:items-center gap-2 mb-2 min-h-12 border-b-2 border-gray-200">
+    <div class="m-8 mt-4 pb-4 flex-col flex justify-between lg:flex-row items-start lg:items-center gap-2 mb-2 min-h-12 border-b-2 border-gray-200 shrink-0">
       
       <div class="flex flex-row gap-2">
         <h1 class="text-lg font-bold tracking-tight uppercase">Harbor Activity</h1>
@@ -40,10 +40,11 @@ const handleHarborsLoaded = (harbors) => {
         <p class="text-gray-400 font-medium uppercase tracking-widest text-sm">Select a harbor from the list above</p>
       </div>
 
-      <div>
+      <div class="flex-grow min-h-0">
         <HarborActivityChart 
           :selected-harbor="selectedHarbor" 
           @harbors-loaded="handleHarborsLoaded" 
+          class="h-full"
         />
       </div>
     </div>
