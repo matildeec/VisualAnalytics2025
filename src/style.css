@@ -21,7 +21,7 @@
   --plot-red-shade-6: #FAA307;
 }
 
-h1 {
+h1, h2 {
   color: var(--main-deep-blue)
 }
 

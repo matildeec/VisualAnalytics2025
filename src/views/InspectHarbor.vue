@@ -26,7 +26,7 @@ const handleHarborsLoaded = (harbors) => {
         <label class="text-[10px] font-bold uppercase text-gray-400 whitespace-nowrap">Select Harbor</label>
         <select 
           v-model="selectedHarbor"
-          class="text-sm font-semibold bg-transparent border-none focus:ring-0 cursor-pointer min-w-[200px] text-slate-700"
+          class="text-sm font-medium bg-transparent border-none focus:ring-0 cursor-pointer min-w-[200px] text-slate-700"
         >
           <option disabled value="">Choose a location...</option>
           <option v-for="h in availableHarbors" :key="h" :value="h">{{ h }}</option>

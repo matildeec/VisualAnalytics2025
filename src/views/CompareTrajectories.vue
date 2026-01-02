@@ -23,9 +23,9 @@ function handleSelectSlot2(id) { selectedVesselId2.value = id }
       </span>
     </div>
 
-    <div class="flex-grow p-4 flex flex-col gap-2 overflow-hidden">
+    <div class="flex-grow p-4 pt-2 flex flex-col gap-2 overflow-hidden">
       
-      <div class="flex-1 bg-gray-50/50 p-4 rounded-xl border border-gray-100 shadow-sm overflow-hidden min-h-0">
+      <div class="flex-1 bg-gray-50/50 p-3 rounded-xl border border-gray-100 shadow-sm overflow-hidden min-h-0">
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 h-full items-stretch">
           <div class="lg:col-span-1 border-r border-gray-200 pr-4">
             <VesselFilters title="Vessel Selection" index="1" @select="handleSelectSlot1" />
@@ -36,7 +36,7 @@ function handleSelectSlot2(id) { selectedVesselId2.value = id }
         </div>
       </div>
 
-      <div class="flex-1 bg-gray-50/50 p-4 rounded-xl border border-gray-100 shadow-sm overflow-hidden min-h-0">
+      <div class="flex-1 bg-gray-50/50 p-3 rounded-xl border border-gray-100 shadow-sm overflow-hidden min-h-0">
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 h-full items-stretch">
           <div class="lg:col-span-1 border-r border-gray-200 pr-4">
             <VesselFilters title="Vessel Selection" index="2" @select="handleSelectSlot2" />

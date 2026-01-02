@@ -1,6 +1,6 @@
 <script setup>
 import * as d3 from 'd3'
-import { ref, reactive, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, reactive, onMounted, onUnmounted, watch } from 'vue'
 import { loadDocumentsMap, fishIcons, illegalCommodities, illegalFishingZones } from './utils.js'
 import Tooltip from '../Tooltip.vue'
 
@@ -27,8 +27,14 @@ let allData = {
   harborReports: null, 
   transactions: null, 
   documentsMap: null,
-  commodityNames: {} 
+  commodityNames: {},
+  vessels: []
 }
+
+const currentVessel = computed(() => {
+  if (!props.selectedVesselId || !allData.vessels.length) return null
+  return allData.vessels.find(v => v.id === props.selectedVesselId) || { name: 'Unknown', company: 'Unknown' }
+})
 
 // --- Tooltip State ---
 const tooltip = reactive({
@@ -53,10 +59,11 @@ function toggleLayer(group, visible) {
 // Initial Data Fetch: Loads all required JSON datasets and maps commodity IDs to names
 async function initializeData() {
   try {
-    const [traj, reports, trans, docMap, commList] = await Promise.all([
+    const [traj, reports, trans, vess, docMap, commList] = await Promise.all([
       fetch('/data/trajectories.json').then(res => res.json()),
       fetch('/data/harbor_reports.json').then(res => res.json()),
       fetch('/data/transactions.json').then(res => res.json()),
+      fetch('/data/vessels.json').then(res => res.json()),
       loadDocumentsMap(),
       fetch('/data/commodities.json').then(res => res.json())
     ])
@@ -69,6 +76,7 @@ async function initializeData() {
       trajectories: traj, 
       harborReports: reports, 
       transactions: trans, 
+      vessels: vess,
       documentsMap: docMap,
       commodityNames: commLookup
     }
@@ -379,27 +387,47 @@ watch(showCargo, (val) => toggleLayer(cargoGroup, val))
       Please select a vessel to view its timeline
     </div>
 
-    <div class="absolute top-2 right-2 z-20 flex gap-2">
-      <button v-for="btn in [
-        { state: showPings, label: 'Transponder Pings', color: 'blue' },
-        { state: showReports, label: 'Harbor Reports', color: 'amber' },
-        { state: showCargo, label: 'Probable Cargo', color: 'emerald' },
-        { state: isZoneVisible, label: 'Exclusion Event', color: 'red' }
-      ]" 
-      :key="btn.label"
-      @click="btn.label.includes('Pings') ? showPings = !showPings : btn.label.includes('Reports') ? showReports = !showReports : btn.label.includes('Cargo') ? showCargo = !showCargo : isZoneVisible = !isZoneVisible"
-      :disabled="!selectedVesselId"
-      class="px-2 py-1 text-[10px] font-bold uppercase rounded border transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-      :class="[
-        selectedVesselId && btn.state ? `bg-${btn.color}-50 text-${btn.color}-700 border-${btn.color}-200` : 'bg-white text-gray-400 border-gray-200',
-        selectedVesselId ? `hover:bg-${btn.color}-100/50` : ''
-      ]">
-        {{ btn.state ? 'Hide' : 'Show' }} {{ btn.label }}
+    <div v-if="currentVessel" class="absolute top-2 left-4 z-20 pointer-events-none">
+      <div class="flex flex-col">
+        <h2 class="text-sm font-bold uppercase tracking-tight leading-none">
+          {{ currentVessel.name }}
+        </h2>
+        <span class="text-[10px] text-slate-500 mt-1">
+          <span class="uppercase font-medium text-[var(--main-deep-blue)]">Company</span> {{ currentVessel.company }} | 
+          <span class="uppercase font-medium text-[var(--main-deep-blue)]">Vessel Type</span> {{ currentVessel.vessel_type }} | 
+          <span class="uppercase font-medium text-[var(--main-deep-blue)]">Tonnage</span> {{ currentVessel.tonnage }} GT
+        </span>
+      </div>
+    </div>
+
+    <div class="absolute top-2 right-4 z-20 flex gap-1.5 bg-white/90 p-1 rounded-lg border border-slate-100 shadow-sm backdrop-blur-sm">
+      <button 
+        v-for="btn in [
+          { state: showPings, label: 'Pings', color: 'bg-blue-500' },
+          { state: showReports, label: 'Reports', color: 'bg-amber-400' },
+          { state: showCargo, label: 'Cargo', color: 'bg-emerald-500' },
+          { state: isZoneVisible, label: 'Event', color: 'bg-red-500' }
+        ]" 
+        :key="btn.label"
+        @click="btn.label === 'Pings' ? showPings = !showPings : btn.label === 'Reports' ? showReports = !showReports : btn.label === 'Cargo' ? showCargo = !showCargo : isZoneVisible = !isZoneVisible"
+        :disabled="!selectedVesselId"
+        class="flex items-center gap-1.5 px-2 py-1 rounded transition-all hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed group"
+      >
+        <span 
+          class="w-2 h-2 rounded-full transition-colors duration-200"
+          :class="btn.state ? btn.color : 'bg-slate-300'"
+        ></span>
+        
+        <span 
+          class="text-[10px] font-bold uppercase transition-colors"
+          :class="btn.state ? 'text-slate-600' : 'text-slate-400'"
+        >
+          {{ btn.label }}
+        </span>
       </button>
     </div>
     
-    <div ref="plotContainer" class="w-full h-full flex-grow bg-white"></div>
-    
+    <div ref="plotContainer" class="w-full h-full flex-grow bg-white py-2"></div>
     <Tooltip v-bind="tooltip" />
   </div>
 </template>
