@@ -36,8 +36,8 @@ const handleHarborsLoaded = (harbors) => {
   
     <div class="flex-grow p-6 flex flex-col relative overflow-hidden">
       
-      <div v-if="!selectedHarbor" class="absolute inset-0 z-20 m-6 flex flex-col items-center justify-center bg-gray-50/90 backdrop-blur-[2px] rounded-2xl border-2 border-dashed border-gray-300 transition-all">
-        <p class="text-gray-400 font-medium uppercase tracking-widest text-sm">Select a harbor from the list above</p>
+      <div v-if="!selectedHarbor" class="absolute inset-0 z-20 m-6 flex flex-col items-center justify-center bg-white backdrop-blur-[2px] rounded-xl border border-gray-100 shadow-sm transition-all">
+        <p class="text-gray-400">Select a harbor from the list above</p>
       </div>
 
       <div class="flex-grow min-h-0">

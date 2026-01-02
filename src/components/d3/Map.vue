@@ -1,77 +1,69 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount, h, render } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import InfoCard from '../InfoCard.vue'
 
-// Import default marker icons from Leaflet to fix missing icon issue
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+// Fix Leaflet's default icon paths
+import markerIcon from 'leaflet/dist/images/marker-icon.png'
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
+import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 
-// Delete default icon URLs to avoid issues with bundlers
-delete L.Icon.Default.prototype._getIconUrl;
-
-// Set custom icon URLs
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: markerIcon2x,
     iconUrl: markerIcon,
     shadowUrl: markerShadow,
-});
+})
 
+const emit = defineEmits(['feature-clicked'])
 const mapContainer = ref(null)
 let map = null
 let geoJsonLayer = null
+let selectedLayer = null 
 
 const getRegionStyle = (feature) => {
-    const kind = feature.properties?.['*Kind'] || '';
-    if (kind === 'Island') return { fillColor: '#dcd5c5', color: '#9a8c73', weight: 2, fillOpacity: 0.8 };
-    if (feature.properties?.type?.includes('Harbor')) return { fillColor: '#3b82f6', color: '#1d4ed8', weight: 3, fillOpacity: 0.6 };
-    return { fillColor: '#e2e8f0', color: '#94a3b8', weight: 1, fillOpacity: 0.4 };
-};
-
-const createPopupContent = (feature) => {
-    const container = document.createElement('div');
-    
-    const vnode = h(InfoCard, {
-        vessel: feature.properties.Name,
-        kind: feature.properties['*Kind'] || feature.properties.type,
-        description: feature.properties.Description,
-        activities: feature.properties.Activities || [],
-        species: feature.properties.fish_species_present || []
-    });
-
-    render(vnode, container);
-    
-    return container;
+    const kind = feature.properties?.['*Kind'] || feature.properties?.type || '';
+    if (kind === 'Island') return { fillColor: '#dcd5c5', color: '#9a8c73', weight: 1, fillOpacity: 0.8 };
+    if (kind.includes('Harbor') || kind.includes('Fishing')) return { fillColor: '#3b82f6', color: '#1d4ed8', weight: 2, fillOpacity: 0.5 };
+    return { fillColor: '#94a3b8', color: '#64748b', weight: 1, fillOpacity: 0.3 };
 };
 
 const handleFeatureEvents = (feature, layer) => {
-    layer.bindPopup(createPopupContent(feature), {
-        maxWidth: 300,
-        className: 'custom-popup'
-    });
-
     layer.on({
-        mouseover: (e) => {
-            const el = e.target;
-            // Controlla se l'elemento supporta setStyle (solo Poligoni e Linee)
-            if (typeof el.setStyle === 'function') {
-                el.setStyle({ 
-                    fillOpacity: 0.9, 
-                    weight: 4, 
-                    color: '#2563eb' 
-                });
+        click: (e) => {
+            if (selectedLayer && geoJsonLayer) {
+                geoJsonLayer.resetStyle(selectedLayer);
             }
-            
-            if (typeof el.bringToFront === 'function') {
-                el.bringToFront();
+
+            selectedLayer = layer;
+            if (layer.setStyle) {
+                layer.setStyle({
+                    color: '#f59e0b',
+                    weight: 4,
+                    fillOpacity: 0.8,
+                    fillColor: '#fbbf24'
+                });
+                layer.bringToFront();
+            }
+
+            if (feature.geometry.type !== 'Point' && geoJsonLayer) {
+                    geoJsonLayer.eachLayer((l) => {
+                        if (l.feature.geometry.type === 'Point') {
+                            l.bringToFront();
+                        }
+                    });
+                }
+
+            emit('feature-clicked', feature);            
+            L.DomEvent.stopPropagation(e);
+        },
+        mouseover: (e) => {
+            if (e.target !== selectedLayer && e.target.setStyle) {
+                e.target.setStyle({ weight: 3, color: '#2563eb', fillOpacity: 0.7 });
             }
         },
         mouseout: (e) => {
-            const el = e.target;
-            if (geoJsonLayer && typeof el.setStyle === 'function') {
-                geoJsonLayer.resetStyle(el);
+            if (e.target !== selectedLayer && geoJsonLayer) {
+                geoJsonLayer.resetStyle(e.target);
             }
         }
     });
@@ -79,7 +71,10 @@ const handleFeatureEvents = (feature, layer) => {
 
 async function initMap() {
     if (!mapContainer.value) return;
-    map = L.map(mapContainer.value).setView([39.75, -166.0], 12);
+    map = L.map(mapContainer.value, {
+        zoomControl: true,
+        attributionControl: false
+    }).setView([39.75, -166.0], 12);
 
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
 
@@ -89,11 +84,17 @@ async function initMap() {
 
         geoJsonLayer = L.geoJSON(geojsonData, {
             style: getRegionStyle,
-            onEachFeature: handleFeatureEvents
+            onEachFeature: handleFeatureEvents,
+            pointToLayer: (feature, latlng) => {
+                return L.circleMarker(latlng, {
+                    radius: 6,
+                    fillOpacity: 0.8
+                });
+            }
         }).addTo(map);
 
         if (geojsonData.features?.length) {
-            map.fitBounds(geoJsonLayer.getBounds(), { padding: [30, 30] });
+            map.fitBounds(geoJsonLayer.getBounds(), { padding: [20, 20] });
         }
     } catch (err) { console.error(err); }
 }
@@ -103,27 +104,5 @@ onBeforeUnmount(() => { if (map) map.remove(); });
 </script>
 
 <template>
-    <div ref="mapContainer" class="w-full h-full min-h-[500px] rounded-xl shadow-inner bg-slate-200 overflow-hidden border border-slate-300"></div>
+    <div ref="mapContainer" class="w-full h-full bg-slate-100 p-0"></div>
 </template>
-
-<style scoped>
-:deep(.leaflet-container) {
-    width: 100%;
-    height: 100%;
-}
-
-:deep(.leaflet-popup) {
-    border-radius: 12px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-}
-
-:deep(.leaflet-popup-content) {
-    margin: 8px;
-    line-height: inherit;
-}
-
-:deep(.leaflet-popup-content-wrapper) {
-    border-radius: 12px;
-}
-</style>
