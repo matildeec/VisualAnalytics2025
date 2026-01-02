@@ -12,7 +12,7 @@ import Button from './Button.vue'
 					<Button
 						to="/"
 						icon="/src/assets/map-icon.svg"
-						label="See Map"
+						label="Traffic Explorer"
 					/>
 
 					<Button
