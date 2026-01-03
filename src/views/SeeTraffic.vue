@@ -7,15 +7,42 @@ import InfoCard from '../components/InfoCard.vue'
 const selectedFeature = ref(null)
 const allPings = ref([])
 
-const minDwellHours = ref(2)
 const hourStart = ref(0)
 const hourEnd = ref(24)
+const tempHourStart = ref(0)
+const tempHourEnd = ref(24)
+
+const setPreset = (start, end) => {
+    tempHourStart.value = start
+    tempHourEnd.value = end
+}
+
+const validateRange = () => {
+    if (tempHourStart.value > tempHourEnd.value - 1) {
+        tempHourStart.value = tempHourEnd.value - 1
+    }
+}
+
+const selectionStyle = computed(() => {
+    const startPercent = (tempHourStart.value / 24) * 100
+    const endPercent = (tempHourEnd.value / 24) * 100
+    return {
+        left: `${startPercent}%`,
+        width: `${endPercent - startPercent}%`
+    }
+})
+
+const applyFilters = () => {
+    hourStart.value = tempHourStart.value
+    hourEnd.value = tempHourEnd.value
+}
 
 const isIslandSelection = computed(() => {
     if (!selectedFeature.value) return false
     
     const kind = selectedFeature.value.properties['*Kind'] || selectedFeature.value.properties.type
-    return kind === 'Island'
+    const centralia_city = selectedFeature.value.properties.Name === 'Centralia'
+    return kind === 'Island' || centralia_city
 })
 
 const filteredTrafficData = computed(() => {
@@ -26,10 +53,6 @@ const filteredTrafficData = computed(() => {
     return allPings.value.filter(p => {
         // Location Filter
         if (p.source !== locationName) return false
-
-        // Dwell Time Filter
-        const dwellInHours = p.dwell / 3600
-        if (dwellInHours < minDwellHours.value) return false
 
         // Hour Filter
         const hour = new Date(p.time).getHours()
@@ -42,6 +65,14 @@ const filteredTrafficData = computed(() => {
 
         return true
     })
+})
+
+const uniqueVesselCount = computed(() => {
+    const pings = filteredTrafficData.value
+    if (!pings || pings.length === 0) return 0
+    
+    const uniqueIds = new Set(pings.map(p => p.target))
+    return uniqueIds.size
 })
 
 onMounted(async () => {
@@ -94,56 +125,73 @@ const handleSelection = (feature) => {
 
             <div class="w-5/7 flex flex-col bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
 
-                <div class="flex-none bg-slate-50 border-b border-slate-200 p-3 flex items-center gap-4 lg:gap-8 h-16">
+                <div class="flex-none bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between h-auto gap-8">
                     
-                    <div class="flex flex-col min-w-[80px]">
-                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Vessels</span>
-                        <div class="flex items-baseline gap-1">
-                             <span class="text-xl font-black text-blue-600 leading-none">{{ filteredTrafficData.length }}</span>
-                             <span class="text-[9px] text-slate-400">found</span>
+                    <div class="flex flex-col min-w-[100px] border-r border-gray-100 pr-6">
+                        <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1">Active Vessels</span>
+                        <div class="flex items-baseline gap-1.5">
+                            <span class="text-2xl font-bold text-gray-500 leading-none">{{ uniqueVesselCount }}</span>
+                            <span class="text-[10px] font-medium text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded">filtered</span>
                         </div>
                     </div>
 
-                    <div class="w-px h-8 bg-slate-200"></div>
+                    <div class="flex flex-col flex-1 max-w-2xl">
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2 text-xs font-mono text-gray-600">
+                                <span class="font-bold bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">
+                                    {{ String(tempHourStart).padStart(2, '0') }}:00
+                                </span>
+                                <span class="text-gray-300">–</span>
+                                <span class="font-bold bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">
+                                    {{ String(tempHourEnd).padStart(2, '0') }}:00
+                                </span>
+                            </div>
 
-                    <div class="flex flex-col justify-center gap-1 w-48">
-                        <div class="flex justify-between items-end">
-                            <label class="text-[9px] font-bold text-slate-500 uppercase">Min Dwell Time</label>
-                            <span class="text-[10px] font-mono font-bold text-blue-600">{{ minDwellHours }}h</span>
+                            <div class="flex gap-1">
+                                <button @click="setPreset(0, 24)" class="px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide rounded hover:bg-gray-100 text-gray-500 transition-colors">All</button>
+                                <button @click="setPreset(6, 18)" class="px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide rounded hover:bg-blue-50 text-blue-600 transition-colors">Day</button>
+                                <button @click="setPreset(18, 24)" class="px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide rounded hover:bg-slate-100 text-slate-600 transition-colors">Night</button>
+                            </div>
                         </div>
-                        <input 
-                            type="range" 
-                            v-model.number="minDwellHours" 
-                            min="0" max="100" 
-                            class="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                        />
-                    </div>
 
-                    <div class="w-px h-8 bg-slate-200"></div>
+                        <div class="relative w-full h-8 group select-none">
+                            
+                            <div class="absolute inset-x-0 bottom-0 h-4 border-b border-gray-300 flex justify-between items-end px-[1px]">
+                                <div v-for="i in 25" :key="i" class="w-px bg-gray-300" 
+                                    :class="(i-1) % 6 === 0 ? 'h-3' : 'h-1.5'"></div>
+                            </div>
+                            <div class="absolute inset-x-0 bottom-[-14px] flex justify-between px-0 text-[9px] text-gray-400 font-mono">
+                                <span>00</span><span>06</span><span>12</span><span>18</span><span>24</span>
+                            </div>
 
-                    <div class="flex flex-col justify-center gap-1">
-                        <label class="text-[9px] font-bold text-slate-500 uppercase">Hour Filter (24h)</label>
-                        <div class="flex items-center gap-2 bg-white px-2 py-0.5 rounded border border-slate-200 shadow-sm">
+                            <div class="absolute top-2 bottom-2 left-0 right-0 bg-gray-100 rounded-sm"></div>
+
+                            <div 
+                                class="absolute top-2 bottom-2 bg-slate-500/90 z-10 shadow-sm"
+                                :style="selectionStyle"
+                            ></div>
+
                             <input 
-                                type="number" 
-                                v-model.number="hourStart" 
-                                min="0" max="23" 
-                                class="w-8 text-xs font-mono text-center outline-none bg-transparent"
+                                type="range" v-model.number="tempHourStart" @input="validateRange"
+                                min="0" max="24" step="1"
+                                class="absolute inset-0 w-full h-full appearance-none bg-transparent pointer-events-none z-30 slider-thumb-tech"
                             />
-                            <span class="text-xs text-slate-300 font-bold">:00</span>
-                            <span class="text-[10px] text-slate-400">to</span>
                             <input 
-                                type="number" 
-                                v-model.number="hourEnd" 
-                                min="0" max="24" 
-                                class="w-8 text-xs font-mono text-center outline-none bg-transparent"
+                                type="range" v-model.number="tempHourEnd" @input="validateRange"
+                                min="0" max="24" step="1"
+                                class="absolute inset-0 w-full h-full appearance-none bg-transparent pointer-events-none z-30 slider-thumb-tech"
                             />
-                            <span class="text-xs text-slate-300 font-bold">:00</span>
                         </div>
                     </div>
 
-                    <div class="ml-auto text-[9px] text-slate-400 italic hidden xl:block max-w-[200px] text-right">
-                        Use filters to isolate suspicious patterns like night activity (e.g. 22 to 05) or long stops.
+                    <div class="flex items-center border-l border-gray-100 pl-6 h-full">
+                        <button 
+                            @click="applyFilters"
+                            class="h-9 px-6 bg-slate-500/90 hover:bg-slate-600/90 text-white text-[11px] font-bold uppercase tracking-wider rounded-3xl shadow-md flex items-center gap-2"
+                        >
+                            Update Map
+                        </button>
                     </div>
                 </div>
 
@@ -172,14 +220,44 @@ const handleSelection = (feature) => {
     </div>
 </template>
 
+
 <style scoped>
-input[type=range]::-webkit-slider-thumb {
+.slider-thumb-tech {
   -webkit-appearance: none;
-  height: 10px;
-  width: 10px;
-  border-radius: 50%;
-  background: #2563eb;
-  cursor: pointer;
-  margin-top: -4px; 
+  pointer-events: none;
+}
+
+.slider-thumb-tech::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  pointer-events: auto; 
+  height: 20px;
+  width: 12px;
+  border-radius: 2px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  cursor: ew-resize;
+  margin-top: -6px;
+  position: relative;
+  z-index: 40;
+  
+  background-image: linear-gradient(to right, transparent 3px, #e5e7eb 3px, #e5e7eb 4px, transparent 4px, transparent 7px, #e5e7eb 7px, #e5e7eb 8px, transparent 8px);
+}
+
+.slider-thumb-tech::-webkit-slider-thumb:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.slider-thumb-tech::-moz-range-thumb {
+  pointer-events: auto;
+  height: 20px;
+  width: 12px;
+  border-radius: 2px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  cursor: ew-resize;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  z-index: 40;
 }
 </style>

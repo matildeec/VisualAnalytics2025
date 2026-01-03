@@ -8,249 +8,358 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['vessel-selected'])
-const chartContainer = ref(null)
-const tooltip = ref({ 
-    visible: false, 
-    x: 0, 
-    y: 0, 
-    contentDict: {} 
-})
-const selectedVessel = ref(null)
+const headerContainer = ref(null)
+const bodyContainer = ref(null)
+const isLoading = ref(true)
+
+const tooltip = ref({ visible: false, x: 0, y: 0, contentDict: {} })
+const selectedVesselId = ref(null)
 const vesselRegistry = ref({})
 
-const drawChart = () => {
-    if (!chartContainer.value || !props.data || props.data.length === 0) {
-        if (chartContainer.value) d3.select(chartContainer.value).selectAll('*').remove()
-        return
-    }
-    
-    d3.select(chartContainer.value).selectAll('*').remove()
-    
-    const margin = { top: 20, right: 20, bottom: 30, left: 50 }
-    const width = chartContainer.value.clientWidth - margin.left - margin.right
-    const height = chartContainer.value.clientHeight - margin.top - margin.bottom
+const TARGET_COMPANY = "SouthSeafood Express Corp" 
+const MARGIN = { top: 0, right: 20, bottom: 0, left: 260 }
+const AXIS_HEIGHT = 30
+const PINNED_ROW_HEIGHT = 50 
+const ROW_HEIGHT = 42
+const PING_WIDTH = 4 
 
-    const groupedData = d3.rollup(props.data,
-        (v) => Array.from(new Set(v.map(d => d.target))).sort(),
-        (d) => d3.timeDay(new Date(d.time)).getTime(),
-        (d) => new Date(d.time).getHours()
-    )
+// Scala Colori (già mappata a variabili CSS)
+const typeColorScale = d3.scaleOrdinal()
+    .domain(['FishingVessel', 'CargoVessel', 'Ferry.Cargo', 'Ferry.Passenger', 'Tour', 'Research', 'Other']) 
+    .range([
+        'var(--chart-vessel-fishing)', 
+        'var(--chart-vessel-cargo)', 
+        'var(--chart-vessel-ferry-cargo)', 
+        'var(--chart-vessel-ferry-passenger)', 
+        'var(--chart-vessel-tour)', 
+        'var(--chart-vessel-research)', 
+        'var(--chart-vessel-other)'
+    ])
 
-    const stripesData = []
-    for (const [dayTime, hoursMap] of groupedData) {
-        for (const [hour, vessels] of hoursMap) {
-            vessels.forEach((vessel, index) => {
-                stripesData.push({
-                    day: new Date(dayTime),
-                    hour: hour,
-                    vessel: vessel,
-                    index: index,
-                    total: vessels.length
-                })
-            })
-        }
-    }
-
-    const svg = d3.select(chartContainer.value)
-        .append('svg')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
-        .on('click', (event) => {
-            selectedVessel.value = null;
-            emit('vessel-selected', null);
-            svg.selectAll('.vessel-stripe')
-                .transition().duration(200)
-                .attr('opacity', 1);
-        })
-    
-    svg.append("defs").append("clipPath")
-        .attr("id", "chart-clip")
-        .append("rect")
-        .attr("width", width)
-        .attr("height", height)
-
-    const gMain = svg.append('g')
-        .attr('transform', `translate(${margin.left},${margin.top})`)
-
-    const xScale = d3.scaleTime()
-        .domain(d3.extent(props.data, d => new Date(d.time)))
-        .range([0, width])
-
-    const yScale = d3.scaleLinear()
-        .domain([0, 24]) 
-        .range([height, 0])
-
-    const nightGroup = gMain.append('g').attr('class', 'night-background')
-    const nightColor = '#f1f5f9' 
-    
-    nightGroup.append('rect')
-        .attr('x', 0).attr('width', width)
-        .attr('y', yScale(6)).attr('height', yScale(0) - yScale(6))
-        .attr('fill', nightColor)
-        
-    nightGroup.append('rect')
-        .attr('x', 0).attr('width', width)
-        .attr('y', yScale(24)).attr('height', yScale(18) - yScale(24))
-        .attr('fill', nightColor)
-
-    gMain.selectAll('.grid-line')
-        .data([6, 12, 18])
-        .enter().append('line')
-        .attr('x1', 0).attr('x2', width)
-        .attr('y1', d => yScale(d)).attr('y2', d => yScale(d))
-        .attr('stroke', '#cbd5e1').attr('stroke-dasharray', '3,3')
-
-    const xAxisGroup = gMain.append('g')
-        .attr('transform', `translate(0,${height})`)
-        .attr('class', 'text-gray-400 text-[10px]')
-    
-    const xAxis = d3.axisBottom(xScale)
-        .ticks(width / 80)
-        .tickFormat(d3.timeFormat("%b %d"))
-    xAxisGroup.call(xAxis).select(".domain").remove()
-
-    const formatHour = (d) => {
-        if (d === 0 || d === 24) return "12 AM";
-        if (d === 12) return "12 PM";
-        return d < 12 ? `${d} AM` : `${d - 12} PM`;
-    };
-
-    const yAxisGroup = gMain.append('g')
-        .call(d3.axisLeft(yScale)
-        .tickValues([0, 6, 12, 18, 24]) // O aggiungi 3, 9, 15, 21 per più dettagli
-        .tickFormat(formatHour))
-        .attr('class', 'text-gray-400 text-[10px]')
-    yAxisGroup.select(".domain").remove()
-
-    const barsGroup = gMain.append('g')
-        .attr("clip-path", "url(#chart-clip)")
-
-    const allVessels = Array.from(new Set(props.data.map(d => d.target))).sort()
-    const colorScale = d3.scaleOrdinal(d3.schemeTableau10).domain(allVessels)
-    const cellHeight = Math.abs(yScale(1) - yScale(0))
-
-    const dateFormatter = d3.timeFormat("%d %b %Y")
-
-    const getOpacity = (d) => {
-        if (!selectedVessel.value) return 1;
-        return d.vessel === selectedVessel.value ? 1 : 0.1;
-    }
-
-    const updateBars = (currentXScale) => {
-        const t1 = currentXScale.domain()[0]
-        const t2 = d3.timeDay.offset(t1, 1)
-        const currentDayWidth = currentXScale(t2) - currentXScale(t1)
-
-        const bars = barsGroup.selectAll('.vessel-stripe')
-            .data(stripesData)
-
-        bars.enter()
-            .append('rect')
-            .attr('class', 'vessel-stripe')
-            .merge(bars)
-            .attr('y', d => yScale(d.hour + 1)) 
-            .attr('height', cellHeight - 0.5)
-            .attr('fill', d => colorScale(d.vessel))
-            .attr('x', d => currentXScale(d.day) + ((currentDayWidth / d.total) * d.index))
-            .attr('width', d => Math.max(0.5, (currentDayWidth / d.total) - 0.5)) 
-            .attr('opacity', d => getOpacity(d))
-            .style('cursor', 'pointer')
-            .on('click', function(event, d) {
-                event.stopPropagation(); 
-                
-                if (selectedVessel.value === d.vessel) {
-                    selectedVessel.value = null; 
-                } else {
-                    selectedVessel.value = d.vessel;
-                }
-                emit('vessel-selected', selectedVessel.value);
-
-                barsGroup.selectAll('.vessel-stripe')
-                    .transition().duration(200)
-                    .attr('opacity', d => getOpacity(d));
-            })
-            .on('mouseover', function(event, d) {
-                if (d3.select(this).attr('opacity') > 0.1) d3.select(this).attr('stroke', '#000').attr('stroke-width', 1)
-                
-                const details = vesselRegistry.value[d.vessel] || { name: d.vessel, company: 'N/A' }
-
-                tooltip.value = {
-                    visible: true,
-                    x: event.clientX + 15, 
-                    y: event.clientY + 15,
-                    contentDict: {
-                        "Vessel": details.name, 
-                        "Company": details.company,
-                        "Type": details.vessel_type || 'Unknown',
-                        "Tonnage": details.tonnage || 'Unknown',
-                        "Date": dateFormatter(d.day),
-                        "Hour": `${d.hour}:00 - ${d.hour + 1}:00`
-                    }
-                }
-            })
-            .on('mouseout', function() {
-                d3.select(this).attr('stroke', 'none')
-                tooltip.value.visible = false
-            })
-
-        bars.exit().remove()
-    }
-
-    updateBars(xScale)
-
-    const zoom = d3.zoom()
-        .scaleExtent([1, 50])
-        .extent([[0, 0], [width, height]])
-        .translateExtent([[0, 0], [width, height]])
-        .on("zoom", (event) => {
-            const newXScale = event.transform.rescaleX(xScale)
-            xAxisGroup.call(xAxis.scale(newXScale))
-            updateBars(newXScale)
-        })
-
-    svg.call(zoom)
-       .on("dblclick.zoom", null)
+const formatDuration = (ms) => {
+    if (!ms) return "0m";
+    const minutes = Math.floor((ms / (1000 * 60)) % 60);
+    const hours = Math.floor((ms / (1000 * 60 * 60)));
+    if (hours > 0) return `${hours}h ${minutes}m`;
+    return `${minutes}m`;
 }
 
-watch(() => props.data, async () => { await nextTick(); drawChart() }, { deep: true })
+// --- RENDER FUNCTION ---
+const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
+    const g = container.append('g')
+        .attr('class', 'vessel-row-group')
+        .attr('transform', yScale ? `translate(0, ${yScale(d.id)})` : `translate(0, 0)`);
+
+    const isTarget = d.company === TARGET_COMPANY;
+
+    // Gestione Sfondo Riga tramite Variabili
+    let bgFill = 'var(--chart-bg-default)'; // Default transparent
+    if (isPinned) bgFill = 'var(--chart-bg-pinned)';
+    else if (isTarget) bgFill = 'var(--chart-row-highlight-bg)';
+
+    g.append('rect')
+        .attr('x', -MARGIN.left)
+        .attr('y', 0)
+        .attr('width', '100%') 
+        .attr('height', isPinned ? PINNED_ROW_HEIGHT : ROW_HEIGHT)
+        .attr('fill', bgFill) 
+        .attr('stroke-left', isTarget && !isPinned ? 'var(--chart-text-highlight)' : 'none')
+        .attr('stroke-width', 4)
+        .on('mouseenter', function() { 
+            if(!isPinned) {
+                d3.select(this).attr('fill', isTarget ? 'var(--chart-row-highlight-hover)' : 'var(--chart-row-hover)') 
+            }
+        })
+        .on('mouseleave', function() { 
+            if(!isPinned) d3.select(this).attr('fill', bgFill) 
+        })
+        .on('click', () => handleVesselClick(d.id));
+    
+    // Indicatore Target (Barra laterale)
+    if (isTarget && !isPinned) {
+        g.append('rect')
+            .attr('x', -MARGIN.left)
+            .attr('y', 0)
+            .attr('width', 4)
+            .attr('height', ROW_HEIGHT)
+            .attr('fill', 'var(--chart-text-highlight)');
+    }
+
+    // Linea divisoria per Pinned Row
+    if (isPinned) {
+        g.append('line')
+            .attr('x1', -MARGIN.left).attr('x2', 20000)
+            .attr('y1', PINNED_ROW_HEIGHT).attr('y2', PINNED_ROW_HEIGHT);
+        
+        g.append('text')
+            .text("PINNED")
+            .attr('x', -MARGIN.left + 10).attr('y', 10)
+            .style('font-size', '9px')
+            .style('fill', 'var(--chart-text-pinned)')
+            .style('font-weight', 'bold');
+    }
+
+    // --- TEXT LABELS ---
+    const labelY = isPinned ? PINNED_ROW_HEIGHT / 2 : ROW_HEIGHT / 2;
+    const labelGroup = g.append('g')
+        .attr('transform', `translate(0, ${labelY})`)
+        .style('pointer-events', 'none');
+
+    const colorVar = typeColorScale(d.type);
+
+    // Nome
+    const nameText = labelGroup.append('text')
+        .text(d.name.length > 25 ? d.name.substring(0,25)+'...' : d.name)
+        .attr('x', -15).attr('y', -3)
+        .style('font-size', '11px')
+        .style('font-weight', isTarget ? '800' : '700') 
+        .style('fill', isTarget ? 'var(--chart-text-highlight-dark)' : 'var(--chart-text-main)')
+        .style('text-anchor', 'end');
+
+    // Badge
+    const badgeRightX = nameText.node().getBBox().x - 6;
+    const typeLabel = d.type === 'Unknown' ? '?' : d.type;
+    const badgeText = labelGroup.append('text')
+        .text(typeLabel)
+        .attr('x', badgeRightX).attr('y', -3)
+        .style('font-size', '9px').style('font-weight', '600')
+        .style('fill', colorVar).style('text-anchor', 'end');
+    
+    const badgeBBox = badgeText.node().getBBox();
+    labelGroup.insert('rect', 'text')
+        .attr('x', badgeBBox.x - 4).attr('y', badgeBBox.y - 1)
+        .attr('width', badgeBBox.width + 8).attr('height', badgeBBox.height + 2)
+        .attr('fill', colorVar).attr('fill-opacity', 0.15).attr('rx', 3);
+
+    // Company
+    labelGroup.append('text')
+        .text(d.company.length > 35 ? d.company.substring(0,35)+'...' : (d.company || 'Unknown'))
+        .attr('x', -15).attr('y', 10)
+        .style('font-size', '10px')
+        .style('fill', isTarget ? 'var(--chart-text-highlight)' : 'var(--chart-text-muted)')
+        .style('font-weight', isTarget ? '600' : '400')
+        .style('font-style', 'italic').style('text-anchor', 'end');
+
+    // --- PINGS ---
+    const pingsG = g.append('g').attr('clip-path', 'url(#clip-body)');
+    const rectHeight = isPinned ? (PINNED_ROW_HEIGHT - 20) : (ROW_HEIGHT - 12);
+    const rectY = isPinned ? 10 : 6;
+
+    pingsG.selectAll('.ping-rect')
+        .data(d.pings)
+        .enter()
+        .append('rect')
+        .attr('class', 'ping-rect')
+        .attr('x', p => xScale(p.time))
+        .attr('y', rectY) 
+        .attr('height', rectHeight)
+        .attr('width', PING_WIDTH)
+        .attr('fill', p => typeColorScale(vesselRegistry.value[p.target]?.vessel_type || 'Unknown'))
+        .attr('opacity', 0.8)
+        .attr('rx', 1)
+        .on('mouseover', (event, p) => {
+            const details = vesselRegistry.value[p.target] || { name: p.target }
+            tooltip.value = {
+                visible: true,
+                x: event.clientX + 15,
+                y: event.clientY + 15,
+                contentDict: {
+                    "Vessel": details.name,
+                    "Company": details.company,
+                    "Time": d3.timeFormat("%d %b %H:%M")(p.time),
+                    "Duration": formatDuration(p.duration)
+                }
+            }
+        })
+        .on('mouseout', () => { tooltip.value.visible = false });
+}
+
+function handleVesselClick(vesselId) {
+    selectedVesselId.value = (selectedVesselId.value === vesselId) ? null : vesselId;
+    emit('vessel-selected', selectedVesselId.value);
+    drawChart();
+}
+
+const drawChart = async () => {
+    isLoading.value = true;
+    if (!headerContainer.value || !bodyContainer.value) return
+    await nextTick();
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    d3.select(headerContainer.value).selectAll('*').remove()
+    d3.select(bodyContainer.value).selectAll('*').remove()
+
+    if (!props.data || props.data.length === 0) {
+        isLoading.value = false;
+        return
+    }
+
+    try {
+        const rawNested = d3.groups(props.data, d => d.target);
+        const sortedVessels = rawNested.map(([id, values]) => {
+            const info = vesselRegistry.value[id] || { name: id, vessel_type: 'Unknown', company: 'Unknown' };
+            const sortedPings = values.slice().sort((a, b) => new Date(a.time) - new Date(b.time));
+            const DEFAULT_DURATION = 15 * 60 * 1000;
+            
+            const pingsWithDwell = sortedPings.map((p) => {
+                let duration = Number(p.dwell);
+                if (!duration || duration <= 0) duration = DEFAULT_DURATION;
+                return { ...p, time: new Date(p.time), duration: duration }; 
+            });
+
+            return { id, name: info.name, type: info.vessel_type, company: info.company, pings: pingsWithDwell }
+        }).sort((a, b) => {
+            const isATarget = a.company === TARGET_COMPANY;
+            const isBTarget = b.company === TARGET_COMPANY;
+            if (isATarget && !isBTarget) return -1; 
+            if (!isATarget && isBTarget) return 1;
+            return a.name.localeCompare(b.name);
+        });
+
+        const width = headerContainer.value.clientWidth - MARGIN.left - MARGIN.right
+        const bodyHeight = sortedVessels.length * ROW_HEIGHT
+        const totalHeaderHeight = AXIS_HEIGHT + PINNED_ROW_HEIGHT + 10; 
+
+        const headerSvg = d3.select(headerContainer.value).append('svg')
+            .attr('width', width + MARGIN.left + MARGIN.right)
+            .attr('height', totalHeaderHeight)
+            .style('display', 'block').style('overflow', 'visible');
+
+        const gAxis = headerSvg.append('g').attr('transform', `translate(${MARGIN.left}, ${AXIS_HEIGHT})`);
+        const gPinned = headerSvg.append('g').attr('transform', `translate(${MARGIN.left}, ${AXIS_HEIGHT + 10})`);
+
+        const bodySvg = d3.select(bodyContainer.value).append('svg')
+            .attr('width', width + MARGIN.left + MARGIN.right)
+            .attr('height', bodyHeight)
+            .style('display', 'block');
+
+        const gBody = bodySvg.append('g').attr('transform', `translate(${MARGIN.left}, 0)`);
+
+        const defs = bodySvg.append('defs');
+        defs.append("clipPath").attr("id", "clip-body").append("rect").attr("width", width).attr("height", 10000);
+        headerSvg.append("defs").append("clipPath").attr("id", "clip-header").append("rect").attr("width", width).attr("height", PINNED_ROW_HEIGHT);
+
+        const xScale = d3.scaleTime().domain(d3.extent(props.data, d => new Date(d.time))).range([0, width]);
+        const yScale = d3.scaleBand().domain(sortedVessels.map(d => d.id)).range([0, bodyHeight]).padding(0.1);
+
+        const xAxis = d3.axisTop(xScale).ticks(width / 80).tickFormat(d3.timeFormat("%d %b")).tickSizeOuter(0);
+        const xAxisGroup = gAxis.append('g').attr('class', 'x-axis text-gray-500 text-[10px]').call(xAxis);
+        xAxisGroup.select(".domain").remove();
+
+        // Pinned Row Logic
+        if (selectedVesselId.value) {
+            const pinnedData = sortedVessels.find(v => v.id === selectedVesselId.value);
+            if (pinnedData) renderVesselRow(gPinned, pinnedData, null, xScale, true);
+        } else {
+            gPinned.append('rect')
+                .attr('width', width + MARGIN.left + MARGIN.right)
+                .attr('x', -MARGIN.left)
+                .attr('height', PINNED_ROW_HEIGHT)
+                .attr('fill', 'var(--chart-bg-pinned)');
+            
+            gPinned.append('text')
+                .text("Click on a vessel to pin it. Click back here to unpin it.")
+                .attr('x', width / 2)
+                .attr('y', PINNED_ROW_HEIGHT / 2)
+                .attr('dy', '0.3em')
+                .attr('text-anchor', 'middle')
+                .style('fill', 'var(--chart-text-pinned)')
+                .style('font-size', '12px');
+        }
+
+        const gGrid = gBody.append('g').attr('class', 'grid-layer');
+        const gridAxisX = d3.axisTop(xScale).ticks(width / 80).tickSize(-bodyHeight).tickFormat('').tickSizeOuter(0);
+        const gGridVertical = gGrid.append('g').attr('class', 'grid-vertical').attr('opacity', 0.5).call(gridAxisX);
+        gGridVertical.selectAll('line').attr('stroke', 'var(--chart-grid-line)').attr('stroke-dasharray', '2,2');
+        gGridVertical.select('.domain').remove();
+
+        gGrid.selectAll('.grid-horizontal-line').data(sortedVessels).enter().append('line')
+            .attr('x1', 0).attr('x2', width)
+            .attr('y1', d => yScale(d.id) + yScale.bandwidth())
+            .attr('y2', d => yScale(d.id) + yScale.bandwidth())
+            .attr('stroke', 'var(--chart-grid-line)').attr('stroke-width', 1).attr('opacity', 0.3);
+
+        const gRows = gBody.append('g').attr('class', 'rows-layer');
+        sortedVessels.forEach(v => {
+            const rowContainer = gRows.append('g'); 
+            renderVesselRow(rowContainer, v, yScale, xScale, false);
+        });
+
+        const zoom = d3.zoom()
+            .scaleExtent([1, 100])
+            .translateExtent([[0, 0], [width, bodyHeight]])
+            .extent([[0, 0], [width, bodyHeight]])
+            .filter(function(event) {
+                if (event.type === 'wheel') {
+                    const [x] = d3.pointer(event, bodySvg.node());
+                    return x >= MARGIN.left;
+                }
+                return true;
+            })
+            .on("zoom", (event) => {
+                const t = event.transform;
+                const newXScale = t.rescaleX(xScale);
+                
+                if (t.k > 5) xAxis.tickFormat(d3.timeFormat("%d %b %H:%M"));
+                else xAxis.tickFormat(d3.timeFormat("%d %b"));
+                
+                xAxisGroup.call(xAxis.scale(newXScale));
+                xAxisGroup.select(".domain").remove();
+
+                gGridVertical.call(gridAxisX.scale(newXScale));
+                gGridVertical.selectAll('line').attr('stroke', 'var(--chart-grid-line)').attr('stroke-dasharray', '2,2');
+                gGridVertical.select('.domain').remove();
+
+                gBody.selectAll('.ping-rect').attr('x', d => newXScale(d.time));
+                gPinned.selectAll('.ping-rect').attr('x', d => newXScale(d.time));
+            });
+
+        bodySvg.call(zoom).on("dblclick.zoom", null);
+
+    } catch (e) {
+        console.error("Error drawing chart:", e);
+    } finally {
+        isLoading.value = false;
+    }
+}
+
+watch(() => props.data, async () => { await drawChart() }, { deep: true })
 
 onMounted(async () => {
+    isLoading.value = true;
     try {
         const res = await fetch('/data/vessels.json')
         const vesselsList = await res.json()
-
         vesselRegistry.value = vesselsList.reduce((acc, v) => {
-            acc[v.id] = { 
-                name: v.name, 
-                company: v.company || 'Unknown',
-                vessel_type: v.vessel_type || 'Unknown',
-                tonnage: v.tonnage || 'Unknown'
-            }
+            acc[v.id] = { ...v, company: v.company || 'Unknown', vessel_type: v.vessel_type || 'Unknown' }
             return acc
         }, {})
-        
-        drawChart()
+        await drawChart()
         window.addEventListener('resize', drawChart)
-    } catch (e) {
-        console.error("Errore caricamento vessels.json:", e)
-        drawChart()
-    }
+    } catch (e) { console.error(e); isLoading.value = false; }
 })
-
-
 onUnmounted(() => { window.removeEventListener('resize', drawChart) })
 </script>
 
 <template>
-    <div class="relative w-full h-full">
-        <div ref="chartContainer" class="w-full h-full min-h-0 overflow-hidden bg-white select-none"></div>
+    <div class="relative w-full h-full flex flex-col overflow-hidden">
         
-        <Tooltip 
-            :visible="tooltip.visible"
-            :x="tooltip.x"
-            :y="tooltip.y"
-            :content-dict="tooltip.contentDict"
-            variant="default" 
-        />
+        <Transition
+            enter-active-class="transition-opacity duration-300"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="transition-opacity duration-300"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+        >
+            <div v-if="isLoading" class="absolute inset-0 z-50 bg-white/90 flex flex-col items-center justify-center backdrop-blur-sm">
+                <div class="animate-spin rounded-full h-10 w-10 border-4 border-gray-200 border-t-blue-600 mb-3"></div>
+                <div class="text-sm font-medium text-gray-600 animate-pulse">Loading Visualization...</div>
+            </div>
+        </Transition>
+
+        <div ref="headerContainer" class="w-full h-[90px] shrink-0 bg-white border-b border-gray-100 z-10 shadow-sm relative"></div>
+        <div ref="bodyContainer" class="w-full flex-1 overflow-y-auto overflow-x-hidden relative"></div>
+        <Tooltip :visible="tooltip.visible" :x="tooltip.x" :y="tooltip.y" :content-dict="tooltip.contentDict" />
     </div>
 </template>

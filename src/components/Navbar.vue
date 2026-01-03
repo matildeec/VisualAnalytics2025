@@ -3,41 +3,51 @@ import Button from './Button.vue'
 </script>
 
 <template>
-	<nav class="relative navbar px-4 py-3 flex items-center justify-between">
-		<span class="inline-flex items-center gap-2 px-4 py-1 rounded-2xl text-white font-bold text-lg">
-			<img src="../assets/fisheye-icon.svg" alt='FishEye icon' class="w-8 h-8" />
-			FishEye International
-		</span>
-				<div class="flex gap-4">
-					<Button
-						to="/"
-						icon="/src/assets/map-icon.svg"
-						label="Traffic Explorer"
-					/>
+    <nav class="sticky top-0 z-50 w-full px-6 py-3 flex items-center justify-between border-b border-white/10 shadow-lg navbar-bg">
+        
+        <div class="flex items-center select-none">
+            <router-link to="/" class="inline-flex items-center gap-3 group focus:outline-none">
+                <img 
+                    src="../assets/fisheye-icon.svg" 
+                    alt='FishEye icon' 
+                    class="w-8 h-8 group-hover:scale-110 transition-transform duration-300" 
+                />
+                
+                <div class="flex flex-col">
+                    <span class="text-white font-bold text-lg leading-none tracking-wide">
+                        FishEye
+                    </span>
+                    <span class="text-[10px] text-blue-200 font-medium uppercase tracking-[0.15em] leading-none mt-0.5">
+                        International
+                    </span>
+                </div>
+            </router-link>
+        </div>
 
-					<Button
-						to="/inspectharbor"
-						icon="/src/assets/anchor-icon.svg"
-						label="Inspect Harbor"
-					/>
-					<Button
-						to="/comparetrajectories"
-						icon="/src/assets/vessel-icon.svg"
-						label="Compare Trajectories"
-					/>
-				</div>
-	</nav>
+        <div class="flex items-center gap-3">
+            <Button
+                to="/"
+                icon="/src/assets/map-icon.svg"
+                label="Traffic Explorer"
+            />
+
+            <Button
+                to="/inspectharbor"
+                icon="/src/assets/anchor-icon.svg"
+                label="Inspect Harbor"
+            />
+            
+            <Button
+                to="/comparetrajectories"
+                icon="/src/assets/vessel-icon.svg"
+                label="Compare Trajectories"
+            />
+        </div>
+    </nav>
 </template>
 
 <style scoped>
-.navbar {
-  background: var(--main-deep-blue);
-  color: var(--main-white);
-}
-.nav-link {
-  color: var(--main-white);
-}
-.nav-link:hover {
-  color: var(--main-dark-grey);
+.navbar-bg {
+  background-color: var(--main-deep-blue); 
 }
 </style>

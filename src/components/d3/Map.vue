@@ -3,7 +3,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
-// Fix Leaflet's default icon paths
+// Leaflet Default Icon Fix
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
@@ -16,67 +16,93 @@ L.Icon.Default.mergeOptions({
 
 const emit = defineEmits(['feature-clicked'])
 const mapContainer = ref(null)
+const legendRef = ref(null)
 let map = null
 let geoJsonLayer = null
 let selectedLayer = null 
 
+const categories = [
+    { label: 'Island', color: 'var(--zone-island-bg)', border: 'var(--zone-island-border)', check: (k) => k === 'Island' },
+    { label: 'Fishing Zone', color: 'var(--zone-fishing-bg)', border: 'var(--zone-fishing-border)', check: (k) => k.includes('Fishing') },
+    { label: 'Preserve', color: 'var(--zone-preserve-bg)', border: 'var(--zone-preserve-border)', check: (k) => k.includes('Preserve') },
+    { label: 'Buoy', color: 'var(--zone-buoy-bg)', border: 'var(--zone-buoy-border)', check: (k) => k.includes('buoy') },
+    { label: 'City', color: 'var(--zone-city-bg)', border: 'var(--zone-city-border)', check: (k) => k.includes('city') }
+];
+
 const getRegionStyle = (feature) => {
     const kind = feature.properties?.['*Kind'] || feature.properties?.type || '';
-    if (kind === 'Island') return { fillColor: '#dcd5c5', color: '#9a8c73', weight: 1, fillOpacity: 0.8 };
-    if (kind.includes('Harbor') || kind.includes('Fishing')) return { fillColor: '#3b82f6', color: '#1d4ed8', weight: 2, fillOpacity: 0.5 };
-    return { fillColor: '#94a3b8', color: '#64748b', weight: 1, fillOpacity: 0.3 };
+    const category = categories.find(c => c.check(kind));
+    
+    if (!category) return { 
+        fillColor: 'var(--zone-default-bg)', 
+        color: 'var(--zone-default-border)', 
+        weight: 1, 
+        fillOpacity: 0.3 
+    };
+
+    return { 
+        fillColor: category.color, 
+        color: category.border, 
+        weight: category.label.includes('Fishing') ? 2 : 1,
+        fillOpacity: category.label === 'Island' ? 0.8 : 0.5
+    };
 };
 
 const handleFeatureEvents = (feature, layer) => {
     layer.on({
         click: (e) => {
-            if (selectedLayer && geoJsonLayer) {
-                geoJsonLayer.resetStyle(selectedLayer);
-            }
-
+            if (selectedLayer && geoJsonLayer) geoJsonLayer.resetStyle(selectedLayer);
             selectedLayer = layer;
             if (layer.setStyle) {
-                layer.setStyle({
-                    color: '#f59e0b',
-                    weight: 4,
-                    fillOpacity: 0.8,
-                    fillColor: '#fbbf24'
+                layer.setStyle({ 
+                    color: 'var(--state-selected-border)', 
+                    weight: 4, 
+                    fillOpacity: 0.8, 
+                    fillColor: 'var(--state-selected-bg)' 
                 });
                 layer.bringToFront();
             }
-
             if (feature.geometry.type !== 'Point' && geoJsonLayer) {
-                    geoJsonLayer.eachLayer((l) => {
-                        if (l.feature.geometry.type === 'Point') {
-                            l.bringToFront();
-                        }
-                    });
-                }
-
+                geoJsonLayer.eachLayer((l) => { if (l.feature.geometry.type === 'Point') l.bringToFront(); });
+            }
             emit('feature-clicked', feature);            
             L.DomEvent.stopPropagation(e);
         },
         mouseover: (e) => {
             if (e.target !== selectedLayer && e.target.setStyle) {
-                e.target.setStyle({ weight: 3, color: '#2563eb', fillOpacity: 0.7 });
+                // Variabili per lo stato "Hover"
+                e.target.setStyle({ 
+                    weight: 3, 
+                    color: 'var(--state-hover-border)', 
+                    fillOpacity: 0.7 
+                });
             }
         },
         mouseout: (e) => {
-            if (e.target !== selectedLayer && geoJsonLayer) {
-                geoJsonLayer.resetStyle(e.target);
-            }
+            if (e.target !== selectedLayer && geoJsonLayer) geoJsonLayer.resetStyle(e.target);
         }
     });
 };
 
 async function initMap() {
     if (!mapContainer.value) return;
+    
     map = L.map(mapContainer.value, {
         zoomControl: true,
         attributionControl: false
     }).setView([39.75, -166.0], 12);
 
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
+
+    if (legendRef.value) {
+        const legend = L.control({ position: 'bottomright' });
+        legend.onAdd = () => {
+            const div = legendRef.value;
+            L.DomEvent.disableClickPropagation(div);
+            return div;
+        };
+        legend.addTo(map);
+    }
 
     try {
         const response = await fetch('/data/oceanus.geojson');
@@ -85,12 +111,7 @@ async function initMap() {
         geoJsonLayer = L.geoJSON(geojsonData, {
             style: getRegionStyle,
             onEachFeature: handleFeatureEvents,
-            pointToLayer: (feature, latlng) => {
-                return L.circleMarker(latlng, {
-                    radius: 6,
-                    fillOpacity: 0.8
-                });
-            }
+            pointToLayer: (feature, latlng) => L.circleMarker(latlng, { radius: 6, fillOpacity: 0.8 })
         }).addTo(map);
 
         if (geojsonData.features?.length) {
@@ -104,5 +125,29 @@ onBeforeUnmount(() => { if (map) map.remove(); });
 </script>
 
 <template>
-    <div ref="mapContainer" class="w-full h-full bg-slate-100 p-0"></div>
+    <div class="relative w-full h-full">
+        <div ref="mapContainer" class="w-full h-full bg-slate-100 z-0"></div>
+
+        <div ref="legendRef" class="leaflet-legend-container bg-white/90 backdrop-blur-sm p-2 rounded shadow-sm border border-slate-200/50">
+            <h5 class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Zones</h5>
+            
+            <div class="flex flex-col gap-1">
+                <div v-for="(cat, index) in categories" :key="index" class="flex items-center">
+                    <span 
+                        class="w-2 h-2 rounded-full mr-1.5 shadow-sm"
+                        :style="{ backgroundColor: cat.color, border: `1px solid ${cat.border}` }"
+                    ></span>
+                    <span class="text-[10px] text-slate-600 font-medium leading-none">{{ cat.label }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
+
+<style>
+.leaflet-legend-container {
+    min-width: auto; 
+    margin-bottom: 5px !important; 
+    margin-right: 5px !important;
+}
+</style>

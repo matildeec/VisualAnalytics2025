@@ -181,6 +181,8 @@ function renderChart() {
 
   const xAxisG = gMain.append('g')
     .attr('transform', `translate(0,${height})`)
+    .attr('class', 'x-axis')
+    .attr('color', '#374151')
     .call(d3.axisBottom(x))
   
   // Custom Y-Axis with Illegal Zone Highlighting
@@ -400,7 +402,7 @@ watch(showCargo, (val) => toggleLayer(cargoGroup, val))
       </div>
     </div>
 
-    <div class="absolute top-2 right-4 z-20 flex gap-1.5 bg-white/90 p-1 rounded-lg border border-slate-100 shadow-sm backdrop-blur-sm">
+    <div class="absolute top-2 right-4 z-20 flex gap-1.5 bg-white/90 p-1 rounded-3xl border border-slate-100 shadow-sm backdrop-blur-sm">
       <button 
         v-for="btn in [
           { state: showPings, label: 'Pings', color: 'bg-blue-500' },
