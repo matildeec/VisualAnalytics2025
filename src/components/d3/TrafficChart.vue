@@ -104,11 +104,21 @@ const drawChart = () => {
         .attr('transform', `translate(0,${height})`)
         .attr('class', 'text-gray-400 text-[10px]')
     
-    const xAxis = d3.axisBottom(xScale).ticks(5).tickFormat(d3.timeFormat("%b %d"))
+    const xAxis = d3.axisBottom(xScale)
+        .ticks(width / 80)
+        .tickFormat(d3.timeFormat("%b %d"))
     xAxisGroup.call(xAxis).select(".domain").remove()
 
+    const formatHour = (d) => {
+        if (d === 0 || d === 24) return "12 AM";
+        if (d === 12) return "12 PM";
+        return d < 12 ? `${d} AM` : `${d - 12} PM`;
+    };
+
     const yAxisGroup = gMain.append('g')
-        .call(d3.axisLeft(yScale).tickValues([0, 6, 12, 18, 24]).tickFormat(d => `${d}h`))
+        .call(d3.axisLeft(yScale)
+        .tickValues([0, 6, 12, 18, 24]) // O aggiungi 3, 9, 15, 21 per più dettagli
+        .tickFormat(formatHour))
         .attr('class', 'text-gray-400 text-[10px]')
     yAxisGroup.select(".domain").remove()
 
