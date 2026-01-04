@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import { ref, reactive, onMounted, computed, watch, nextTick } from 'vue';
 import { illegalCommodities } from './utils.js';
 import Tooltip from '../Tooltip.vue';
+import LoadingOverlay from '../LoadingOverlay.vue';
 
 const props = defineProps({ 
   selectedHarbor: String,
@@ -262,19 +263,8 @@ watch([() => props.hiddenCommodities, () => props.hiddenVesselTypes], renderChar
 
 <template>
   <div class="relative w-full h-full bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-      <Transition
-            enter-active-class="transition-opacity duration-300"
-            enter-from-class="opacity-0"
-            enter-to-class="opacity-100"
-            leave-active-class="transition-opacity duration-300"
-            leave-from-class="opacity-100"
-            leave-to-class="opacity-0"
-      >
-          <div v-if="isLoading" class="absolute inset-0 z-50 bg-white/90 flex flex-col items-center justify-center backdrop-blur-sm rounded-xl">
-              <div class="animate-spin rounded-full h-10 w-10 border-4 border-gray-200 border-t-blue-600 mb-3"></div>
-              <div class="text-sm font-medium text-gray-600 animate-pulse">Loading Visualization...</div>
-          </div>
-      </Transition>
+      
+      <LoadingOverlay :loading="isLoading" message="Loading Visualization..." />
 
       <div ref="chartContainer" class="w-full h-full cursor-crosshair"></div>
       <Tooltip v-bind="tooltip" />

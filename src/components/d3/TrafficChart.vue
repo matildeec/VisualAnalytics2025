@@ -2,28 +2,35 @@
 import * as d3 from 'd3'
 import { ref, onMounted, watch, nextTick, onUnmounted } from 'vue'
 import Tooltip from '../Tooltip.vue'
+import LoadingOverlay from '../LoadingOverlay.vue'
 
+// Props to receive ping data from parent
 const props = defineProps({
     data: Array
 })
 
+// Emit event when a vessel is selected
 const emit = defineEmits(['vessel-selected'])
-const headerContainer = ref(null)
-const bodyContainer = ref(null)
-const isLoading = ref(true)
 
-const tooltip = ref({ visible: false, x: 0, y: 0, contentDict: {} })
-const selectedVesselId = ref(null)
-const vesselRegistry = ref({})
-
+// Constants
 const TARGET_COMPANY = "SouthSeafood Express Corp" 
 const MARGIN = { top: 0, right: 20, bottom: 0, left: 260 }
 const AXIS_HEIGHT = 30
 const PINNED_ROW_HEIGHT = 50 
 const ROW_HEIGHT = 42
-const PING_WIDTH = 4 
+const PING_WIDTH = 2
 
-// Scala Colori (già mappata a variabili CSS)
+// DOM References for SVG containers
+const headerContainer = ref(null)
+const bodyContainer = ref(null)
+
+// Reactive State
+const isLoading = ref(true)
+const tooltip = ref({ visible: false, x: 0, y: 0, contentDict: {} })
+const selectedVesselId = ref(null)
+const vesselRegistry = ref({})
+ 
+// D3 Ordinal Scale mapping vessel types to CSS variables
 const typeColorScale = d3.scaleOrdinal()
     .domain(['FishingVessel', 'CargoVessel', 'Ferry.Cargo', 'Ferry.Passenger', 'Tour', 'Research', 'Other']) 
     .range([
@@ -36,6 +43,11 @@ const typeColorScale = d3.scaleOrdinal()
         'var(--chart-vessel-other)'
     ])
 
+/**
+ * Formats milliseconds into a readable string (e.g., "1h 30m").
+ * @param {number} ms - Duration in milliseconds.
+ * @returns {string} Formatted string.
+ */
 const formatDuration = (ms) => {
     if (!ms) return "0m";
     const minutes = Math.floor((ms / (1000 * 60)) % 60);
@@ -44,7 +56,15 @@ const formatDuration = (ms) => {
     return `${minutes}m`;
 }
 
-// --- RENDER FUNCTION ---
+/**
+ * Renders a single vessel row (Label + Timeline Pings) into a specific container.
+ * Used for both the main list and the pinned header.
+ * * @param {Object} container - D3 selection of the parent group.
+ * @param {Object} d - The data object for the vessel.
+ * @param {Function} yScale - D3 scale for vertical positioning (null if pinned).
+ * @param {Function} xScale - D3 scale for horizontal time positioning.
+ * @param {boolean} isPinned - Flag to determine styling (highlighted/static).
+ */
 const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
     const g = container.append('g')
         .attr('class', 'vessel-row-group')
@@ -52,11 +72,13 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
 
     const isTarget = d.company === TARGET_COMPANY;
 
-    // Gestione Sfondo Riga tramite Variabili
-    let bgFill = 'var(--chart-bg-default)'; // Default transparent
+    // Background logic: if pinned, highlight bg; if target, highlight border
+    let bgFill = 'var(--chart-bg-default)';
+
     if (isPinned) bgFill = 'var(--chart-bg-pinned)';
     else if (isTarget) bgFill = 'var(--chart-row-highlight-bg)';
 
+    // Background Rectangle with hover and click events
     g.append('rect')
         .attr('x', -MARGIN.left)
         .attr('y', 0)
@@ -75,7 +97,7 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
         })
         .on('click', () => handleVesselClick(d.id));
     
-    // Indicatore Target (Barra laterale)
+    // If target vessel and not pinned, add left border highlight
     if (isTarget && !isPinned) {
         g.append('rect')
             .attr('x', -MARGIN.left)
@@ -85,7 +107,7 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
             .attr('fill', 'var(--chart-text-highlight)');
     }
 
-    // Linea divisoria per Pinned Row
+    // Line separator for pinned row
     if (isPinned) {
         g.append('line')
             .attr('x1', -MARGIN.left).attr('x2', 20000)
@@ -99,7 +121,7 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
             .style('font-weight', 'bold');
     }
 
-    // --- TEXT LABELS ---
+    // Labels Group
     const labelY = isPinned ? PINNED_ROW_HEIGHT / 2 : ROW_HEIGHT / 2;
     const labelGroup = g.append('g')
         .attr('transform', `translate(0, ${labelY})`)
@@ -107,7 +129,7 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
 
     const colorVar = typeColorScale(d.type);
 
-    // Nome
+    // Vessel Name
     const nameText = labelGroup.append('text')
         .text(d.name.length > 25 ? d.name.substring(0,25)+'...' : d.name)
         .attr('x', -15).attr('y', -3)
@@ -116,7 +138,7 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
         .style('fill', isTarget ? 'var(--chart-text-highlight-dark)' : 'var(--chart-text-main)')
         .style('text-anchor', 'end');
 
-    // Badge
+    // Vessel Type Badge
     const badgeRightX = nameText.node().getBBox().x - 6;
     const typeLabel = d.type === 'Unknown' ? '?' : d.type;
     const badgeText = labelGroup.append('text')
@@ -131,7 +153,7 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
         .attr('width', badgeBBox.width + 8).attr('height', badgeBBox.height + 2)
         .attr('fill', colorVar).attr('fill-opacity', 0.15).attr('rx', 3);
 
-    // Company
+    // Company name
     labelGroup.append('text')
         .text(d.company.length > 35 ? d.company.substring(0,35)+'...' : (d.company || 'Unknown'))
         .attr('x', -15).attr('y', 10)
@@ -140,7 +162,7 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
         .style('font-weight', isTarget ? '600' : '400')
         .style('font-style', 'italic').style('text-anchor', 'end');
 
-    // --- PINGS ---
+    // Pings rendering
     const pingsG = g.append('g').attr('clip-path', 'url(#clip-body)');
     const rectHeight = isPinned ? (PINNED_ROW_HEIGHT - 20) : (ROW_HEIGHT - 12);
     const rectY = isPinned ? 10 : 6;
@@ -174,18 +196,16 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
         .on('mouseout', () => { tooltip.value.visible = false });
 }
 
-function handleVesselClick(vesselId) {
-    selectedVesselId.value = (selectedVesselId.value === vesselId) ? null : vesselId;
-    emit('vessel-selected', selectedVesselId.value);
-    drawChart();
-}
-
+// Main function to draw the entire chart
 const drawChart = async () => {
     isLoading.value = true;
+
+    // Wait for DOM update
     if (!headerContainer.value || !bodyContainer.value) return
     await nextTick();
     await new Promise(resolve => setTimeout(resolve, 100));
 
+    // Clear previous contents
     d3.select(headerContainer.value).selectAll('*').remove()
     d3.select(bodyContainer.value).selectAll('*').remove()
 
@@ -199,13 +219,12 @@ const drawChart = async () => {
         const sortedVessels = rawNested.map(([id, values]) => {
             const info = vesselRegistry.value[id] || { name: id, vessel_type: 'Unknown', company: 'Unknown' };
             const sortedPings = values.slice().sort((a, b) => new Date(a.time) - new Date(b.time));
-            const DEFAULT_DURATION = 15 * 60 * 1000;
             
-            const pingsWithDwell = sortedPings.map((p) => {
-                let duration = Number(p.dwell);
-                if (!duration || duration <= 0) duration = DEFAULT_DURATION;
-                return { ...p, time: new Date(p.time), duration: duration }; 
-            });
+            const pingsWithDwell = sortedPings.map((p) => ({
+                ...p, // Spread syntax to copy existing properties and only modify specific ones
+                time: new Date(p.time),
+                duration: Number(p.dwell) || 0
+            }));
 
             return { id, name: info.name, type: info.vessel_type, company: info.company, pings: pingsWithDwell }
         }).sort((a, b) => {
@@ -216,6 +235,7 @@ const drawChart = async () => {
             return a.name.localeCompare(b.name);
         });
 
+        // SVG setup
         const width = headerContainer.value.clientWidth - MARGIN.left - MARGIN.right
         const bodyHeight = sortedVessels.length * ROW_HEIGHT
         const totalHeaderHeight = AXIS_HEIGHT + PINNED_ROW_HEIGHT + 10; 
@@ -235,16 +255,29 @@ const drawChart = async () => {
 
         const gBody = bodySvg.append('g').attr('transform', `translate(${MARGIN.left}, 0)`);
 
+        // Define clip paths to avoid overflow of pings outside chart area when scrolling to zoom
         const defs = bodySvg.append('defs');
         defs.append("clipPath").attr("id", "clip-body").append("rect").attr("width", width).attr("height", 10000);
         headerSvg.append("defs").append("clipPath").attr("id", "clip-header").append("rect").attr("width", width).attr("height", PINNED_ROW_HEIGHT);
 
-        const xScale = d3.scaleTime().domain(d3.extent(props.data, d => new Date(d.time))).range([0, width]);
-        const yScale = d3.scaleBand().domain(sortedVessels.map(d => d.id)).range([0, bodyHeight]).padding(0.1);
+        // Scales
+        const xScale = d3.scaleTime()
+            .domain(d3.extent(props.data, d => new Date(d.time)))
+            .range([0, width]);
+        const yScale = d3.scaleBand()
+            .domain(sortedVessels.map(d => d.id))
+            .range([0, bodyHeight])
+            .padding(0.1);
 
-        const xAxis = d3.axisTop(xScale).ticks(width / 80).tickFormat(d3.timeFormat("%d %b")).tickSizeOuter(0);
-        const xAxisGroup = gAxis.append('g').attr('class', 'x-axis text-gray-500 text-[10px]').call(xAxis);
-        xAxisGroup.select(".domain").remove();
+        // X Axis
+        const xAxis = d3.axisTop(xScale)
+            .ticks(width / 80)
+            .tickFormat(d3.timeFormat("%d %b"))
+            .tickSizeOuter(0);
+        const xAxisGroup = gAxis.append('g')
+            .attr('class', 'x-axis text-gray-500 text-[10px]')
+            .call(xAxis);
+        xAxisGroup.select(".domain").remove(); // Remove axis line for cleaner look
 
         // Pinned Row Logic
         if (selectedVesselId.value) {
@@ -267,11 +300,20 @@ const drawChart = async () => {
                 .style('font-size', '12px');
         }
 
+        // Grid lines and rows
         const gGrid = gBody.append('g').attr('class', 'grid-layer');
-        const gridAxisX = d3.axisTop(xScale).ticks(width / 80).tickSize(-bodyHeight).tickFormat('').tickSizeOuter(0);
-        const gGridVertical = gGrid.append('g').attr('class', 'grid-vertical').attr('opacity', 0.5).call(gridAxisX);
-        gGridVertical.selectAll('line').attr('stroke', 'var(--chart-grid-line)').attr('stroke-dasharray', '2,2');
-        gGridVertical.select('.domain').remove();
+        const gridAxisX = d3.axisTop(xScale)
+            .ticks(width / 80)
+            .tickSize(-bodyHeight)
+            .tickFormat('').tickSizeOuter(0);
+        const gGridVertical = gGrid.append('g')
+            .attr('class', 'grid-vertical')
+            .attr('opacity', 0.5)
+            .call(gridAxisX);
+        gGridVertical.selectAll('line')
+            .attr('stroke', 'var(--chart-grid-line)')
+            .attr('stroke-dasharray', '2,2');
+        gGridVertical.select('.domain').remove(); // Remove domain line for cleaner look
 
         gGrid.selectAll('.grid-horizontal-line').data(sortedVessels).enter().append('line')
             .attr('x1', 0).attr('x2', width)
@@ -280,11 +322,14 @@ const drawChart = async () => {
             .attr('stroke', 'var(--chart-grid-line)').attr('stroke-width', 1).attr('opacity', 0.3);
 
         const gRows = gBody.append('g').attr('class', 'rows-layer');
+
+        // Render all vessel rows
         sortedVessels.forEach(v => {
             const rowContainer = gRows.append('g'); 
             renderVesselRow(rowContainer, v, yScale, xScale, false);
         });
 
+        // Zoom and pan behavior
         const zoom = d3.zoom()
             .scaleExtent([1, 100])
             .translateExtent([[0, 0], [width, bodyHeight]])
@@ -323,7 +368,21 @@ const drawChart = async () => {
     }
 }
 
-watch(() => props.data, async () => { await drawChart() }, { deep: true })
+/**
+ * Handles clicks on vessel rows. Toggles selection state.
+ * @param {string} vesselId 
+ */
+function handleVesselClick(vesselId) {
+    selectedVesselId.value = (selectedVesselId.value === vesselId) ? null : vesselId;
+    emit('vessel-selected', selectedVesselId.value);
+    drawChart();
+}
+
+// Redraw chart when data or selection changes
+watch(() => props.data, async () => { 
+    await drawChart() }, 
+    { deep: true }
+)
 
 onMounted(async () => {
     isLoading.value = true;
@@ -338,25 +397,14 @@ onMounted(async () => {
         window.addEventListener('resize', drawChart)
     } catch (e) { console.error(e); isLoading.value = false; }
 })
+
 onUnmounted(() => { window.removeEventListener('resize', drawChart) })
 </script>
 
 <template>
     <div class="relative w-full h-full flex flex-col overflow-hidden">
         
-        <Transition
-            enter-active-class="transition-opacity duration-300"
-            enter-from-class="opacity-0"
-            enter-to-class="opacity-100"
-            leave-active-class="transition-opacity duration-300"
-            leave-from-class="opacity-100"
-            leave-to-class="opacity-0"
-        >
-            <div v-if="isLoading" class="absolute inset-0 z-50 bg-white/90 flex flex-col items-center justify-center backdrop-blur-sm">
-                <div class="animate-spin rounded-full h-10 w-10 border-4 border-gray-200 border-t-blue-600 mb-3"></div>
-                <div class="text-sm font-medium text-gray-600 animate-pulse">Loading Visualization...</div>
-            </div>
-        </Transition>
+        <LoadingOverlay :loading="isLoading" message="Loading Visualization..." />
 
         <div ref="headerContainer" class="w-full h-[90px] shrink-0 bg-white border-b border-gray-100 z-10 shadow-sm relative"></div>
         <div ref="bodyContainer" class="w-full flex-1 overflow-y-auto overflow-x-hidden relative"></div>

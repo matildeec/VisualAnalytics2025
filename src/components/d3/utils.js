@@ -29,6 +29,19 @@ export const illegalCommodities = new Set([
   'piscessatisb87'
 ]);
 
+export const commodityStatus = new Map([
+  ['piscesfoetidaae7', 'illegal'], 
+  ['piscisosseusb6d', 'illegal'],
+  ['piscessatisb87', 'illegal'],
+  ['gadusnspecificatae4ba', 'legal'],
+  ['piscesfrigus900', 'suspect'],
+  ['labridaenrefert9be', 'suspect'],
+  ['habeaspisces4eb', 'suspect'],
+  ['piscissapidum9b7', 'legal'],
+  ['thunnininveradb7', 'suspect'],
+  ['oncorhynchusrosea790', 'legal']
+]);
+
 export const illegalFishingZones = new Set([
   'Don Limpet Preserve',
   'Nemo Reef',

@@ -3,7 +3,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
-// Leaflet Default Icon Fix
+// Leaflet Default Icon Fix: sometimes icons don't load correctly without this
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
@@ -14,9 +14,14 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 })
 
+// Emit event when a feature (zone) is clicked
 const emit = defineEmits(['feature-clicked'])
+
+// References to DOM elements
 const mapContainer = ref(null)
 const legendRef = ref(null)
+
+// Other variables
 let map = null
 let geoJsonLayer = null
 let selectedLayer = null 
@@ -29,6 +34,13 @@ const categories = [
     { label: 'City', color: 'var(--zone-city-bg)', border: 'var(--zone-city-border)', check: (k) => k.includes('city') }
 ];
 
+/**
+ * Determines the Leaflet style object based on GeoJSON feature properties.
+ * It maps specific feature kinds to defined categories for coloring and opacity.
+ *
+ * @param {Object} feature - The GeoJSON feature object containing properties (e.g., 'type', '*Kind').
+ * @returns {L.PathOptions} An object containing style options (fillColor, color, weight, fillOpacity).
+ */
 const getRegionStyle = (feature) => {
     const kind = feature.properties?.['*Kind'] || feature.properties?.type || '';
     const category = categories.find(c => c.check(kind));
@@ -48,6 +60,13 @@ const getRegionStyle = (feature) => {
     };
 };
 
+/**
+ * Attaches event listeners (click, mouseover, mouseout) to a specific map layer.
+ * Handles selection highlighting, hover effects, and emits the 'feature-clicked' event.
+ *
+ * @param {Object} feature - The GeoJSON feature data associated with the layer.
+ * @param {L.Layer} layer - The Leaflet layer instance representing the feature.
+ */
 const handleFeatureEvents = (feature, layer) => {
     layer.on({
         click: (e) => {
@@ -84,6 +103,13 @@ const handleFeatureEvents = (feature, layer) => {
     });
 };
 
+/**
+ * Initializes the Leaflet map, mounts it to the DOM, and asynchronously fetches GeoJSON data.
+ * It also configures the custom legend control and fits the map bounds to the data.
+ *
+ * @async
+ * @returns {Promise<void>} A promise that resolves when the map initialization is complete.
+ */
 async function initMap() {
     if (!mapContainer.value) return;
     
@@ -120,7 +146,10 @@ async function initMap() {
     } catch (err) { console.error(err); }
 }
 
+// Initialize the map when the component is mounted
 onMounted(initMap);
+
+// Clean up the map instance to make sure there are no memory leaks
 onBeforeUnmount(() => { if (map) map.remove(); });
 </script>
 

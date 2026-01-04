@@ -97,7 +97,7 @@ const toggleCargoExpansion = (cargoId) => {
     </div>
 
     <div class="mx-8 my-4 min-h-[70px] shrink-0">
-       <div v-if="metadata.ready" class="flex flex-col gap-2 animate-in fade-in">
+       <div v-if="metadata.ready" class="flex flex-col gap-2">
         <div class="flex items-start gap-3">
             <span class="text-[10px] font-black text-gray-400 uppercase tracking-wide mt-1.5 min-w-[60px]">Cargo:</span>
             <div class="flex flex-wrap gap-1.5 max-h-[60px] overflow-y-auto no-scrollbar">
@@ -174,7 +174,7 @@ const toggleCargoExpansion = (cargoId) => {
                     </div>
                   </div>
                 </div>
-                <div v-if="expandedCargoId === cargo.id" class="bg-slate-50 border-t border-slate-100 p-2 flex flex-col gap-1.5 animate-in slide-in-from-top-2 duration-200">
+                <div v-if="expandedCargoId === cargo.id" class="bg-slate-50 border-t border-slate-100 p-2 flex flex-col gap-1.5">
                   <h4 class="text-[8px] font-black text-slate-400 uppercase tracking-wider mb-1">Suspected Vessels:</h4>
                   <div v-if="!cargo.suspected_vessels || cargo.suspected_vessels.length === 0" class="text-[9px] italic text-slate-400">No suspected vessels recorded.</div>
                   <div v-for="vId in cargo.suspected_vessels" :key="vId" class="flex items-center justify-between bg-white p-1.5 rounded border border-slate-200">
@@ -240,6 +240,4 @@ select {
 .no-scrollbar::-webkit-scrollbar-track { background: transparent; }
 .select-none { user-select: none; }
 .cursor-row-resize { cursor: row-resize !important; }
-.animate-in { animation: slideIn 0.2s ease-out; }
-@keyframes slideIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 </style>

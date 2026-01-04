@@ -1,28 +1,65 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import Map from '../components/d3/Map.vue'
+import Map from '../components/Map.vue'
 import TrafficChart from '../components/d3/TrafficChart.vue'
 import InfoCard from '../components/InfoCard.vue'
 
+// References to reactive variables
 const selectedFeature = ref(null)
 const allPings = ref([])
 
+// Time filter variables
 const hourStart = ref(0)
 const hourEnd = ref(24)
 const tempHourStart = ref(0)
 const tempHourEnd = ref(24)
 
+/**
+ * Sets the temporary start and end hours for the time filter.
+ * Used by UI presets ("All", "Day", "Night").
+ *
+ * @param {number} start - The starting hour (0-23).
+ * @param {number} end - The ending hour (0-24).
+ */
 const setPreset = (start, end) => {
     tempHourStart.value = start
     tempHourEnd.value = end
 }
 
+/**
+ * Validates the time slider input to ensure the start time is not greater than the end time.
+ * Adjusts the start time if it exceeds the end time.
+ */
 const validateRange = () => {
     if (tempHourStart.value > tempHourEnd.value - 1) {
         tempHourStart.value = tempHourEnd.value - 1
     }
 }
 
+/**
+ * Commits the temporary time selection to the active filter variables.
+ * Triggers the re-calculation of computed properties dependent on hourStart/hourEnd.
+ */
+const applyFilters = () => {
+    hourStart.value = tempHourStart.value
+    hourEnd.value = tempHourEnd.value
+}
+
+/**
+ * Updates the selectedFeature reference when a user clicks a feature on the map.
+ *
+ * @param {Object} feature - The GeoJSON feature clicked by the user.
+ */
+const handleSelection = (feature) => {
+    selectedFeature.value = feature
+}
+
+/**
+ * Computes the CSS style object for the visual range slider.
+ * Calculates 'left' position and 'width' based on the temporary hour values.
+ *
+ * @returns {Object} A style object containing 'left' and 'width' percentages.
+ */
 const selectionStyle = computed(() => {
     const startPercent = (tempHourStart.value / 24) * 100
     const endPercent = (tempHourEnd.value / 24) * 100
@@ -32,11 +69,12 @@ const selectionStyle = computed(() => {
     }
 })
 
-const applyFilters = () => {
-    hourStart.value = tempHourStart.value
-    hourEnd.value = tempHourEnd.value
-}
-
+/**
+ * Determines if the currently selected feature is an 'Island' or the specific city 'Centralia'.
+ * Used to toggle specific UI elements or logic relevant only to islands.
+ *
+ * @returns {boolean} True if the selection is an island or Centralia, otherwise false.
+ */
 const isIslandSelection = computed(() => {
     if (!selectedFeature.value) return false
     
@@ -45,6 +83,13 @@ const isIslandSelection = computed(() => {
     return kind === 'Island' || centralia_city
 })
 
+/**
+ * Filters the raw 'allPings' dataset based on:
+ * 1. The name of the currently selected location (source).
+ * 2. The active time range (hourStart to hourEnd).
+ *
+ * @returns {Array} An array of ping objects that match the criteria.
+ */
 const filteredTrafficData = computed(() => {
     if (!selectedFeature.value || allPings.value.length === 0) return []
 
@@ -57,6 +102,7 @@ const filteredTrafficData = computed(() => {
         // Hour Filter
         const hour = new Date(p.time).getHours()
         
+        // Handles standard ranges (e.g., 8-18) and crossing midnight ranges
         if (hourStart.value <= hourEnd.value) {
             if (hour < hourStart.value || hour >= hourEnd.value) return false
         } else {
@@ -67,6 +113,11 @@ const filteredTrafficData = computed(() => {
     })
 })
 
+/**
+ * Calculates the count of unique vessels (targets) present in the filtered dataset.
+ *
+ * @returns {number} The count of unique vessel IDs.
+ */
 const uniqueVesselCount = computed(() => {
     const pings = filteredTrafficData.value
     if (!pings || pings.length === 0) return 0
@@ -75,18 +126,13 @@ const uniqueVesselCount = computed(() => {
     return uniqueIds.size
 })
 
+// Fetches the traffic data JSON when the component is mounted.
 onMounted(async () => {
     try {
         const res = await fetch('/data/transponder_pings.json')
         allPings.value = await res.json()
-    } catch (e) {
-        console.error("Errore nel caricamento pings:", e)
-    }
+    } catch (e) { console.error(e) }
 })
-
-const handleSelection = (feature) => {
-    selectedFeature.value = feature
-}
 </script>
 
 <template>
@@ -155,7 +201,7 @@ const handleSelection = (feature) => {
                             </div>
                         </div>
 
-                        <div class="relative w-full h-8 group select-none">
+                        <div class="relative w-full h-6 group select-none">
                             
                             <div class="absolute inset-x-0 bottom-0 h-4 border-b border-gray-300 flex justify-between items-end px-[1px]">
                                 <div v-for="i in 25" :key="i" class="w-px bg-gray-300" 
@@ -230,14 +276,14 @@ const handleSelection = (feature) => {
 .slider-thumb-tech::-webkit-slider-thumb {
   -webkit-appearance: none;
   pointer-events: auto; 
-  height: 20px;
+  height: 16px;
   width: 12px;
   border-radius: 2px;
   background: #ffffff;
   border: 1px solid #d1d5db;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   cursor: ew-resize;
-  margin-top: -6px;
+  margin-top: -4px;
   position: relative;
   z-index: 40;
   
@@ -251,7 +297,7 @@ const handleSelection = (feature) => {
 
 .slider-thumb-tech::-moz-range-thumb {
   pointer-events: auto;
-  height: 20px;
+  height: 16px;
   width: 12px;
   border-radius: 2px;
   background: #ffffff;

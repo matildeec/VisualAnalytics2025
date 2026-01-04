@@ -38,3 +38,17 @@ Although the platform is mostly reader-driven, we also integrated elements of \t
 \subsection{Visual Encoding and Interaction Design}
 
 We describe the key visual variables (color, shape, size, position, animation) and interaction mechanisms chosen for each page, explaining how these choices address the VAST Challenge research questions and support anomaly detection, pattern recognition, and hypothesis generation.
+
+\section{Technical Implementation and Coding Standards}
+
+The frontend architecture is built upon the Vue 3 Composition API, utilizing the \texttt{<script setup>} syntax to streamline component logic and reactivity. The integration of the imperative Leaflet library within the declarative Vue environment is managed through \textbf{reactive references} (\texttt{ref}), which provide a direct and controlled bridge to the underlying DOM elements required for map rendering.
+
+Data retrieval operations are handled using modern asynchronous patterns (\texttt{async}/\texttt{await}), ensuring that the fetching and parsing of complex GeoJSON datasets occur in a non-blocking manner. regarding code structure, functions are consistently defined as constants using \textbf{arrow function syntax} to enforce immutability and predictable scoping. 
+
+\subsection*{Documentation and Styling Strategy}
+To ensure long-term maintainability, the codebase strictly adheres to **JSDoc** standards. By explicitly documenting function parameters and return types (e.g., typing Leaflet layers and GeoJSON features), the project benefits from enhanced IDE support and pseudo-static type checking, which helps prevent runtime errors in a dynamically typed language like JavaScript.
+
+Furthermore, the visual representation of data involves a clear separation of concerns. Color schemes and interaction states (such as hover and selection effects) are managed through **CSS Custom Properties** (variables). Instead of hardcoding hexadecimal color values within the JavaScript logic, the application references these variables (e.g., \texttt{var(--state-selected-bg)}). This approach centralizes the stylistic control, making the visual analytics system modular and easily themable without modifying the core application logic.
+
+\subsection*{Resource Management}
+Finally, resource management is strictly enforced through Vue's lifecycle hooks. Specifically, the \texttt{onBeforeUnmount} hook is utilized to explicitly destroy Leaflet map instances and detach event listeners while the DOM is still accessible. This is a critical strategy for preventing memory leaks and ensuring high performance in Single Page Applications (SPAs).
