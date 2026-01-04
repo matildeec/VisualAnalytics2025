@@ -1,29 +1,36 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import HarborActivityChart from '../components/d3/HarborActivityChart.vue'
-import { illegalCommodities } from '../components/d3/utils.js' 
+import { 
+    getVesselColor, 
+    getCommodityStatus,
+    getFishIcon,
+    commodityStyles
+} from '../components/d3/utils.js'
 
-const selectedHarbor = ref('')
-const availableHarbors = ref([])
-
-// --- State dei Filtri ---
-const hiddenCommodities = reactive(new Set())
-const hiddenVesselTypes = reactive(new Set())
-
-// --- Metadata & View Data ---
-const metadata = reactive({
-  commodities: [], 
-  vesselTypes: [], 
-  commodityNames: {}, 
-  vesselColorMap: {}, 
-  vesselLookup: {}, 
-  ready: false
-})
+const isLoading = ref(true);
+const cargoData = ref([]);
+const vesselData = ref([]);
+const availableHarbors = ref([]);
 
 const viewData = reactive({
   cargo: [],
   vessels: []
 })
+
+const metadata = ref({
+    commodityNames: {},
+    vesselColorMap: {},
+    vesselLookup: {},
+    vesselTypes: [],
+    commodities: [],
+    ready: false
+});
+
+// Stato UI
+const selectedHarbor = ref('');
+const hiddenCommodities = reactive(new Set()); // Meglio reactive per i Set in Vue 3
+const hiddenVesselTypes = reactive(new Set());
 
 // --- Sidebar UI State ---
 const sidebarRef = ref(null);
@@ -32,19 +39,11 @@ const isResizing = ref(false);
 const expandedCargoId = ref(null);
 
 // --- Handlers ---
-const handleDataLoaded = (payload) => {
-  availableHarbors.value = payload.harbors
-  metadata.commodities = payload.commodities
-  metadata.vesselTypes = payload.vesselTypes
-  metadata.commodityNames = payload.commodityNames
-  metadata.vesselColorMap = payload.vesselColorMap
-  metadata.vesselLookup = payload.vesselLookup
-  metadata.ready = true
-}
 
 const handleViewUpdate = (payload) => {
-  viewData.cargo = payload.cargo
-  viewData.vessels = payload.vessels
+  // Quando il grafico filtra i dati (zoom/brush), aggiorniamo la sidebar
+  viewData.cargo = payload.cargo || []
+  viewData.vessels = payload.vessels || []
 }
 
 const toggleCommodity = (id) => {
@@ -71,6 +70,90 @@ const stopResizing = () => { isResizing.value = false; window.removeEventListene
 const toggleCargoExpansion = (cargoId) => {
   expandedCargoId.value = expandedCargoId.value === cargoId ? null : cargoId;
 }
+
+const getCommodityButtonClasses = (id) => {
+    if (hiddenCommodities.has(id)) {
+        return 'bg-slate-100 border-transparent text-slate-400 opacity-60 hover:opacity-100 grayscale';
+    }
+
+    const status = getCommodityStatus(id);
+    const baseClasses = commodityStyles[status];
+    
+    return `${baseClasses} shadow-sm hover:shadow-md`;
+}
+
+// --- Data Loading (Lifting State Up) ---
+onMounted(async () => {
+    isLoading.value = true;
+    try {
+        const [trans, docs, comms, reports, vessels] = await Promise.all([
+          fetch('/data/transactions.json').then(res => res.json()),
+          fetch('/data/documents.json').then(res => res.json()),
+          fetch('/data/commodities.json').then(res => res.json()),
+          fetch('/data/harbor_reports.json').then(res => res.json()),
+          fetch('/data/vessels.json').then(res => res.json())
+        ]);
+
+        // 1. MAPPA NOMI MERCI (Fondamentale per i pesci)
+        // Crea un dizionario: { "pisces...": "Salmon", ... }
+        metadata.value.commodityNames = Object.fromEntries(comms.map(c => [c.id, c.name]));
+        
+        // Mappa Documenti e Vascelli per lookup veloce
+        const docMap = Object.fromEntries(docs.map(d => [d.id, d]));
+        metadata.value.vesselLookup = Object.fromEntries(vessels.map(v => [v.id, v]));
+        
+        // 2. PROCESSA CARGO (Le Transazioni)
+        cargoData.value = trans.map(t => {
+          const cargoDetail = docMap[t.source];
+          return { 
+             ...t, 
+             date: new Date(t.date), 
+             // Se il documento manca, mettiamo 'unknown'
+             commodity: cargoDetail ? cargoDetail.commodity : 'unknown', 
+             qty: cargoDetail ? parseFloat(cargoDetail.qty_tons) : 0 
+          };
+        }).filter(d => d.qty > 0);
+
+        // 3. PROCESSA VASCELLI
+        vesselData.value = reports.map(r => {
+          const vesselDetail = metadata.value.vesselLookup[r.source];
+          return { 
+             ...r, 
+             date: new Date(r.date), 
+             name: vesselDetail?.name || 'Unknown', 
+             vessel_type: vesselDetail?.vessel_type || 'Unknown', 
+             tonnage: parseFloat(vesselDetail?.tonnage) || 0, 
+             company: vesselDetail?.company || 'Unknown' 
+          };
+        }).filter(v => v.tonnage > 0);
+
+        // 4. CALCOLA LE LISTE PER I FILTRI (QUI è dove creiamo i bottoni)
+        
+        // Lista Porti disponibili
+        availableHarbors.value = [...new Set(cargoData.value.map(d => d.target))].sort();
+        
+        // Lista Tipi Vascello (Cargo, Fishing, ecc.)
+        metadata.value.vesselTypes = [...new Set(vesselData.value.map(v => v.vessel_type))].sort();
+        
+        // Lista Merci Uniche (I Pesci) presenti nei dati
+        const uniqueCommodities = new Set(cargoData.value.map(d => d.commodity));
+        metadata.value.commodities = Array.from(uniqueCommodities).sort();
+
+        // 5. COLORI E LOOKUP
+        metadata.value.vesselColorMap = {};
+        metadata.value.vesselTypes.forEach(type => {
+            metadata.value.vesselColorMap[type] = getVesselColor(type);
+        });
+
+        // Segnale per mostrare i filtri nel template
+        metadata.value.ready = true;
+
+    } catch (e) {
+        console.error("Error loading data:", e);
+    } finally {
+        isLoading.value = false;
+    }
+});
 </script>
 
 <template>
@@ -97,18 +180,30 @@ const toggleCargoExpansion = (cargoId) => {
     </div>
 
     <div class="mx-8 my-4 min-h-[70px] shrink-0">
-       <div v-if="metadata.ready" class="flex flex-col gap-2">
+      <div v-if="metadata.ready" class="flex flex-col gap-2">
+        
         <div class="flex items-start gap-3">
             <span class="text-[10px] font-black text-gray-400 uppercase tracking-wide mt-1.5 min-w-[60px]">Cargo:</span>
             <div class="flex flex-wrap gap-1.5 max-h-[60px] overflow-y-auto no-scrollbar">
+                
                 <button v-for="id in metadata.commodities" :key="id" @click="toggleCommodity(id)"
                     class="group flex items-center gap-1.5 px-2 py-1 rounded-md border text-[9px] font-bold uppercase transition-all duration-150 select-none"
-                    :class="[ hiddenCommodities.has(id) ? 'bg-slate-100 border-transparent text-slate-400 opacity-60 hover:opacity-100' : 'bg-white border-slate-200 text-slate-700 shadow-sm hover:border-blue-300 hover:shadow-md' ]">
-                    <span class="w-1.5 h-1.5 rounded-full" :class="illegalCommodities.has(id) ? 'bg-red-500' : 'bg-blue-500'"></span>
-                    <span :class="{ 'text-red-600': illegalCommodities.has(id) }">{{ metadata.commodityNames[id] || id }}</span>
+                    :class="getCommodityButtonClasses(id)">
+                    
+                    <img 
+                        :src="`../src/assets/${getFishIcon(id)}`" 
+                        alt="fish"
+                        class="w-3.5 h-3.5 object-contain"
+                        :class="{ 'opacity-50': hiddenCommodities.has(id) }"
+                    />
+                    
+                    <span>
+                        {{ metadata.commodityNames[id] || id }}
+                    </span>
                 </button>
             </div>
         </div>
+
         <div class="flex items-center gap-3">
             <span class="text-[10px] font-black text-gray-400 uppercase tracking-wide min-w-[60px]">Vessels:</span>
             <div class="flex flex-wrap gap-1.5">
@@ -120,6 +215,7 @@ const toggleCargoExpansion = (cargoId) => {
                 </button>
             </div>
         </div>
+
       </div>
     </div>
   
@@ -130,12 +226,15 @@ const toggleCargoExpansion = (cargoId) => {
             <p class="text-gray-400">Select a harbor from the list above</p>
         </div>
         <HarborActivityChart 
-          :selected-harbor="selectedHarbor"
-          :hidden-commodities="hiddenCommodities"
-          :hidden-vessel-types="hiddenVesselTypes"
-          @data-loaded="handleDataLoaded"
-          @view-updated="handleViewUpdate"
-          class="h-full w-full" 
+            :selected-harbor="selectedHarbor"
+            :cargo-data="cargoData"
+            :vessel-data="vesselData"
+            :commodity-names="metadata.commodityNames"
+            :vessel-color-map="metadata.vesselColorMap"
+            :vessel-lookup="metadata.vesselLookup"
+            :hidden-commodities="hiddenCommodities"
+            :hidden-vessel-types="hiddenVesselTypes"
+            @view-updated="handleViewUpdate"
         />
       </div>
 

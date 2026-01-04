@@ -29,7 +29,7 @@ let selectedLayer = null
 const categories = [
     { label: 'Island', color: 'var(--zone-island-bg)', border: 'var(--zone-island-border)', check: (k) => k === 'Island' },
     { label: 'Fishing Zone', color: 'var(--zone-fishing-bg)', border: 'var(--zone-fishing-border)', check: (k) => k.includes('Fishing') },
-    { label: 'Preserve', color: 'var(--zone-preserve-bg)', border: 'var(--zone-preserve-border)', check: (k) => k.includes('Preserve') },
+    { label: 'Ecological Preserve', color: 'var(--zone-preserve-bg)', border: 'var(--zone-preserve-border)', check: (k) => k.includes('Preserve') },
     { label: 'Buoy', color: 'var(--zone-buoy-bg)', border: 'var(--zone-buoy-border)', check: (k) => k.includes('buoy') },
     { label: 'City', color: 'var(--zone-city-bg)', border: 'var(--zone-city-border)', check: (k) => k.includes('city') }
 ];

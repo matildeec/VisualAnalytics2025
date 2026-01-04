@@ -1,173 +1,137 @@
-<template>
-  <div class="flex flex-col h-full max-w-full overflow-hidden">
-    <div class="flex items-center gap-2 mb-2">
-      <div 
-        v-if="index" 
-        :class="[badgeBgColor, 'w-5 h-5 text-white text-[10px] font-bold rounded-sm flex items-center justify-center shrink-0 shadow-sm']"
-      >
-        {{ index }}
-      </div>
-      <h2 v-if="title" class="text-[11px] font-bold text-gray-500 uppercase tracking-tight truncate">
-        {{ title }}
-      </h2>
-    </div>
-
-    <div class="flex flex-col gap-2 p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
-      
-      <div class="flex flex-col">
-        <label class="text-[9px] uppercase font-bold text-gray-400 mb-0.5">Company</label>
-        <select v-model="selectedCompany" @change="onCompanyChange" class="filter-select">
-          <option value="">All Companies</option>
-          <option v-for="c in companies" :key="c">{{ c }}</option>
-        </select>
-      </div>
-
-      <div class="flex flex-col">
-        <label class="text-[9px] uppercase font-bold text-gray-400 mb-0.5">Type</label>
-        <select v-model="selectedType" @change="onTypeChange" class="filter-select">
-          <option value="">All Types</option>
-          <option v-for="t in vesselTypes" :key="t">{{ t }}</option>
-        </select>
-      </div>
-
-      <div class="flex flex-col">
-        <label class="text-[9px] uppercase font-bold text-gray-400 mb-0.5">Tonnage</label>
-        <select v-model="selectedTonnage" @change="onTonnageChange" class="filter-select">
-          <option value="">All Tonnages</option>
-          <option v-for="t in tonnages" :key="t">{{ t }}</option>
-        </select>
-      </div>
-
-      <div class="flex flex-col">
-        <label class="text-[9px] uppercase font-bold text-gray-400 mb-0.5">Vessel Name</label>
-        <select 
-          v-model="selectedVessel" 
-          @change="$emit('select', selectedVessel)" 
-          class="filter-select bg-blue-50/50 border-blue-200"
-        >
-          <option value="">Select Vessel...</option>
-          <option v-for="v in vessels" :key="v.id" :value="v.id">
-            {{ v.name }}
-          </option>
-        </select>
-      </div>
-
-      <button 
-        @click="resetFilters"
-        class="mt-1 w-full py-1 text-[10px] font-bold text-gray-400 uppercase tracking-tighter hover:text-blue-500 hover:bg-blue-50 rounded transition-colors flex items-center justify-center gap-1"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-        </svg>
-        Clear Selection
-      </button>
-    </div>
-  </div>
-</template>
-
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, reactive, onMounted, computed, watch } from 'vue'
 
 const props = defineProps({
-  title: { type: String, default: '' },
-  index: { type: [Number, String], default: null }
+  index: { type: [Number, String], required: true },
+  colorClass: { type: String, default: 'bg-blue-500' }
 })
 
 const emit = defineEmits(['select'])
 
-// Dynamic Badge Colors based on index
-const badgeBgColor = computed(() => {
-  const idx = String(props.index)
-  if (idx === '1') return 'bg-red-500'
-  if (idx === '2') return 'bg-indigo-500'
-  return 'bg-gray-400'
-})
-
-const selectedCompany = ref('')
-const selectedType = ref('')
-const selectedTonnage = ref('')
-const selectedVessel = ref('')
-
-const companies = ref([])
-const vesselTypes = ref([])
-const tonnages = ref([])
+const isExpanded = ref(true)
 const vessels = ref([])
 const allVessels = ref([])
 
-function filterOptions() {
+const filters = reactive({
+  company: '',
+  type: '',
+  tonnage: '',
+  vesselId: ''
+})
+
+const options = reactive({
+  companies: [],
+  types: [],
+  tonnages: []
+})
+
+const selectedVesselDetails = computed(() => {
+  if (!filters.vesselId) return null
+  return allVessels.value.find(v => v.id === filters.vesselId)
+})
+
+function updateOptions() {
   let filtered = allVessels.value
   
-  // Apply active filters
-  if (selectedCompany.value) filtered = filtered.filter(v => v.company === selectedCompany.value)
-  if (selectedType.value) filtered = filtered.filter(v => v.vessel_type === selectedType.value)
-  if (selectedTonnage.value) filtered = filtered.filter(v => v.tonnage === Number(selectedTonnage.value))
+  if (filters.company) filtered = filtered.filter(v => v.company === filters.company)
+  if (filters.type) filtered = filtered.filter(v => v.vessel_type === filters.type)
+  if (filters.tonnage) filtered = filtered.filter(v => v.tonnage === Number(filters.tonnage))
   
-  // Sort and populate dropdown arrays
-  companies.value = [...new Set(filtered.map(v => v.company))].sort()
-  vesselTypes.value = [...new Set(filtered.map(v => v.vessel_type))].sort()
-  tonnages.value = [...new Set(filtered.map(v => v.tonnage))].sort((a, b) => a - b)
+  options.companies = [...new Set(filtered.map(v => v.company))].sort()
+  options.types = [...new Set(filtered.map(v => v.vessel_type))].sort()
+  options.tonnages = [...new Set(filtered.map(v => v.tonnage))].sort((a, b) => a - b)
   
-  // Standard alphabetical sort for vessels
-  vessels.value = [...filtered].sort((a, b) => a.name.localeCompare(b.name))
+  vessels.value = filtered.sort((a, b) => a.name.localeCompare(b.name))
 }
 
-function resetFilters() {
-  selectedCompany.value = ''
-  selectedType.value = ''
-  selectedTonnage.value = ''
-  selectedVessel.value = ''
-  filterOptions()
-  emit('select', '') // Notify parent that selection is cleared
+function handleSelection() {
+  emit('select', filters.vesselId)
+  if (filters.vesselId) isExpanded.value = false
 }
 
-function onCompanyChange() {
-  selectedType.value = ''; selectedTonnage.value = ''; selectedVessel.value = '';
-  filterOptions()
+function clearSelection() {
+  filters.company = ''
+  filters.type = ''
+  filters.tonnage = ''
+  filters.vesselId = ''
+  updateOptions()
+  emit('select', '')
+  isExpanded.value = true
 }
-function onTypeChange() {
-  selectedTonnage.value = ''; selectedVessel.value = '';
-  filterOptions()
-}
-function onTonnageChange() {
-  selectedVessel.value = '';
-  filterOptions()
-}
+
+watch(() => [filters.company, filters.type, filters.tonnage], updateOptions)
 
 onMounted(async () => {
   try {
-    const vesselsRes = await fetch('data/vessels.json')
-    allVessels.value = await vesselsRes.json()
-    filterOptions()
-  } catch (err) {
-    console.error("Failed to load vessels:", err)
-  }
+    const res = await fetch('/data/vessels.json')
+    allVessels.value = await res.json()
+    updateOptions()
+  } catch (e) { console.error(e) }
 })
 </script>
 
-<style scoped>
-.filter-select {
-  width: 100%;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.375rem;
-  border-width: 1px;
-  border-color: #d1d5db;
-  background-color: #f9fafb;
-  font-size: 11px;
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  cursor: pointer;
-}
+<template>
+  <div class="flex flex-col bg-white border-b border-gray-200 shadow-sm z-20 relative transition-all duration-300 rounded-t-2xl">
+    
+    <div class="flex items-center justify-between p-3 bg-slate-50/50 rounded-t-2xl">
+      <div class="flex items-center gap-3 overflow-hidden">
+        <div :class="[colorClass, 'w-6 h-6 rounded-md flex items-center justify-center text-white font-bold text-xs shadow-sm shrink-0']">
+          {{ index }}
+        </div>
 
-.filter-select:focus {
-  border-color: #60a5fa;
-  box-shadow: 0 0 0 1px #60a5fa;
-  outline: none;
-}
+        <div v-if="selectedVesselDetails" class="flex flex-col overflow-hidden">
+          <h3 class="text-sm font-bold text-slate-800 uppercase truncate leading-tight">
+            {{ selectedVesselDetails.name }}
+          </h3>
+          <span class="text-[10px] text-slate-500 truncate">
+            {{ selectedVesselDetails.company }} • {{ selectedVesselDetails.vessel_type }} • {{ selectedVesselDetails.tonnage }} GT
+          </span>
+        </div>
+        <div v-else class="text-xs font-medium text-slate-400 italic">
+          No vessel selected
+        </div>
+      </div>
 
-option {
-  font-size: 12px;
-  color: #374151;
-}
-</style>
+      <button 
+        @click="isExpanded = !isExpanded"
+        class="text-[10px] uppercase font-bold px-3 py-1 rounded-full border transition-all"
+        :class="isExpanded ? 'bg-slate-200 text-slate-500 border-slate-300' : 'bg-white text-slate-600 border-slate-200 shadow-sm hover:shadow'"
+      >
+        {{ isExpanded ? 'Close Filters' : 'Change Vessel' }}
+      </button>
+    </div>
+
+    <div v-if="isExpanded" class="absolute top-full left-0 w-full bg-white border-b border-gray-200 shadow-xl rounded-b-lg p-3 grid grid-cols-2 lg:grid-cols-4 gap-2 z-[999]">
+
+      <div class="flex flex-col">
+        <label class="text-[9px] uppercase font-bold text-slate-400 mb-0.5 ml-0.5">Company</label>
+        <select v-model="filters.company" class="w-full h-[26px] text-[11px] bg-slate-50 border border-slate-200 rounded px-2 focus:ring-1 focus:ring-blue-400 focus:outline-none cursor-pointer">
+          <option value="">Any</option>
+          <option v-for="c in options.companies" :key="c">{{ c }}</option>
+        </select>
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-[9px] uppercase font-bold text-slate-400 mb-0.5 ml-0.5">Type</label>
+        <select v-model="filters.type" class="w-full h-[26px] text-[11px] bg-slate-50 border border-slate-200 rounded px-2 focus:ring-1 focus:ring-blue-400 focus:outline-none cursor-pointer">
+          <option value="">Any</option>
+          <option v-for="t in options.types" :key="t">{{ t }}</option>
+        </select>
+      </div>
+
+      <div class="flex flex-col col-span-2 lg:col-span-1">
+        <label class="text-[9px] uppercase font-bold text-slate-400 mb-0.5 ml-0.5">Vessel Name</label>
+        <select v-model="filters.vesselId" @change="handleSelection" class="w-full h-[26px] text-[11px] bg-slate-50 border border-slate-200 rounded px-2 focus:ring-1 focus:ring-blue-400 focus:outline-none cursor-pointer font-bold text-slate-700">
+          <option value="">Select a Vessel...</option>
+          <option v-for="v in vessels" :key="v.id" :value="v.id">{{ v.name }}</option>
+        </select>
+      </div>
+
+      <div class="flex items-end">
+        <button @click="clearSelection" class="w-full h-[26px] mb-[1px] text-[10px] font-bold text-slate-400 uppercase bg-slate-50 hover:bg-red-50 hover:text-red-500 border border-slate-200 rounded transition-colors">
+          Clear
+        </button>
+      </div>
+    </div>
+  </div>
+</template>

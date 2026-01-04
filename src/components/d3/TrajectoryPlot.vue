@@ -1,26 +1,30 @@
 <script setup>
 import * as d3 from 'd3'
-import { ref, computed, reactive, onMounted, onUnmounted, watch } from 'vue'
-import { loadDocumentsMap, fishIcons, illegalCommodities, illegalFishingZones } from './utils.js'
+import { ref, reactive, onMounted, onUnmounted, watch, nextTick } from 'vue'
+import { loadDocumentsMap, fishIcons, illegalCommodities, getZoneFill, getZoneBorder, showTooltip, hideTooltip } from './utils.js'
 import Tooltip from '../Tooltip.vue'
+import LoadingOverlay from '../LoadingOverlay.vue'
 
 // --- Props & Refs ---
 const props = defineProps({ selectedVesselId: String })
+const isLoading = ref(true)
 const plotContainer = ref(null)
 
 // --- Chart Configuration & Globals ---
-const margin = { top: 40, right: 40, bottom: 30, left: 120 }
+const margin = { top: 20, right: 40, bottom: 40, left: 120 }
 const highlightDate = new Date('2035-05-14')
 const currentTransform = ref(d3.zoomIdentity)
 
-// --- Reactive Layer Visibility State ---
-const isZoneVisible = ref(true)
-const showPings = ref(true)
-const showReports = ref(true)
-const showCargo = ref(true)
+// --- Layer Visibility (Reactive) ---
+const layers = reactive({
+  pings: true,
+  reports: true,
+  cargo: true,
+  event: true
+})
 
 // --- D3 Selections & Data Storage ---
-let dwellGroup, reportGroup, cargoGroup, highZoneGroup, leaderLine
+let dwellGroup, reportGroup, cargoGroup, highZoneGroup
 let x, y 
 let allData = { 
   trajectories: null, 
@@ -28,49 +32,53 @@ let allData = {
   transactions: null, 
   documentsMap: null,
   commodityNames: {},
+  locationKindMap: {},
   vessels: []
 }
 
-const currentVessel = computed(() => {
-  if (!props.selectedVesselId || !allData.vessels.length) return null
-  return allData.vessels.find(v => v.id === props.selectedVesselId) || { name: 'Unknown', company: 'Unknown' }
-})
-
 // --- Tooltip State ---
-const tooltip = reactive({
+const tooltip = ref({ 
   x: 0, 
   y: 0, 
-  contentDict: null, 
+  contentDict: {}, 
   visible: false, 
-  variant: 'default'
+  variant: 'default' 
 })
 
-// Toggle Layer Visibility: Animates the opacity of SVG groups based on reactive state
 function toggleLayer(group, visible) {
   if (!group) return
-  group.transition()
-    .duration(300)
-    .style('opacity', visible ? 1 : 0)
-    .on('end', function() {
-      d3.select(this).style('display', visible ? 'inline' : 'none')
-    })
+  group.transition().duration(200).style('opacity', visible ? 1 : 0)
 }
 
 // Initial Data Fetch: Loads all required JSON datasets and maps commodity IDs to names
 async function initializeData() {
+  isLoading.value = true;
+
   try {
-    const [traj, reports, trans, vess, docMap, commList] = await Promise.all([
+    const [traj, reports, trans, vess, docMap, commList, locs] = await Promise.all([
       fetch('/data/trajectories.json').then(res => res.json()),
       fetch('/data/harbor_reports.json').then(res => res.json()),
       fetch('/data/transactions.json').then(res => res.json()),
       fetch('/data/vessels.json').then(res => res.json()),
       loadDocumentsMap(),
-      fetch('/data/commodities.json').then(res => res.json())
+      fetch('/data/commodities.json').then(res => res.json()),
+      fetch('/data/locations.json').then(res => res.json())
     ])
 
     // Map commodity list to a lookup object for O(1) access
     const commLookup = {}
     commList.forEach(c => { commLookup[c.id] = c.name })
+
+    // Map location names to kinds to style
+    const locKindMap = {}
+    const uniqueLocs = new Set()
+
+    locs.forEach(l => { 
+      locKindMap[l.id] = l.kind || 'Unknown' 
+      uniqueLocs.add(l.id)
+    })
+
+    const sortedLocs = Array.from(uniqueLocs).sort((a, b) => a.localeCompare(b))
 
     allData = { 
       trajectories: traj, 
@@ -78,13 +86,49 @@ async function initializeData() {
       transactions: trans, 
       vessels: vess,
       documentsMap: docMap,
-      commodityNames: commLookup
+      commodityNames: commLookup,
+      locationKindMap: locKindMap,
+      sortedLocations: sortedLocs
     }
     renderChart()
   } catch (err) { 
     console.error("Data load error:", err) 
+  } finally {
+    isLoading.value = false;
   }
 }
+
+const drawRichYAxis = (g) => {
+  g.selectAll(".tick").each(function(d) {
+    const tick = d3.select(this);
+    
+    tick.selectAll("text").remove(); 
+    tick.selectAll(".rich-label").remove();
+
+    const kind = allData.locationKindMap[d] || 'Unknown';
+
+    const labelGroup = tick.append("g")
+        .attr("class", "rich-label")
+        .attr("transform", "translate(-10, 0)");
+
+    labelGroup.append('text')
+        .text(d.length > 20 ? d.substring(0, 20) + '...' : d)
+        .attr('x', 0) 
+        .attr('y', -4)
+        .style('font-size', '10px')
+        .style('fill', 'var(--chart-text-main')
+        .style('text-anchor', 'end');
+
+    labelGroup.append('text')
+        .text(kind)
+        .attr('x', 0)
+        .attr('y', 4) // Sotto il nome
+        .style('font-size', '8px')
+        .style('font-style', 'italic')
+        .style('fill', getZoneBorder(kind))
+        .style('text-anchor', 'end');
+  });
+};
 
 //Main Render Function: Handles SVG creation, scales, axes, and data layer drawing
 function renderChart() {
@@ -111,8 +155,8 @@ function renderChart() {
     end_time: new Date(new Date(d.time).getTime() + Number(d.dwell) * 1000)
   }))
 
-  const locations = Array.from(new Set(vesselData.map(d => d.source)))
-  const colorScale = d3.scaleOrdinal(d3.schemeTableau10).domain(locations)
+  //const locations = Array.from(new Set(vesselData.map(d => d.source)))
+  const locations = allData.sortedLocations
 
   const vesselReports = allData.harborReports
     .filter(r => r.source === vesselId && locations.includes(r.target))
@@ -155,7 +199,7 @@ function renderChart() {
     p.append('rect')
       .attr('width', 4)
       .attr('height', 8)
-      .attr('fill', colorScale(loc))
+      .attr('fill', getZoneFill(allData.locationKindMap[loc]))
       .attr('opacity', 0.4)
   })
 
@@ -185,35 +229,42 @@ function renderChart() {
     .attr('color', '#374151')
     .call(d3.axisBottom(x))
   
-  // Custom Y-Axis with Illegal Zone Highlighting
   const yAxisG = gMain.append('g')
-    .call(d3.axisLeft(y).tickSize(0)) // Hide tick lines for a cleaner look
+    .call(d3.axisLeft(y).tickSize(0))
     .attr('class', 'y-axis');
 
-  // Remove the vertical axis line (the "domain")
   yAxisG.select(".domain").remove();
 
-  // Highlight Illegal Zones by changing text color
-  yAxisG.selectAll(".tick text")
-    .attr('fill', d => illegalFishingZones.has(d) ? '#ef4444' : '#374151') // Red if illegal, Gray if safe
-    .style('font-weight', d => illegalFishingZones.has(d) ? 'bold' : '400')
-    .style('font-size', '11px');
+  yAxisG.call(drawRichYAxis);
 
-  // Tooltip Leash Line
-  leaderLine = gMain.append('line')
-    .attr('stroke', '#999')
-    .attr('stroke-width', 1)
-    .attr('stroke-dasharray', '4,2')
-    .style('opacity', 0)
-    .style('pointer-events', 'none')
+  const gGrid = gMain.append('g').attr('class', 'grid-layer');
+
+  const gridAxisX = d3.axisBottom(x)
+      .tickSize(height)
+      .tickFormat('')
+      .ticks(10);
+
+  const gGridHorizontal = gGrid.append('g').attr('class', 'grid-horizontal');
+
+  gGridHorizontal.selectAll('line')
+      .data(locations)
+      .enter().append('line')
+      .attr('x1', 0)
+      .attr('x2', width)
+      .attr('y1', d => y(d) + y.bandwidth()) 
+      .attr('y2', d => y(d) + y.bandwidth())
+      .attr('stroke', 'var(--chart-grid-line)')
+      .attr('stroke-dasharray', '2,2')
+      .attr('stroke-width', 1)
+      .attr('opacity', 0.5);
 
   const gChart = gMain.append('g')
     .attr('clip-path', 'url(#plot-area-clip)')
 
   // --- Layer Groups ---
-  dwellGroup = gChart.append('g').style('opacity', showPings.value ? 1 : 0)
-  reportGroup = gChart.append('g').style('opacity', showReports.value ? 1 : 0)
-  cargoGroup = gChart.append('g').style('opacity', showCargo.value ? 1 : 0)
+  dwellGroup = gChart.append('g').style('opacity', layers.pings ? 1 : 0)
+  reportGroup = gChart.append('g').style('opacity', layers.reports ? 1 : 0)
+  cargoGroup = gChart.append('g').style('opacity', layers.cargo ? 1 : 0)
 
   // --- Layer 1: Dwell Bars ---
   const dwellBars = dwellGroup.selectAll('.dwell')
@@ -222,15 +273,16 @@ function renderChart() {
     .attr('y', d => y(d.source))
     .attr('width', d => x(d.end_time) - x(d.time))
     .attr('height', y.bandwidth())
-    .attr('fill', d => colorScale(d.source))
+    .attr('fill', d => getZoneFill(allData.locationKindMap[d.source]))
     .attr('opacity', 0.8)
+    .attr('rx', 1)
     .style('cursor', 'help')
-    .on('mouseenter', (e, d) => showTooltip({
+    .on('mouseenter', (e, d) => showTooltip(e, {
       'Location': d.source, 
       'Arrived': d.time.toLocaleDateString(), 
       'Departed': d.end_time.toLocaleDateString()
-    }, { date: d.end_time, location: d.source }))
-    .on('mouseleave', hideTooltip)
+    }, tooltip))
+    .on('mouseleave', hideTooltip(tooltip))
 
   // --- Layer 2: Striped Report Bars ---
   const reportBars = reportGroup.selectAll('.report')
@@ -240,12 +292,13 @@ function renderChart() {
     .attr('width', r => x(r.day_end) - x(r.day_start))
     .attr('height', y.bandwidth())
     .attr('fill', r => `url(#stripe-${locations.indexOf(r.target)})`)
+    .attr('rx', 1)
     .style('cursor', 'help')
-    .on('mouseenter', (e, r) => showTooltip({
+    .on('mouseenter', (e, r) => showTooltip(e, {
       'Report Filed': r.target, 
       'Date': r.day_start.toLocaleDateString()
-    }, { date: r.day_end, location: r.target }))
-    .on('mouseleave', hideTooltip)
+    }, tooltip))
+    .on('mouseleave', hideTooltip(tooltip))
 
   // --- Layer 3: Transaction Icons ---
   const transIcons = cargoGroup.selectAll('.icon')
@@ -259,20 +312,20 @@ function renderChart() {
     .style('cursor', 'help')
     .on('mouseenter', (e, t) => {
       const isIllegal = illegalCommodities.has(t.commodityId)
-      showTooltip({
+      showTooltip(e, {
         'Transaction': t.target, 
         'Commodity': t.commodityName, 
-        'Status': isIllegal ? '⚠️ ILLEGAL SHIPMENT' : 'Legal Shipment',
+        'Status': isIllegal ? 'Illegal Shipment' : 'Legal Shipment',
         'Date': t.date.toLocaleDateString()
-      }, { date: t.date, location: t.target, isIcon: true }, isIllegal ? 'danger' : 'default')
+      }, tooltip, isIllegal ? 'danger' : 'default')
     })
-    .on('mouseleave', hideTooltip)
+    .on('mouseleave', hideTooltip(tooltip))
 
   // --- Layer 4: Market Exclusion Event ---
   highZoneGroup = gChart.append('g')
     .attr('class', 'exclusion-zone')
-    .style('opacity', isZoneVisible.value ? 1 : 0)
-    .style('display', isZoneVisible.value ? 'inline' : 'none');
+    .style('opacity', layers.event ? 1 : 0)
+    .style('display', layers.event ? null : 'none')
 
   const exclusionStart = new Date(highlightDate)
   exclusionStart.setHours(0,0,0,0)
@@ -303,16 +356,16 @@ function renderChart() {
 
   highZoneGroup
     .style('cursor', 'help')
-    .on('mouseenter', () => showTooltip({
+    .on('mouseenter', (e) => showTooltip(e, {
       'CRITICAL EVENT': 'SouthSeafood Express Corp was banned from fishing markets on this date.', 
       'Date': highlightDate.toLocaleDateString()
-    }, { date: exclusionEnd, isHighLine: true }, 'danger'))
-    .on('mouseleave', hideTooltip)
+    }, tooltip, 'danger'))
+    .on('mouseleave', hideTooltip(tooltip))
 
   // --- Interaction: Zoom & Pan ---
   const zoom = d3.zoom().scaleExtent([1, 100]).on('zoom', (event) => {
     currentTransform.value = event.transform
-    hideTooltip()
+    hideTooltip(tooltip)
     const newX = event.transform.rescaleX(x)
     
     // Update Axis
@@ -332,37 +385,7 @@ function renderChart() {
   svg.call(zoom)
 }
 
-// Tooltip Helper: Calculates screen coordinates and prepares content for the Tooltip component
-function showTooltip(dict, rawAnchor, variant = 'default') {
-  if (!plotContainer.value || !rawAnchor || !x || !y) return
-  
-  const svgRect = plotContainer.value.getBoundingClientRect()
-  const liveX = currentTransform.value.applyX(x(rawAnchor.date))
-  let liveY = rawAnchor.isHighLine 
-    ? (plotContainer.value.clientHeight - margin.top - margin.bottom) / 2 
-    : y(rawAnchor.location) + (rawAnchor.isIcon ? y.bandwidth()/2 : y.bandwidth())
-  
-  tooltip.x = svgRect.left + margin.left + liveX + 40
-  tooltip.y = svgRect.top + margin.top + liveY + 20
-  tooltip.contentDict = dict
-  tooltip.variant = variant
-  tooltip.visible = true
-  
-  if (leaderLine) {
-    leaderLine
-      .attr('x1', liveX)
-      .attr('y1', liveY)
-      .attr('x2', liveX + 40)
-      .attr('y2', liveY + 20)
-      .attr('stroke', variant === 'danger' ? 'red' : '#999')
-      .style('opacity', 1)
-  }
-}
 
-function hideTooltip() { 
-  tooltip.visible = false
-  if (leaderLine) leaderLine.style('opacity', 0) 
-}
 
 // --- Lifecycle ---
 onMounted(() => { 
@@ -374,69 +397,59 @@ onUnmounted(() => window.removeEventListener('resize', renderChart))
 
 // --- Watchers ---
 watch(() => props.selectedVesselId, renderChart)
-watch(isZoneVisible, (val) => toggleLayer(highZoneGroup, val))
-watch(showPings, (val) => toggleLayer(dwellGroup, val))
-watch(showReports, (val) => toggleLayer(reportGroup, val))
-watch(showCargo, (val) => toggleLayer(cargoGroup, val))
+
+watch(layers, () => {
+  toggleLayer(dwellGroup, layers.pings)
+  toggleLayer(reportGroup, layers.reports)
+  toggleLayer(cargoGroup, layers.cargo)
+  toggleLayer(highZoneGroup, layers.event)
+})
 </script>
 
 <template>
-  <div class="relative w-full h-full min-h-0 flex flex-col overflow-hidden">
-    <div 
-      v-if="!selectedVesselId" 
-      class="absolute inset-0 flex items-center justify-center text-gray-400 bg-gray-50/80 z-10"
-    >
-      Please select a vessel to view its timeline
-    </div>
-
-    <div v-if="currentVessel" class="absolute top-2 left-4 z-20 pointer-events-none">
-      <div class="flex flex-col">
-        <h2 class="text-sm font-bold uppercase tracking-tight leading-none">
-          {{ currentVessel.name }}
-        </h2>
-        <span class="text-[10px] text-slate-500 mt-1">
-          <span class="uppercase font-medium text-[var(--main-deep-blue)]">Company</span> {{ currentVessel.company }} | 
-          <span class="uppercase font-medium text-[var(--main-deep-blue)]">Vessel Type</span> {{ currentVessel.vessel_type }} | 
-          <span class="uppercase font-medium text-[var(--main-deep-blue)]">Tonnage</span> {{ currentVessel.tonnage }} GT
-        </span>
-      </div>
-    </div>
-
-    <div class="absolute top-2 right-4 z-20 flex gap-1.5 bg-white/90 p-1 rounded-3xl border border-slate-100 shadow-sm backdrop-blur-sm">
-      <button 
-        v-for="btn in [
-          { state: showPings, label: 'Pings', color: 'bg-blue-500' },
-          { state: showReports, label: 'Reports', color: 'bg-amber-400' },
-          { state: showCargo, label: 'Cargo', color: 'bg-emerald-500' },
-          { state: isZoneVisible, label: 'Event', color: 'bg-red-500' }
-        ]" 
-        :key="btn.label"
-        @click="btn.label === 'Pings' ? showPings = !showPings : btn.label === 'Reports' ? showReports = !showReports : btn.label === 'Cargo' ? showCargo = !showCargo : isZoneVisible = !isZoneVisible"
-        :disabled="!selectedVesselId"
-        class="flex items-center gap-1.5 px-2 py-1 rounded transition-all hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed group"
-      >
-        <span 
-          class="w-2 h-2 rounded-full transition-colors duration-200"
-          :class="btn.state ? btn.color : 'bg-slate-300'"
-        ></span>
-        
-        <span 
-          class="text-[10px] font-bold uppercase transition-colors"
-          :class="btn.state ? 'text-slate-600' : 'text-slate-400'"
-        >
-          {{ btn.label }}
-        </span>
-      </button>
-    </div>
+  <div class="relative w-full h-full flex flex-col overflow-hidden">
     
-    <div ref="plotContainer" class="w-full h-full flex-grow bg-white py-2"></div>
+    <LoadingOverlay :loading="isLoading" message="Loading Visualization..." />
+
+    <div ref="plotContainer" class="w-full min-h-0 flex-grow bg-white"></div>
     <Tooltip v-bind="tooltip" />
+
+    <div class="h-8 shrink-0 border-t border-slate-100 flex items-center justify-end px-4 gap-2 bg-white">
+       <span class="text-[9px] font-bold text-slate-300 uppercase mr-2 tracking-widest">Layers</span>
+       
+       <button @click="layers.pings = !layers.pings" class="layer-btn" :class="layers.pings ? 'text-blue-600 bg-blue-50 border-blue-100' : 'off'">
+         <span class="dot bg-blue-500"></span> Pings
+       </button>
+       
+       <button @click="layers.reports = !layers.reports" class="layer-btn" :class="layers.reports ? 'text-slate-600 bg-slate-100 border-slate-200' : 'off'">
+         <span class="dot bg-slate-400"></span> Reports
+       </button>
+       
+       <button @click="layers.cargo = !layers.cargo" class="layer-btn" :class="layers.cargo ? 'text-emerald-600 bg-emerald-50 border-emerald-100' : 'off'">
+         <span class="dot bg-emerald-500"></span> Cargo
+       </button>
+       
+       <button @click="layers.event = !layers.event" class="layer-btn" :class="layers.event ? 'text-red-600 bg-red-50 border-red-100' : 'off'">
+         <span class="dot bg-red-500"></span> Event
+       </button>
+    </div>
   </div>
 </template>
 
 <style scoped>
-:deep(svg) {
-  display: block;
-  user-select: none;
+:deep(svg) { display: block; user-select: none; }
+
+.layer-btn {
+  display: flex; align-items: center; gap: 4px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+  cursor: pointer;
 }
+.layer-btn:hover { background-color: #f8fafc; }
+.layer-btn.off { background-color: transparent; color: #cbd5e1; border-color: transparent; }
+.layer-btn.off .dot { background-color: #cbd5e1; }
+.dot { width: 6px; height: 6px; border-radius: 50%; }
 </style>

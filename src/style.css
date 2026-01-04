@@ -51,7 +51,7 @@
   --state-selected-border: #f59e0b;
 
   /* Vessel Types Colors */
-  --chart-vessel-cargo: #f59e0b;
+  --chart-vessel-cargo: #f5a70b;
   --chart-vessel-fishing: #3b82f6;
   --chart-vessel-ferry-cargo: #64748b;
   --chart-vessel-ferry-passenger: #ec4899;
@@ -79,6 +79,8 @@
   --chart-text-main: #1e293b;
   --chart-text-muted: #94a3b8;
   --chart-text-pinned: #94a3b8;
+
+  --chart-ping-neutral: #848687;
   
   /* Highlight Colors (SouthSeafood) */
   --chart-row-highlight-bg: #fffbeb; /* Amber 50 */

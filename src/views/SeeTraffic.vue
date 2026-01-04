@@ -146,9 +146,9 @@ onMounted(async () => {
             </span>
         </div>
 
-        <div class="flex flex-grow overflow-hidden p-6 gap-3">
+        <div class="flex flex-grow overflow-hidden p-4 pt-2 gap-2">
             
-            <div class="w-2/7 h-full bg-white rounded-xl overflow-hidden relative border border-gray-100 shadow-sm flex flex-col">
+            <div class="w-2/7 h-full bg-white rounded-xl overflow-hidden relative border border-gray-100 flex flex-col">
                 <div class="h-4/6 relative w-full">
                     <Map @feature-clicked="handleSelection" />
                 </div>
@@ -163,13 +163,13 @@ onMounted(async () => {
                             :species="selectedFeature.properties.fish_species_present"
                         />
                     </div>
-                    <div v-else class="h-full flex items-center justify-center text-gray-400 text-sm text-center">
+                    <div v-else class="h-full flex items-center justify-center text-gray-400 opacity-50 text-sm text-center">
                         <p>Click on a Fishing Zone or Harbor on the map to see details here.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="w-5/7 flex flex-col bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="w-5/7 flex flex-col bg-white rounded-xl border border-gray-100  overflow-hidden">
 
                 <div class="flex-none bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between h-auto gap-8">
                     
@@ -234,7 +234,7 @@ onMounted(async () => {
                     <div class="flex items-center border-l border-gray-100 pl-6 h-full">
                         <button 
                             @click="applyFilters"
-                            class="h-9 px-6 bg-slate-500/90 hover:bg-slate-600/90 text-white text-[11px] font-bold uppercase tracking-wider rounded-3xl shadow-md flex items-center gap-2"
+                            class="text-[10px] uppercase font-bold px-3 py-1 rounded-full border transition-all bg-white text-slate-600 border-slate-200 shadow-sm hover:shadow-md"
                         >
                             Update Map
                         </button>
@@ -244,16 +244,16 @@ onMounted(async () => {
                 <div class="flex-1 min-h-0 w-full relative">
                     
                     <div v-if="!selectedFeature" class="absolute inset-0 z-30 flex flex-col items-center justify-center bg-white text-center p-8">
-                        <p class="text-gray-400">
-                            Please select a Fishing Zone or Harbor on the map to visualize traffic patterns and anomalies.
+                        <p class="text-gray-400 opacity-50">
+                            Select a Fishing Zone or Harbor on the map to visualize traffic patterns and anomalies.
                         </p>
                     </div>
 
                     <div v-else class="flex flex-col h-full w-full">
                         <div v-if="isIslandSelection" class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white text-center p-8">
                             <h3 class="text-slate-400 font-bold uppercase tracking-widest text-sm mb-2">No Traffic Data Available</h3>
-                            <p class="text-gray-400">
-                                Please select a valid fishing zone or harbor to view vessel activity.
+                            <p class="text-gray-400 opacity-50">
+                                Select a valid fishing zone or harbor to view vessel activity.
                             </p>
                         </div>
 

@@ -3,6 +3,7 @@ import * as d3 from 'd3'
 import { ref, onMounted, watch, nextTick, onUnmounted } from 'vue'
 import Tooltip from '../Tooltip.vue'
 import LoadingOverlay from '../LoadingOverlay.vue'
+import { getVesselColor, showTooltip, hideTooltip } from './utils'
 
 // Props to receive ping data from parent
 const props = defineProps({
@@ -29,32 +30,6 @@ const isLoading = ref(true)
 const tooltip = ref({ visible: false, x: 0, y: 0, contentDict: {} })
 const selectedVesselId = ref(null)
 const vesselRegistry = ref({})
- 
-// D3 Ordinal Scale mapping vessel types to CSS variables
-const typeColorScale = d3.scaleOrdinal()
-    .domain(['FishingVessel', 'CargoVessel', 'Ferry.Cargo', 'Ferry.Passenger', 'Tour', 'Research', 'Other']) 
-    .range([
-        'var(--chart-vessel-fishing)', 
-        'var(--chart-vessel-cargo)', 
-        'var(--chart-vessel-ferry-cargo)', 
-        'var(--chart-vessel-ferry-passenger)', 
-        'var(--chart-vessel-tour)', 
-        'var(--chart-vessel-research)', 
-        'var(--chart-vessel-other)'
-    ])
-
-/**
- * Formats milliseconds into a readable string (e.g., "1h 30m").
- * @param {number} ms - Duration in milliseconds.
- * @returns {string} Formatted string.
- */
-const formatDuration = (ms) => {
-    if (!ms) return "0m";
-    const minutes = Math.floor((ms / (1000 * 60)) % 60);
-    const hours = Math.floor((ms / (1000 * 60 * 60)));
-    if (hours > 0) return `${hours}h ${minutes}m`;
-    return `${minutes}m`;
-}
 
 /**
  * Renders a single vessel row (Label + Timeline Pings) into a specific container.
@@ -127,7 +102,7 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
         .attr('transform', `translate(0, ${labelY})`)
         .style('pointer-events', 'none');
 
-    const colorVar = typeColorScale(d.type);
+    const colorVar = getVesselColor(d.type);
 
     // Vessel Name
     const nameText = labelGroup.append('text')
@@ -176,28 +151,23 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
         .attr('y', rectY) 
         .attr('height', rectHeight)
         .attr('width', PING_WIDTH)
-        .attr('fill', p => typeColorScale(vesselRegistry.value[p.target]?.vessel_type || 'Unknown'))
-        .attr('opacity', 0.8)
+        .attr('fill', 'var(--chart-ping-neutral)')
+        .attr('opacity', 0.7)
         .attr('rx', 1)
         .on('mouseover', (event, p) => {
             const details = vesselRegistry.value[p.target] || { name: p.target }
-            tooltip.value = {
-                visible: true,
-                x: event.clientX + 15,
-                y: event.clientY + 15,
-                contentDict: {
-                    "Vessel": details.name,
-                    "Company": details.company,
-                    "Time": d3.timeFormat("%d %b %H:%M")(p.time),
-                    "Duration": formatDuration(p.duration)
-                }
-            }
+
+            showTooltip(event, {
+                "Vessel": details.name,
+                "Company": details.company,
+                "Time": d3.timeFormat("%d %b %H:%M")(p.time)
+            }, tooltip);
         })
-        .on('mouseout', () => { tooltip.value.visible = false });
+        .on('mouseout', () => { hideTooltip(tooltip) });
 }
 
 // Main function to draw the entire chart
-const drawChart = async () => {
+const renderChart = async () => {
     isLoading.value = true;
 
     // Wait for DOM update
@@ -222,8 +192,7 @@ const drawChart = async () => {
             
             const pingsWithDwell = sortedPings.map((p) => ({
                 ...p, // Spread syntax to copy existing properties and only modify specific ones
-                time: new Date(p.time),
-                duration: Number(p.dwell) || 0
+                time: new Date(p.time)
             }));
 
             return { id, name: info.name, type: info.vessel_type, company: info.company, pings: pingsWithDwell }
@@ -345,7 +314,7 @@ const drawChart = async () => {
                 const t = event.transform;
                 const newXScale = t.rescaleX(xScale);
                 
-                if (t.k > 5) xAxis.tickFormat(d3.timeFormat("%d %b %H:%M"));
+                if (t.k > 5) xAxis.tickFormat(d3.timeFormat("%d %b (%H:%M)"));
                 else xAxis.tickFormat(d3.timeFormat("%d %b"));
                 
                 xAxisGroup.call(xAxis.scale(newXScale));
@@ -375,12 +344,12 @@ const drawChart = async () => {
 function handleVesselClick(vesselId) {
     selectedVesselId.value = (selectedVesselId.value === vesselId) ? null : vesselId;
     emit('vessel-selected', selectedVesselId.value);
-    drawChart();
+    renderChart();
 }
 
 // Redraw chart when data or selection changes
 watch(() => props.data, async () => { 
-    await drawChart() }, 
+    await renderChart() }, 
     { deep: true }
 )
 
@@ -393,12 +362,12 @@ onMounted(async () => {
             acc[v.id] = { ...v, company: v.company || 'Unknown', vessel_type: v.vessel_type || 'Unknown' }
             return acc
         }, {})
-        await drawChart()
-        window.addEventListener('resize', drawChart)
+        await renderChart()
+        window.addEventListener('resize', renderChart)
     } catch (e) { console.error(e); isLoading.value = false; }
 })
 
-onUnmounted(() => { window.removeEventListener('resize', drawChart) })
+onUnmounted(() => { window.removeEventListener('resize', renderChart) })
 </script>
 
 <template>

@@ -1,34 +1,47 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { illegalCommodities } from './d3/utils.js';
+import { getCommodityStatus, getFishIcon, commodityStyles } from './d3/utils.js';
 
 const props = defineProps({
     vessel: { type: String, required: true },
     kind: { type: String, default: '' },
-    description: { type: String, default: 'No description available.' },
+    description: { type: String, default: '' },
     activities: { type: Array, default: () => [] },
     species: { type: Array, default: () => [] }
 })
 
-const illegalNamesSet = ref(new Set())
+const speciesInfoMap = ref(new Map())
 
 onMounted(async () => {
     try {
         const response = await fetch('/data/commodities.json')
         const allCommodities = await response.json()
 
-        const names = allCommodities
-            .filter(c => illegalCommodities.has(c.id))
-            .map(c => c.name)
+        const map = new Map();
+        
+        allCommodities.forEach(c => {
+            const status = getCommodityStatus(c.id);            
+            const iconFile = getFishIcon(c.id);
 
-        illegalNamesSet.value = new Set(names)
+            map.set(c.name, {
+                status: status,
+                icon: iconFile
+            });
+        });
+        
+        speciesInfoMap.value = map;
     } catch (err) {
-        console.error("Errore nel mapping delle specie:", err)
+        console.error("Error loading commodities:", err)
     }
 })
 
-const isIllegal = (speciesName) => {
-    return illegalNamesSet.value.has(speciesName)
+const getSpeciesData = (speciesName) => {
+    return speciesInfoMap.value.get(speciesName) || { status: 'legal', icon: 'fish-icon-default.svg' };
+}
+
+const getStatusClasses = (speciesName) => {
+    const { status } = getSpeciesData(speciesName);
+    return commodityStyles[status] || commodityStyles['legal'];
 }
 </script>
 
@@ -55,16 +68,16 @@ const isIllegal = (speciesName) => {
             <h4 class="text-[8px] font-bold text-slate-400 uppercase mb-1">Endemic Species</h4>
             <div class="flex flex-wrap gap-1">
                 <span v-for="s in species" :key="s" 
-                    :class="[
-                        'px-2 py-0.5 text-[9px] font-bold rounded border transition-all duration-300',
-                        isIllegal(s) 
-                            ? 'bg-red-50 text-red-700 border-red-200 shadow-sm ring-1 ring-red-100' 
-                            : 'bg-emerald-50 text-emerald-700 border-emerald-100'
-                    ]"
+                    class="pl-1 pr-2 py-0.5 text-[9px] font-bold rounded border transition-all duration-300 flex items-center gap-1.5"
+                    :class="getStatusClasses(s)"
                 >
-                    <span v-if="isIllegal(s)" class="mr-1">⚠️</span>
-                    <span v-else class="mr-1">🐟</span>
-                    {{ s }}
+                    <img 
+                        :src="`../src/assets/${getSpeciesData(s).icon}`" 
+                        alt="fish"
+                        class="w-3.5 h-3.5 object-contain opacity-80"
+                    />
+                    
+                    <span>{{ s }}</span>
                 </span>
             </div>
         </div>
