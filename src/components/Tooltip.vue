@@ -9,7 +9,7 @@ const props = defineProps({
   variant: {
     type: String,
     default: 'default',
-    validator: (value) => ['default', 'danger'].includes(value)
+    validator: (value) => ['default', 'warning', 'danger'].includes(value)
   }
 })
 
@@ -56,6 +56,16 @@ const variantClass = computed(() => `tooltip-${props.variant}`)
 }
 .tooltip-default .tooltip-key {
   color: var(--main-deep-blue, #0056b3); /* Fallback color added */
+}
+
+/* --- warning Theme (Yellow) --- */
+.tooltip-warning {
+  background: #fffbeb; /* Very light yellow background */
+  border: 2px solid #f59e0b; /* Strong yellow border */
+  color: #78350f; /* Dark yellow text */
+}
+.tooltip-warning .tooltip-key {
+  color: #d97706; 
 }
 
 /* --- Danger Theme (Red) --- */

@@ -226,7 +226,7 @@ function renderChart() {
   const xAxisG = gMain.append('g')
     .attr('transform', `translate(0,${height})`)
     .attr('class', 'x-axis')
-    .attr('color', '#374151')
+    .attr('color', 'var(--chart-axis-line)')
     .call(d3.axisBottom(x))
   
   const yAxisG = gMain.append('g')

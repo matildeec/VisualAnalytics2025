@@ -244,7 +244,7 @@ const renderChart = async () => {
             .tickFormat(d3.timeFormat("%d %b"))
             .tickSizeOuter(0);
         const xAxisGroup = gAxis.append('g')
-            .attr('class', 'x-axis text-gray-500 text-[10px]')
+            .attr('class', 'x-axis text-[var(--chart-axis-line)] text-[10px]')
             .call(xAxis);
         xAxisGroup.select(".domain").remove(); // Remove axis line for cleaner look
 

@@ -5,7 +5,8 @@ import {
     getVesselColor, 
     getCommodityStatus,
     getFishIcon,
-    commodityStyles
+    commodityStyles,
+    illegalCommodities
 } from '../components/d3/utils.js'
 
 const isLoading = ref(true);

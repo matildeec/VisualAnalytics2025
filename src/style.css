@@ -51,12 +51,12 @@
   --state-selected-border: #f59e0b;
 
   /* Vessel Types Colors */
-  --chart-vessel-cargo: #f5a70b;
+  --chart-vessel-cargo: #ba9efc;
   --chart-vessel-fishing: #3b82f6;
   --chart-vessel-ferry-cargo: #64748b;
   --chart-vessel-ferry-passenger: #ec4899;
-  --chart-vessel-tour: #8b5cf6;
-  --chart-vessel-research: #10b981;
+  --chart-vessel-tour: #10b981;
+  --chart-vessel-research: #f5a70b;
   --chart-vessel-other: #423b3b;
 
   /* Row Backgrounds & Interaction */
@@ -80,6 +80,7 @@
   --chart-text-muted: #94a3b8;
   --chart-text-pinned: #94a3b8;
 
+  --chart-axis-line: #727880;
   --chart-ping-neutral: #848687;
   
   /* Highlight Colors (SouthSeafood) */

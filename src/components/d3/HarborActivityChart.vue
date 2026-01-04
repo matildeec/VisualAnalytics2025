@@ -1,6 +1,6 @@
 <script setup>
 import * as d3 from 'd3';
-import { ref, reactive, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
 import Tooltip from '../Tooltip.vue';
 import { 
     getVesselColor, 
@@ -114,8 +114,8 @@ function handleTooltip(event, d, type = 'cargo') {
   if (type === 'cargo') {
     const status = getCommodityStatus(d.commodity);
     let statusText = 'Verified';
-    if (status === 'illegal') statusText = '⚠️ ILLEGAL';
-    if (status === 'suspect') statusText = '👀 Suspect';
+    if (status === 'illegal') statusText = 'ILLEGAL';
+    if (status === 'suspect') statusText = 'Suspect';
 
     content = {
       'Commodity': props.commodityNames[d.commodity] || d.commodity,
@@ -180,7 +180,6 @@ async function renderChart() {
 
   // --- Grid & Axes Drawing (Semplificato per brevità, mantieni la tua logica esistente) ---
   const gGrid = svg.append('g').attr('class', 'grid-layer');
-  // ... (Inserisci qui il codice della griglia come nel tuo originale) ...
 
   // --- Brush & Zoom ---
   const brush = d3.brushX().extent([[0, 0], [logicalWidth, totalChartHeight]])
@@ -225,7 +224,7 @@ async function renderChart() {
     .attr('height', d => Math.abs(yCargo(d.y1) - yCargo(d.y0)))
     .attr('fill', d => getCommodityColor(d.commodity))
     .attr('stroke', 'black').attr('stroke-width', 0.2)
-    .on('mouseenter', (e, d) => showTooltip(e, d, 'cargo')).on('mouseleave', hideTooltip);
+    .on('mouseenter', (e, d) => handleTooltip(e, d, 'cargo')).on('mouseleave', hideTooltip (tooltip));
 
   const gVessel = svg.append('g').attr('transform', `translate(${margin.left},${vesselBaseY})`).attr('clip-path', 'url(#chart-content-clip)');
   gVessel.selectAll('.bar-vessel')
@@ -238,7 +237,7 @@ async function renderChart() {
     .attr('height', d => Math.abs(yVessel(d.y1) - yVessel(d.y0)))
     .attr('fill', d => getVesselColor(d.vessel_type))
     .attr('stroke', 'black').attr('stroke-width', 0.2)
-    .on('mouseenter', (e, d) => showTooltip(e, d, 'vessel')).on('mouseleave', hideTooltip);
+    .on('mouseenter', (e, d) => handleTooltip(e, d, 'vessel')).on('mouseleave', hideTooltip (tooltip));
 
   // Axes Calls (Bottom X Axis)
   svg.append('g').attr('class', 'x-axis').attr('transform', `translate(${margin.left},${cargoBaseY})`)
@@ -250,10 +249,10 @@ async function renderChart() {
 
   // Labels
   svg.append('text').attr('transform', `rotate(-90)`).attr('y', margin.left/4).attr('x', -(margin.top + chartHeight/2))
-     .text('Cargo weight (Tons)').attr('text-anchor', 'middle').style('font-size', '10px').style('fill', '#64748b').style('font-weight', 'bold');
+     .text('Cargo weight (Tons)').attr('text-anchor', 'middle').style('font-size', '10px').style('fill', 'var(--chart-axis-line)').style('font-weight', 'bold');
   
   svg.append('text').attr('transform', `rotate(-90)`).attr('y', margin.left/4).attr('x', -(vesselBaseY + chartHeight/2))
-     .text('Vessel tonnage (GT)').attr('text-anchor', 'middle').style('font-size', '10px').style('fill', '#64748b').style('font-weight', 'bold');
+     .text('Vessel tonnage (GT)').attr('text-anchor', 'middle').style('font-size', '10px').style('fill', 'var(--chart-axis-line)').style('font-weight', 'bold');
 
   svg.call(zoom);
 }
