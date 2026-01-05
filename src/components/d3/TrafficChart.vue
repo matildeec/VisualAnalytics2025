@@ -165,7 +165,11 @@ const renderChart = async () => {
     isLoading.value = true;
 
     // Wait for DOM update
-    if (!headerContainer.value || !bodyContainer.value) return
+    if (!headerContainer.value || !bodyContainer.value || !props.data) {
+        isLoading.value = false;
+        return;
+    }
+    
     await nextTick();
     await new Promise(resolve => setTimeout(resolve, 50));
 

@@ -12,7 +12,7 @@ const props = defineProps({
 const isLoading = ref(true)
 const tooltip = ref({ x: 0, y: 0, contentDict: {}, visible: false, variant: 'default' })
 
-const plotContainer = ref(null)
+const chartContainer = ref(null)
 const currentTransform = ref(d3.zoomIdentity)
 
 const MARGIN = { top: 20, right: 40, bottom: 40, left: 120 }
@@ -77,20 +77,21 @@ const drawRichYAxis = (g) => {
 const renderChart = async () => {
   isLoading.value = true
 
-  // Cleanup and checks
-  if (plotContainer.value) {
-    d3.select(plotContainer.value).selectAll('*').remove()
+  if (!chartContainer.value || !props.vesselData || contextData.sortedLocations.length === 0) {
+    isLoading.value = false;
+    return;
   }
   
-  if (!plotContainer.value || !props.vesselData || contextData.sortedLocations.length === 0) return
   await nextTick()
   await new Promise(resolve => setTimeout(resolve, 50));
 
+  d3.select(chartContainer.value).selectAll('*').remove();
+
   try {
 
-    // Dimensions
-    const containerWidth = plotContainer.value.clientWidth
-    const containerHeight = plotContainer.value.clientHeight
+    // Responsive Dimensions
+    const containerWidth = chartContainer.value.clientWidth
+    const containerHeight = chartContainer.value.clientHeight
     const width = containerWidth - MARGIN.left - MARGIN.right
     const height = containerHeight - MARGIN.top - MARGIN.bottom
 
@@ -125,7 +126,7 @@ const renderChart = async () => {
     }))
 
     // SVG Setup
-    const svg = d3.select(plotContainer.value).append('svg')
+    const svg = d3.select(chartContainer.value).append('svg')
       .attr('width', containerWidth)
       .attr('height', containerHeight)
     
@@ -378,7 +379,7 @@ watch(layers, () => {
     
     <LoadingOverlay :loading="isLoading" message="Loading Visualization..." />
 
-    <div ref="plotContainer" class="w-full min-h-0 flex-grow bg-white"></div>
+    <div ref="chartContainer" class="w-full min-h-0 flex-grow bg-white"></div>
     <Tooltip v-bind="tooltip" />
 
     <div class="h-8 shrink-0 border-t border-slate-100 flex items-center justify-end px-4 gap-2 bg-white">

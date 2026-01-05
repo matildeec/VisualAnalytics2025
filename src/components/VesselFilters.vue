@@ -85,7 +85,7 @@ onMounted(async () => {
           {{ index }}
         </div>
 
-        <img src="../assets/vessel.svg" class="w-5 h-5 shrink-0" />
+        <img src="../assets/vessel-icon.svg" class="w-5 h-5 shrink-0" />
 
         <div v-if="selectedVesselDetails" class="flex flex-col overflow-hidden">
           <h3 class="text-sm font-bold text-slate-800 uppercase truncate leading-tight">

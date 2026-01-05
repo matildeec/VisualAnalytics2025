@@ -7,7 +7,7 @@ const selectedVesselId1 = ref('')
 const selectedVesselId2 = ref('')
 const isLoading = ref(true)
 
-const rawData = shallowRef(null)
+const rawData = shallowRef({})
 
 function handleSelectSlot1(id) { 
   selectedVesselId1.value = id 
