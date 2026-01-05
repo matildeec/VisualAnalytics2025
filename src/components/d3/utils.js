@@ -1,15 +1,4 @@
-// Utility
-export async function loadDocumentsMap() {
-  const res = await fetch('/data/documents.json');
-  const docs = await res.json();
-  const docMap = {};
-  for (const doc of docs) {
-    docMap[doc.id] = doc;
-  }
-  return docMap;
-}
-
-const VESSELTYPE_COLORS = {
+const vesselTypeColors = {
     'FishingVessel': 'var(--chart-vessel-fishing)',
     'CargoVessel': 'var(--chart-vessel-cargo)',
     'Ferry.Cargo': 'var(--chart-vessel-ferry-cargo)',
@@ -17,6 +6,12 @@ const VESSELTYPE_COLORS = {
     'Tour': 'var(--chart-vessel-tour)',
     'Research': 'var(--chart-vessel-research)',
     'Other': 'var(--chart-vessel-other)'
+};
+
+const commodityColors = {
+    illegal: 'var(--commodity-illegal)',
+    suspect: 'var(--commodity-suspect)',
+    legal:   'var(--commodity-legal)'
 };
 
 export const illegalCommodities = new Set([
@@ -31,12 +26,6 @@ export const suspectCommodities = new Set([
   'habeaspisces4eb', 
   'thunnininveradb7'
 ]);
-
-const commodityColors = {
-    illegal: '#ef4444',  // Red
-    suspect: '#f59e0b',  // Amber
-    legal:   '#10b981'   // Emerald
-};
 
 export const getCommodityColor = (commodity_id) => {
     if (illegalCommodities.has(commodity_id)) return commodityColors.illegal;
@@ -71,7 +60,7 @@ export const getCommodityStatus = (id) => {
 };
 
 export const getVesselColor = (vessel_type) => {
-    return VESSELTYPE_COLORS[vessel_type] || VESSELTYPE_COLORS['Other'];
+    return vesselTypeColors[vessel_type] || vesselTypeColors['Other'];
 };
 
 export const getFishIcon = (commodity_id) => {

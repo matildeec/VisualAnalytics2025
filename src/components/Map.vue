@@ -26,6 +26,7 @@ let map = null
 let geoJsonLayer = null
 let selectedLayer = null 
 
+// Define categories for styling regions to be used in legend and styling
 const categories = [
     { label: 'Island', color: 'var(--zone-island-bg)', border: 'var(--zone-island-border)', check: (k) => k === 'Island' },
     { label: 'Fishing Zone', color: 'var(--zone-fishing-bg)', border: 'var(--zone-fishing-border)', check: (k) => k.includes('Fishing') },
@@ -34,13 +35,7 @@ const categories = [
     { label: 'City', color: 'var(--zone-city-bg)', border: 'var(--zone-city-border)', check: (k) => k.includes('city') }
 ];
 
-/**
- * Determines the Leaflet style object based on GeoJSON feature properties.
- * It maps specific feature kinds to defined categories for coloring and opacity.
- *
- * @param {Object} feature - The GeoJSON feature object containing properties (e.g., 'type', '*Kind').
- * @returns {L.PathOptions} An object containing style options (fillColor, color, weight, fillOpacity).
- */
+// Determines the style for each region based on its properties
 const getRegionStyle = (feature) => {
     const kind = feature.properties?.['*Kind'] || feature.properties?.type || '';
     const category = categories.find(c => c.check(kind));
@@ -60,13 +55,7 @@ const getRegionStyle = (feature) => {
     };
 };
 
-/**
- * Attaches event listeners (click, mouseover, mouseout) to a specific map layer.
- * Handles selection highlighting, hover effects, and emits the 'feature-clicked' event.
- *
- * @param {Object} feature - The GeoJSON feature data associated with the layer.
- * @param {L.Layer} layer - The Leaflet layer instance representing the feature.
- */
+// Attaches event listeners to each feature layer for interactivity (click, mouseover, mouseout)
 const handleFeatureEvents = (feature, layer) => {
     layer.on({
         click: (e) => {
@@ -89,7 +78,7 @@ const handleFeatureEvents = (feature, layer) => {
         },
         mouseover: (e) => {
             if (e.target !== selectedLayer && e.target.setStyle) {
-                // Variabili per lo stato "Hover"
+                // on hover style
                 e.target.setStyle({ 
                     weight: 3, 
                     color: 'var(--state-hover-border)', 
@@ -103,13 +92,7 @@ const handleFeatureEvents = (feature, layer) => {
     });
 };
 
-/**
- * Initializes the Leaflet map, mounts it to the DOM, and asynchronously fetches GeoJSON data.
- * It also configures the custom legend control and fits the map bounds to the data.
- *
- * @async
- * @returns {Promise<void>} A promise that resolves when the map initialization is complete.
- */
+// Initialize the Leaflet map
 async function initMap() {
     if (!mapContainer.value) return;
     
@@ -143,11 +126,19 @@ async function initMap() {
         if (geojsonData.features?.length) {
             map.fitBounds(geoJsonLayer.getBounds(), { padding: [20, 20] });
         }
-    } catch (err) { console.error(err); }
+    } catch (e) { 
+        console.error('Failed to load GeoJSON data:', e);
+    }
 }
 
 // Initialize the map when the component is mounted
-onMounted(initMap);
+onMounted(async () => {
+    try {
+        await initMap();
+    } catch (error) {
+        console.error('Error initializing map:', error);
+    }
+});
 
 // Clean up the map instance to make sure there are no memory leaks
 onBeforeUnmount(() => { if (map) map.remove(); });

@@ -1,13 +1,75 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, computed, ref, shallowRef } from 'vue'
 import VesselFilters from '../components/VesselFilters.vue'
 import TrajectoryPlot from '../components/d3/TrajectoryPlot.vue'
 
 const selectedVesselId1 = ref('')
 const selectedVesselId2 = ref('')
+const isLoading = ref(true)
 
-function handleSelectSlot1(id) { selectedVesselId1.value = id }
-function handleSelectSlot2(id) { selectedVesselId2.value = id }
+const rawData = shallowRef(null)
+
+function handleSelectSlot1(id) { 
+  selectedVesselId1.value = id 
+}
+
+function handleSelectSlot2(id) { 
+  selectedVesselId2.value = id 
+}
+
+function getVesselData(vesselId) {
+  if (!vesselId || !rawData.value) return null
+
+  const d = rawData.value
+  
+  const vesselTraj = d.trajectories[vesselId] || []
+  
+  const vesselReports = d.harborReports.filter(r => r.source === vesselId)
+
+  const vesselTrans = d.transactions
+    .filter(t => t.suspected_vessels?.includes(vesselId))
+    .map(t => ({
+       ...t,
+       commodityId: d.documentsMap[t.source]?.commodity || 'unknown'
+    }))
+
+  return {
+    trajectory: vesselTraj,
+    reports: vesselReports,
+    transactions: vesselTrans
+  }
+}
+
+const vesselData1 = computed(() => getVesselData(selectedVesselId1.value))
+const vesselData2 = computed(() => getVesselData(selectedVesselId2.value))
+
+onMounted(async () => {
+  isLoading.value = true
+  try {
+    const [traj, reports, trans, docs, vessels] = await Promise.all([
+      fetch('/data/trajectories.json').then(res => res.json()),
+      fetch('/data/harbor_reports.json').then(res => res.json()),
+      fetch('/data/transactions.json').then(res => res.json()),
+      fetch('/data/documents.json').then(res => res.json()),
+      fetch('/data/vessels.json').then(res => res.json()) // Utile per i filtri
+    ])
+
+    // Pre-processing Lookup Maps
+    const docMap = Object.fromEntries(docs.map(d => [d.id, d]))
+
+    rawData.value = {
+      trajectories: traj,
+      harborReports: reports,
+      transactions: trans,
+      documentsMap: docMap,
+      vessels: vessels
+    }
+  } catch (e) {
+    console.error("Error loading data:", e)
+  } finally {
+    isLoading.value = false
+  }
+})
 </script>
 
 <template>
@@ -25,14 +87,13 @@ function handleSelectSlot2(id) { selectedVesselId2.value = id }
       
       <div class="flex-1 flex flex-col h-full min-w-0 bg-white relative group rounded-2xl">
         <VesselFilters 
-          index="1" 
-          colorClass="bg-blue-600" 
-          @select="handleSelectSlot1" 
+          index="1"
+          @select="handleSelectSlot1"
         />
         
         <div class="flex-grow relative bg-slate-50 overflow-hidden rounded-3xl">
           <div class="absolute inset-0">
-             <TrajectoryPlot :selectedVesselId="selectedVesselId1" />
+             <TrajectoryPlot :vesselData="vesselData1" />
           </div>
           <div v-if="!selectedVesselId1" class="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div class="text-center opacity-40">
@@ -44,14 +105,13 @@ function handleSelectSlot2(id) { selectedVesselId2.value = id }
 
       <div class="flex-1 flex flex-col h-full min-w-0 bg-white relative group rounded-2xl">
         <VesselFilters 
-          index="2" 
-          colorClass="bg-amber-500" 
+          index="2"
           @select="handleSelectSlot2" 
         />
         
         <div class="flex-grow relative bg-slate-50 overflow-hidden rounded-2xl">
           <div class="absolute inset-0">
-             <TrajectoryPlot :selectedVesselId="selectedVesselId2" />
+             <TrajectoryPlot :vesselData="vesselData2" />
           </div>
            <div v-if="!selectedVesselId2" class="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div class="text-center opacity-40">

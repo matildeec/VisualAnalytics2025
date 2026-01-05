@@ -2,8 +2,7 @@
 import { ref, reactive, onMounted, computed, watch } from 'vue'
 
 const props = defineProps({
-  index: { type: [Number, String], required: true },
-  colorClass: { type: String, default: 'bg-blue-500' }
+  index: { type: [Number, String], required: true }
 })
 
 const emit = defineEmits(['select'])
@@ -12,6 +11,7 @@ const isExpanded = ref(true)
 const vessels = ref([])
 const allVessels = ref([])
 
+// Filter states are reactive because we want to watch them for changes immediately
 const filters = reactive({
   company: '',
   type: '',
@@ -25,11 +25,13 @@ const options = reactive({
   tonnages: []
 })
 
+// Computed property to get details of the selected vessel
 const selectedVesselDetails = computed(() => {
   if (!filters.vesselId) return null
   return allVessels.value.find(v => v.id === filters.vesselId)
 })
 
+// Function to update filter options based on current selections
 function updateOptions() {
   let filtered = allVessels.value
   
@@ -44,11 +46,13 @@ function updateOptions() {
   vessels.value = filtered.sort((a, b) => a.name.localeCompare(b.name))
 }
 
+// Handle vessel selection
 function handleSelection() {
   emit('select', filters.vesselId)
   if (filters.vesselId) isExpanded.value = false
 }
 
+// Clear all selections
 function clearSelection() {
   filters.company = ''
   filters.type = ''
@@ -59,6 +63,7 @@ function clearSelection() {
   isExpanded.value = true
 }
 
+// Watch for changes in filters to update options dynamically
 watch(() => [filters.company, filters.type, filters.tonnage], updateOptions)
 
 onMounted(async () => {
@@ -75,9 +80,12 @@ onMounted(async () => {
     
     <div class="flex items-center justify-between p-3 bg-slate-50/50 rounded-t-2xl">
       <div class="flex items-center gap-3 overflow-hidden">
-        <div :class="[colorClass, 'w-6 h-6 rounded-md flex items-center justify-center text-white font-bold text-xs shadow-sm shrink-0']">
+        
+        <div class="w-6 h-6 m-0.5 rounded-full flex items-center justify-center bg-white text-slate-400 font-bold text-xs border border-slate-200 shadow-sm shrink-0">
           {{ index }}
         </div>
+
+        <img src="../assets/vessel.svg" class="w-5 h-5 shrink-0" />
 
         <div v-if="selectedVesselDetails" class="flex flex-col overflow-hidden">
           <h3 class="text-sm font-bold text-slate-800 uppercase truncate leading-tight">

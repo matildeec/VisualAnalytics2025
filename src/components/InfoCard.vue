@@ -12,6 +12,17 @@ const props = defineProps({
 
 const speciesInfoMap = ref(new Map())
 
+// Get species data (status and icon) from the map
+const getSpeciesData = (speciesName) => {
+    return speciesInfoMap.value.get(speciesName) || { status: 'legal', icon: 'fish-icon-default.svg' };
+}
+
+// Get CSS classes based on species status (legal, suspect, illegal)
+const getStatusClasses = (speciesName) => {
+    const { status } = getSpeciesData(speciesName);
+    return commodityStyles[status] || commodityStyles['legal'];
+}
+
 onMounted(async () => {
     try {
         const response = await fetch('/data/commodities.json')
@@ -34,15 +45,6 @@ onMounted(async () => {
         console.error("Error loading commodities:", err)
     }
 })
-
-const getSpeciesData = (speciesName) => {
-    return speciesInfoMap.value.get(speciesName) || { status: 'legal', icon: 'fish-icon-default.svg' };
-}
-
-const getStatusClasses = (speciesName) => {
-    const { status } = getSpeciesData(speciesName);
-    return commodityStyles[status] || commodityStyles['legal'];
-}
 </script>
 
 <template>

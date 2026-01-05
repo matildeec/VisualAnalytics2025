@@ -14,52 +14,31 @@ const hourEnd = ref(24)
 const tempHourStart = ref(0)
 const tempHourEnd = ref(24)
 
-/**
- * Sets the temporary start and end hours for the time filter.
- * Used by UI presets ("All", "Day", "Night").
- *
- * @param {number} start - The starting hour (0-23).
- * @param {number} end - The ending hour (0-24).
- */
+// Sets the temporary time filter values to predefined presets
 const setPreset = (start, end) => {
     tempHourStart.value = start
     tempHourEnd.value = end
 }
 
-/**
- * Validates the time slider input to ensure the start time is not greater than the end time.
- * Adjusts the start time if it exceeds the end time.
- */
+// Validates that the start hour is less than the end hour
 const validateRange = () => {
     if (tempHourStart.value > tempHourEnd.value - 1) {
         tempHourStart.value = tempHourEnd.value - 1
     }
 }
 
-/**
- * Commits the temporary time selection to the active filter variables.
- * Triggers the re-calculation of computed properties dependent on hourStart/hourEnd.
- */
+// Applies the temporary time filter values to the actual filter variables
 const applyFilters = () => {
     hourStart.value = tempHourStart.value
     hourEnd.value = tempHourEnd.value
 }
 
-/**
- * Updates the selectedFeature reference when a user clicks a feature on the map.
- *
- * @param {Object} feature - The GeoJSON feature clicked by the user.
- */
+// Handles feature selection from the Map component
 const handleSelection = (feature) => {
     selectedFeature.value = feature
 }
 
-/**
- * Computes the CSS style object for the visual range slider.
- * Calculates 'left' position and 'width' based on the temporary hour values.
- *
- * @returns {Object} A style object containing 'left' and 'width' percentages.
- */
+// Computes the CSS styles for the time selection overlay on the slider
 const selectionStyle = computed(() => {
     const startPercent = (tempHourStart.value / 24) * 100
     const endPercent = (tempHourEnd.value / 24) * 100
@@ -69,12 +48,7 @@ const selectionStyle = computed(() => {
     }
 })
 
-/**
- * Determines if the currently selected feature is an 'Island' or the specific city 'Centralia'.
- * Used to toggle specific UI elements or logic relevant only to islands.
- *
- * @returns {boolean} True if the selection is an island or Centralia, otherwise false.
- */
+// Determines if the selected feature is an island or Centralia (no traffic data available)
 const isIslandSelection = computed(() => {
     if (!selectedFeature.value) return false
     
@@ -83,13 +57,7 @@ const isIslandSelection = computed(() => {
     return kind === 'Island' || centralia_city
 })
 
-/**
- * Filters the raw 'allPings' dataset based on:
- * 1. The name of the currently selected location (source).
- * 2. The active time range (hourStart to hourEnd).
- *
- * @returns {Array} An array of ping objects that match the criteria.
- */
+// Filters the traffic data based on the selected feature and time range to be visualized
 const filteredTrafficData = computed(() => {
     if (!selectedFeature.value || allPings.value.length === 0) return []
 
@@ -113,11 +81,7 @@ const filteredTrafficData = computed(() => {
     })
 })
 
-/**
- * Calculates the count of unique vessels (targets) present in the filtered dataset.
- *
- * @returns {number} The count of unique vessel IDs.
- */
+// Computes the count of unique vessels in the filtered traffic data
 const uniqueVesselCount = computed(() => {
     const pings = filteredTrafficData.value
     if (!pings || pings.length === 0) return 0
@@ -126,12 +90,14 @@ const uniqueVesselCount = computed(() => {
     return uniqueIds.size
 })
 
-// Fetches the traffic data JSON when the component is mounted.
+// Fetches the traffic data JSON when the component is mounted
 onMounted(async () => {
     try {
         const res = await fetch('/data/transponder_pings.json')
         allPings.value = await res.json()
-    } catch (e) { console.error(e) }
+    } catch (e) { 
+        console.error('Error fetching data: ' , e) 
+    }
 })
 </script>
 
@@ -142,7 +108,7 @@ onMounted(async () => {
             <h1 class="text-lg font-bold tracking-tight uppercase">Traffic Explorer</h1>
             <span class="flex text-xs text-gray-400 gap-2 flex-end">
                 <img src="../assets/icon-info.svg" alt="info" class="w-4 h-4 inline-block" />
-                Explore global vessel movements and zone traffic through an interactive map interface.
+                Explore global vessel movements and zone traffic through an interactive map interface. Filter by time of day to analyze patterns and anomalies in maritime activity.
             </span>
         </div>
 
@@ -195,8 +161,9 @@ onMounted(async () => {
                             </div>
 
                             <div class="flex gap-1">
-                                <button @click="setPreset(0, 24)" class="px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide rounded hover:bg-gray-100 text-gray-500 transition-colors">All</button>
-                                <button @click="setPreset(6, 18)" class="px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide rounded hover:bg-blue-50 text-blue-600 transition-colors">Day</button>
+                                <button @click="setPreset(0, 24)" class="px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide rounded bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors">All</button>
+                                <button @click="setPreset(0, 6)" class="px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide rounded hover:bg-slate-100 text-slate-600 transition-colors">Morning</button>
+                                <button @click="setPreset(6, 18)" class="px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide rounded hover:bg-slate-100 text-slate-600 transition-colors">Day</button>
                                 <button @click="setPreset(18, 24)" class="px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide rounded hover:bg-slate-100 text-slate-600 transition-colors">Night</button>
                             </div>
                         </div>

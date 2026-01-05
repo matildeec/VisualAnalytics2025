@@ -5,15 +5,13 @@ import Tooltip from '../Tooltip.vue'
 import LoadingOverlay from '../LoadingOverlay.vue'
 import { getVesselColor, showTooltip, hideTooltip } from './utils'
 
-// Props to receive ping data from parent
 const props = defineProps({
     data: Array
 })
 
-// Emit event when a vessel is selected
+// Emit event when a vessel is selected to pin it
 const emit = defineEmits(['vessel-selected'])
 
-// Constants
 const TARGET_COMPANY = "SouthSeafood Express Corp" 
 const MARGIN = { top: 0, right: 20, bottom: 0, left: 260 }
 const AXIS_HEIGHT = 30
@@ -25,29 +23,22 @@ const PING_WIDTH = 2
 const headerContainer = ref(null)
 const bodyContainer = ref(null)
 
-// Reactive State
 const isLoading = ref(true)
-const tooltip = ref({ visible: false, x: 0, y: 0, contentDict: {} })
+const tooltip = ref({ x: 0, y: 0, contentDict: {}, visible: false, variant: 'default' })
 const selectedVesselId = ref(null)
 const vesselRegistry = ref({})
 
-/**
- * Renders a single vessel row (Label + Timeline Pings) into a specific container.
- * Used for both the main list and the pinned header.
- * * @param {Object} container - D3 selection of the parent group.
- * @param {Object} d - The data object for the vessel.
- * @param {Function} yScale - D3 scale for vertical positioning (null if pinned).
- * @param {Function} xScale - D3 scale for horizontal time positioning.
- * @param {boolean} isPinned - Flag to determine styling (highlighted/static).
- */
+// Function to render a single vessel row (either pinned or in the main body)
 const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
+    
+    // Group for the vessel row
     const g = container.append('g')
         .attr('class', 'vessel-row-group')
         .attr('transform', yScale ? `translate(0, ${yScale(d.id)})` : `translate(0, 0)`);
 
     const isTarget = d.company === TARGET_COMPANY;
 
-    // Background logic: if pinned, highlight bg; if target, highlight border
+    // If pinned, highlight bg; if target, highlight border
     let bgFill = 'var(--chart-bg-default)';
 
     if (isPinned) bgFill = 'var(--chart-bg-pinned)';
@@ -85,8 +76,10 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
     // Line separator for pinned row
     if (isPinned) {
         g.append('line')
-            .attr('x1', -MARGIN.left).attr('x2', 20000)
-            .attr('y1', PINNED_ROW_HEIGHT).attr('y2', PINNED_ROW_HEIGHT);
+            .attr('x1', -MARGIN.left)
+            .attr('x2', 20000)
+            .attr('y1', PINNED_ROW_HEIGHT)
+            .attr('y2', PINNED_ROW_HEIGHT);
         
         g.append('text')
             .text("PINNED")
@@ -106,7 +99,7 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
 
     // Vessel Name
     const nameText = labelGroup.append('text')
-        .text(d.name.length > 25 ? d.name.substring(0,25)+'...' : d.name)
+        .text(d.name.length > 25 ? d.name.substring(0,25)+'...' : d.name) // Truncate long names
         .attr('x', -15).attr('y', -3)
         .style('font-size', '11px')
         .style('font-weight', isTarget ? '800' : '700') 
@@ -123,6 +116,7 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
         .style('fill', colorVar).style('text-anchor', 'end');
     
     const badgeBBox = badgeText.node().getBBox();
+
     labelGroup.insert('rect', 'text')
         .attr('x', badgeBBox.x - 4).attr('y', badgeBBox.y - 1)
         .attr('width', badgeBBox.width + 8).attr('height', badgeBBox.height + 2)
@@ -166,14 +160,14 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
         .on('mouseout', () => { hideTooltip(tooltip) });
 }
 
-// Main function to draw the entire chart
+// Main function to draw the entire chart in async mode to allow DOM updates
 const renderChart = async () => {
     isLoading.value = true;
 
     // Wait for DOM update
     if (!headerContainer.value || !bodyContainer.value) return
     await nextTick();
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 50));
 
     // Clear previous contents
     d3.select(headerContainer.value).selectAll('*').remove()
@@ -185,7 +179,10 @@ const renderChart = async () => {
     }
 
     try {
-        const rawNested = d3.groups(props.data, d => d.target);
+        // Group by vessel ID to get pings per vessel
+        const rawNested = d3.groups(props.data, d => d.target); 
+
+        // Sort vessels: target company first, then alphabetically; also sort pings by time
         const sortedVessels = rawNested.map(([id, values]) => {
             const info = vesselRegistry.value[id] || { name: id, vessel_type: 'Unknown', company: 'Unknown' };
             const sortedPings = values.slice().sort((a, b) => new Date(a.time) - new Date(b.time));
@@ -195,7 +192,13 @@ const renderChart = async () => {
                 time: new Date(p.time)
             }));
 
-            return { id, name: info.name, type: info.vessel_type, company: info.company, pings: pingsWithDwell }
+            return { 
+                id, 
+                name: info.name, 
+                type: info.vessel_type, 
+                company: info.company, 
+                pings: pingsWithDwell }
+
         }).sort((a, b) => {
             const isATarget = a.company === TARGET_COMPANY;
             const isBTarget = b.company === TARGET_COMPANY;
@@ -214,22 +217,37 @@ const renderChart = async () => {
             .attr('height', totalHeaderHeight)
             .style('display', 'block').style('overflow', 'visible');
 
-        const gAxis = headerSvg.append('g').attr('transform', `translate(${MARGIN.left}, ${AXIS_HEIGHT})`);
-        const gPinned = headerSvg.append('g').attr('transform', `translate(${MARGIN.left}, ${AXIS_HEIGHT + 10})`);
+        const gAxis = headerSvg.append('g')
+            .attr('transform', `translate(${MARGIN.left}, ${AXIS_HEIGHT})`);
+        const gPinned = headerSvg
+            .append('g').attr('transform', `translate(${MARGIN.left}, ${AXIS_HEIGHT + 10})`);
 
-        const bodySvg = d3.select(bodyContainer.value).append('svg')
+        const bodySvg = d3.select(bodyContainer.value)
+            .append('svg')
             .attr('width', width + MARGIN.left + MARGIN.right)
             .attr('height', bodyHeight)
             .style('display', 'block');
 
-        const gBody = bodySvg.append('g').attr('transform', `translate(${MARGIN.left}, 0)`);
+        const gMain = bodySvg.append('g')
+            .attr('transform', `translate(${MARGIN.left}, 0)`);
 
         // Define clip paths to avoid overflow of pings outside chart area when scrolling to zoom
         const defs = bodySvg.append('defs');
-        defs.append("clipPath").attr("id", "clip-body").append("rect").attr("width", width).attr("height", 10000);
-        headerSvg.append("defs").append("clipPath").attr("id", "clip-header").append("rect").attr("width", width).attr("height", PINNED_ROW_HEIGHT);
 
-        // Scales
+        defs.append("clipPath")
+            .attr("id", "clip-body")
+            .append("rect")
+            .attr("width", width)
+            .attr("height", 10000);
+
+        headerSvg.append("defs")
+            .append("clipPath")
+            .attr("id", "clip-header")
+            .append("rect")
+            .attr("width", width)
+            .attr("height", PINNED_ROW_HEIGHT);
+
+        // Scales to map data to screen coordinates
         const xScale = d3.scaleTime()
             .domain(d3.extent(props.data, d => new Date(d.time)))
             .range([0, width]);
@@ -240,9 +258,6 @@ const renderChart = async () => {
 
         // X Axis
         const xAxis = d3.axisTop(xScale)
-            .ticks(width / 80)
-            .tickFormat(d3.timeFormat("%d %b"))
-            .tickSizeOuter(0);
         const xAxisGroup = gAxis.append('g')
             .attr('class', 'x-axis text-[var(--chart-axis-line)] text-[10px]')
             .call(xAxis);
@@ -269,36 +284,66 @@ const renderChart = async () => {
                 .style('font-size', '12px');
         }
 
-        // Grid lines and rows
-        const gGrid = gBody.append('g').attr('class', 'grid-layer');
-        const gridAxisX = d3.axisTop(xScale)
-            .ticks(width / 80)
-            .tickSize(-bodyHeight)
-            .tickFormat('').tickSizeOuter(0);
-        const gGridVertical = gGrid.append('g')
-            .attr('class', 'grid-vertical')
-            .attr('opacity', 0.5)
-            .call(gridAxisX);
-        gGridVertical.selectAll('line')
-            .attr('stroke', 'var(--chart-grid-line)')
-            .attr('stroke-dasharray', '2,2');
-        gGridVertical.select('.domain').remove(); // Remove domain line for cleaner look
+        // Grid System
+        const gGrid = gMain.append('g').attr('class', 'grid-layer');
 
+        // Horizontal grid lines (static)
         gGrid.selectAll('.grid-horizontal-line').data(sortedVessels).enter().append('line')
             .attr('x1', 0).attr('x2', width)
             .attr('y1', d => yScale(d.id) + yScale.bandwidth())
             .attr('y2', d => yScale(d.id) + yScale.bandwidth())
             .attr('stroke', 'var(--chart-grid-line)').attr('stroke-width', 1).attr('opacity', 0.3);
 
-        const gRows = gBody.append('g').attr('class', 'rows-layer');
+        // Vertical grid lines (dynamic with zoom)
+        const gGridVertical = gGrid.append('g').attr('class', 'grid-vertical');
 
-        // Render all vessel rows
+        const updateVerticalGrid = (currentScale) => {
+            const ticks = currentScale.ticks ? currentScale.ticks(width / 80) : currentScale.domain();
+            
+            gGridVertical.selectAll('line')
+                .data(ticks)
+                .join(
+                    enter => enter.append('line')
+                        .attr('y1', 0)
+                        .attr('y2', bodyHeight)
+                        .attr('stroke', 'var(--chart-grid-line)')
+                        .attr('stroke-dasharray', '2,2')
+                        .attr('opacity', 0.5),
+                    update => update,
+                    exit => exit.remove()
+                )
+                .attr('x1', d => currentScale(d))
+                .attr('x2', d => currentScale(d));
+        }
+
+        // Initial vertical grid rendering
+        updateVerticalGrid(xScale);
+
+        // Render vessel rows
+        const gRows = gMain.append('g').attr('class', 'rows-layer');
         sortedVessels.forEach(v => {
             const rowContainer = gRows.append('g'); 
             renderVesselRow(rowContainer, v, yScale, xScale, false);
         });
 
-        // Zoom and pan behavior
+        // Zoom handler
+        const handleZoom = (event) => {
+            const t = event.transform;
+            const newXScale = t.rescaleX(xScale);
+            
+            // Updates header axis
+            xAxisGroup.call(xAxis.scale(newXScale));
+            xAxisGroup.select(".domain").remove();
+
+            // Updates vertical grid
+            updateVerticalGrid(newXScale);
+
+            // Updates pings positions
+            gMain.selectAll('.ping-rect').attr('x', d => newXScale(d.time));
+            gPinned.selectAll('.ping-rect').attr('x', d => newXScale(d.time));
+        };
+
+        // Zoom setup
         const zoom = d3.zoom()
             .scaleExtent([1, 100])
             .translateExtent([[0, 0], [width, bodyHeight]])
@@ -310,23 +355,7 @@ const renderChart = async () => {
                 }
                 return true;
             })
-            .on("zoom", (event) => {
-                const t = event.transform;
-                const newXScale = t.rescaleX(xScale);
-                
-                if (t.k > 5) xAxis.tickFormat(d3.timeFormat("%d %b (%H:%M)"));
-                else xAxis.tickFormat(d3.timeFormat("%d %b"));
-                
-                xAxisGroup.call(xAxis.scale(newXScale));
-                xAxisGroup.select(".domain").remove();
-
-                gGridVertical.call(gridAxisX.scale(newXScale));
-                gGridVertical.selectAll('line').attr('stroke', 'var(--chart-grid-line)').attr('stroke-dasharray', '2,2');
-                gGridVertical.select('.domain').remove();
-
-                gBody.selectAll('.ping-rect').attr('x', d => newXScale(d.time));
-                gPinned.selectAll('.ping-rect').attr('x', d => newXScale(d.time));
-            });
+            .on("zoom", handleZoom);
 
         bodySvg.call(zoom).on("dblclick.zoom", null);
 
@@ -337,10 +366,7 @@ const renderChart = async () => {
     }
 }
 
-/**
- * Handles clicks on vessel rows. Toggles selection state.
- * @param {string} vesselId 
- */
+// Handle vessel row click to pin/unpin
 function handleVesselClick(vesselId) {
     selectedVesselId.value = (selectedVesselId.value === vesselId) ? null : vesselId;
     emit('vessel-selected', selectedVesselId.value);
@@ -364,7 +390,10 @@ onMounted(async () => {
         }, {})
         await renderChart()
         window.addEventListener('resize', renderChart)
-    } catch (e) { console.error(e); isLoading.value = false; }
+    } catch (e) { 
+        console.error( 'Error loading vessel registry:', e); 
+        isLoading.value = false; 
+    }
 })
 
 onUnmounted(() => { window.removeEventListener('resize', renderChart) })

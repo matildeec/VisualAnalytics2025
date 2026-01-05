@@ -59,6 +59,11 @@
   --chart-vessel-research: #f5a70b;
   --chart-vessel-other: #423b3b;
 
+  /* Commodity Colors */
+  --commodity-illegal: #ef4444;
+  --commodity-legal: #10b981;
+  --commodity-suspect: #f59e0b;
+
   /* Row Backgrounds & Interaction */
   --chart-row-priority-bg: #fefce8;     /* Light Yellow */
   --chart-row-priority-hover: #fef9c3;  /* Darker Yellow */
