@@ -88,15 +88,32 @@ onMounted(async () => {
         <img src="../assets/vessel-icon.svg" class="w-5 h-5 shrink-0" />
 
         <div v-if="selectedVesselDetails" class="flex flex-col overflow-hidden">
-          <h3 class="text-sm font-bold text-slate-800 uppercase truncate leading-tight">
+          <h3 class="text-sm font-bold text-[var(--main-deep-blue)] uppercase truncate leading-tight">
             {{ selectedVesselDetails.name }}
           </h3>
-          <span class="text-[10px] text-slate-500 truncate">
-            {{ selectedVesselDetails.company }} • {{ selectedVesselDetails.vessel_type }} • {{ selectedVesselDetails.tonnage }} GT
-          </span>
-        </div>
-        <div v-else class="text-xs font-medium text-slate-400 italic">
-          No vessel selected
+          
+          <div class="flex items-center flex-wrap gap-x-2 text-[10px] text-slate-600 truncate mt-0.5">
+            
+            <div class="flex items-center gap-0.5">
+              <span class="font-bold text-slate-400 text-[9px] uppercase">Company:</span>
+              <span>{{ selectedVesselDetails.company || 'Unknown' }}</span>
+            </div>
+
+            <span class="text-slate-300">|</span>
+
+            <div class="flex items-center gap-0.5">
+              <span class="font-bold text-slate-400 text-[9px] uppercase">Type:</span>
+              <span>{{ selectedVesselDetails.vessel_type || 'Unknown' }}</span>
+            </div>
+
+            <span class="text-slate-300">|</span>
+
+            <div class="flex items-center gap-0.5">
+              <span class="font-bold text-slate-400 text-[9px] uppercase">Tonnage:</span>
+              <span>{{ selectedVesselDetails.tonnage ? selectedVesselDetails.tonnage + ' GT' : 'Unknown' }}</span>
+            </div>
+
+          </div>
         </div>
       </div>
 

@@ -75,7 +75,7 @@ onMounted(async () => {
 <template>
   <div class="h-full flex flex-col bg-slate-100 overflow-hidden">
     
-    <div class="m-8 mt-4 pb-4 flex-col flex lg:flex-row items-start lg:items-center gap-2 mb-2 min-h-12 border-b-2 border-gray-200">
+    <div class="m-8 mt-4 flex-col flex lg:flex-row items-start lg:items-center gap-2 mb-2">
         <h1 class="text-lg font-bold tracking-tight uppercase">Compare Trajectories</h1>
         <span class="flex text-xs text-gray-400 gap-2 flex-end">
             <img src="../assets/icon-info.svg" alt="info" class="w-4 h-4 inline-block" />
@@ -91,8 +91,8 @@ onMounted(async () => {
           @select="handleSelectSlot1"
         />
         
-        <div class="flex-grow relative bg-slate-50 overflow-hidden rounded-3xl">
-          <div class="absolute inset-0">
+        <div class="flex-grow relative bg-white overflow-hidden rounded-3xl">
+          <div v-if="selectedVesselId1" class="absolute inset-0">
              <TrajectoryPlot :vesselData="vesselData1" />
           </div>
           <div v-if="!selectedVesselId1" class="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -109,8 +109,8 @@ onMounted(async () => {
           @select="handleSelectSlot2" 
         />
         
-        <div class="flex-grow relative bg-slate-50 overflow-hidden rounded-2xl">
-          <div class="absolute inset-0">
+        <div class="flex-grow relative bg-white overflow-hidden rounded-2xl">
+          <div v-if="selectedVesselId2" class="absolute inset-0">
              <TrajectoryPlot :vesselData="vesselData2" />
           </div>
            <div v-if="!selectedVesselId2" class="absolute inset-0 flex items-center justify-center pointer-events-none">

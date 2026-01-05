@@ -104,7 +104,7 @@ onMounted(async () => {
 <template>
     <div class="h-full flex flex-col overflow-hidden bg-gray-100">
         
-        <div class="m-8 mt-4 pb-4 flex-col flex lg:flex-row items-start lg:items-center gap-2 mb-2 min-h-12 border-b-2 border-gray-200">
+        <div class="m-8 mt-4 flex-col flex lg:flex-row items-start lg:items-center gap-2 mb-2">
             <h1 class="text-lg font-bold tracking-tight uppercase">Traffic Explorer</h1>
             <span class="flex text-xs text-gray-400 gap-2 flex-end">
                 <img src="../assets/icon-info.svg" alt="info" class="w-4 h-4 inline-block" />
@@ -122,7 +122,7 @@ onMounted(async () => {
                 <div class="h-2/6 p-4 overflow-y-auto bg-white">
                     <div v-if="selectedFeature" class="animate-in fade-in duration-300">
                         <InfoCard 
-                            :vessel="selectedFeature.properties.Name"
+                            :zone="selectedFeature.properties.Name"
                             :kind="selectedFeature.properties['*Kind'] || selectedFeature.properties.type"
                             :description="selectedFeature.properties.Description"
                             :activities="selectedFeature.properties.Activities"
@@ -142,8 +142,8 @@ onMounted(async () => {
                     <div class="flex flex-col min-w-[100px] border-r border-gray-100 pr-6">
                         <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-1">Active Vessels</span>
                         <div class="flex items-baseline gap-1.5">
-                            <span class="text-2xl font-bold text-gray-500 leading-none">{{ uniqueVesselCount }}</span>
-                            <span class="text-[10px] font-medium text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded">filtered</span>
+                            <span class="text-2xl font-bold text-blue-600 leading-none">{{ uniqueVesselCount }}</span>
+                            <span class="text-[10px] font-medium text-blue-500 bg-blue-100 px-1.5 py-0.5 rounded">filtered</span>
                         </div>
                     </div>
 
@@ -218,7 +218,7 @@ onMounted(async () => {
 
                     <div v-else class="flex flex-col h-full w-full">
                         <div v-if="isIslandSelection" class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white text-center p-8">
-                            <h3 class="text-slate-400 font-bold uppercase tracking-widest text-sm mb-2">No Traffic Data Available</h3>
+                            <h3 class="text-gray-400 opacity-90 font-medium uppercase text-sm mb-2">No Traffic Data Available</h3>
                             <p class="text-gray-400 opacity-50">
                                 Select a valid fishing zone or harbor to view vessel activity.
                             </p>

@@ -14,7 +14,6 @@ const props = defineProps({
   hiddenVesselTypes: { type: Set, default: () => new Set() }
 });
 
-console.log(props.cargoData, props.vesselData);
 const isLoading = ref(true);
 const tooltip = ref({ x: 0, y: 0, contentDict: null, visible: false, variant: 'default' });
 
@@ -386,6 +385,8 @@ const renderChart = async () => {
 
       const newXScale = event.transform.rescaleX(xScale);
 
+      // Update Bars
+      cargoBars.attr('x', d => newXScale(d.date) - 3);
       vesselNodes.attr('transform', d => `translate(${newXScale(d.date)}, 0)`);
       
       // Update Axis
@@ -398,10 +399,6 @@ const renderChart = async () => {
 
       // Update Vertical Grid
       updateVerticalGrid(newXScale);
-      
-      // Update Bars
-      cargoBars.attr('x', d => newXScale(d.date) - 3);
-      vesselBars.attr('x', d => newXScale(d.date) - 3);
       
       // Reset Brush visual
       brushG.call(brush.move, null); 

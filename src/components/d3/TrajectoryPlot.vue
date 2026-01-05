@@ -1,7 +1,7 @@
 <script setup>
 import * as d3 from 'd3'
 import { ref, reactive, onMounted, onUnmounted, watch, nextTick } from 'vue'
-import { fishIcons, illegalCommodities, getZoneFill, getZoneBorder, showTooltip, hideTooltip } from './utils.js'
+import { fishIcons, getCommodityStatus, getCommodityColor, getZoneFill, getZoneBorder, showTooltip, hideTooltip } from './utils.js'
 import Tooltip from '../Tooltip.vue'
 import LoadingOverlay from '../LoadingOverlay.vue'
 
@@ -255,11 +255,13 @@ const renderChart = async () => {
       .attr('x', t => xScale(t.date) - 12) // Initial Position
       .attr('href', t => `/src/assets/${fishIcons[t.commodityId] || fishIcons['default']}`)
       .on('mouseenter', (e, t) => {
-        const isIllegal = illegalCommodities.has(t.commodityId)
+        const status = getCommodityStatus(t.commodityId);
         showTooltip(e, {
           'Transaction': t.target, 'Commodity': t.commodityName, 
-          'Status': isIllegal ? 'Illegal' : 'Legal', 'Date': t.date.toLocaleDateString()
-        }, tooltip, isIllegal ? 'danger' : 'default')
+          'Status': status,
+          'Date': t.date.toLocaleDateString()
+        }, tooltip, status == 'illegal' ? 'danger' : 
+                    status == 'suspect' ? 'warning' : 'default')
       })
       .on('mouseleave', () => hideTooltip(tooltip))
 
@@ -383,7 +385,7 @@ watch(layers, () => {
     <Tooltip v-bind="tooltip" />
 
     <div class="h-8 shrink-0 border-t border-slate-100 flex items-center justify-end px-4 gap-2 bg-white">
-       <span class="text-[9px] font-bold text-slate-300 uppercase mr-2 tracking-widest">Layers</span>
+       <span class="text-[9px] font-bold text-gray-400 uppercase mr-2 tracking-widest">Layers</span>
        
        <button @click="layers.pings = !layers.pings" class="layer-btn" :class="layers.pings ? 'text-blue-600 bg-blue-50 border-blue-100' : 'off'">
          <span class="dot bg-blue-500"></span> Pings

@@ -3,12 +3,12 @@ import * as d3 from 'd3'
 import { ref, onMounted, watch, nextTick, onUnmounted } from 'vue'
 import Tooltip from '../Tooltip.vue'
 import LoadingOverlay from '../LoadingOverlay.vue'
-import { getVesselColor, showTooltip, hideTooltip } from './utils'
+import { getVesselColor, showTooltip, hideTooltip, getZoneFill } from './utils'
 
 const props = defineProps({
     data: Array
 })
-
+console.log(props.data)
 // Emit event when a vessel is selected to pin it
 const emit = defineEmits(['vessel-selected'])
 
@@ -27,6 +27,7 @@ const isLoading = ref(true)
 const tooltip = ref({ x: 0, y: 0, contentDict: {}, visible: false, variant: 'default' })
 const selectedVesselId = ref(null)
 const vesselRegistry = ref({})
+let locationKindMap = {}
 
 // Function to render a single vessel row (either pinned or in the main body)
 const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
@@ -145,8 +146,10 @@ const renderVesselRow = (container, d, yScale, xScale, isPinned = false) => {
         .attr('y', rectY) 
         .attr('height', rectHeight)
         .attr('width', PING_WIDTH)
-        .attr('fill', 'var(--chart-ping-neutral)')
-        .attr('opacity', 0.7)
+        .attr('fill', p => {
+            const kind = locationKindMap[p.source] || 'Unknown';
+            return getZoneFill(kind);
+        })
         .attr('rx', 1)
         .on('mouseover', (event, p) => {
             const details = vesselRegistry.value[p.target] || { name: p.target }
@@ -386,12 +389,34 @@ watch(() => props.data, async () => {
 onMounted(async () => {
     isLoading.value = true;
     try {
-        const res = await fetch('/data/vessels.json')
-        const vesselsList = await res.json()
+
+        const [vesselsList, locs] = await Promise.all([
+            fetch('/data/vessels.json').then(res => res.json()),
+            fetch('/data/locations.json').then(res => res.json())
+        ]);
+        
+        // Build vessel registry for lookup
         vesselRegistry.value = vesselsList.reduce((acc, v) => {
-            acc[v.id] = { ...v, company: v.company || 'Unknown', vessel_type: v.vessel_type || 'Unknown' }
+            acc[v.id] = { 
+                ...v, 
+                company: 
+                v.company || 'Unknown', 
+                vessel_type: v.vessel_type || 'Unknown' 
+            }
             return acc
         }, {})
+
+        // Map location names to kinds to style
+        const locKindMap = {}
+        const uniqueLocs = new Set()
+
+        locs.forEach(l => { 
+        locKindMap[l.id] = l.kind || 'Unknown' 
+        uniqueLocs.add(l.id)
+        })
+
+        locationKindMap = locKindMap
+
         await renderChart()
         window.addEventListener('resize', renderChart)
     } catch (e) { 

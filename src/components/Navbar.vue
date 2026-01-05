@@ -39,7 +39,7 @@ import Button from './Button.vue'
             
             <Button
                 to="/comparetrajectories"
-                icon="/src/assets/vessel-icon.svg"
+                icon="/src/assets/compare-vessel-icon.svg"
                 label="Compare Trajectories"
             />
         </div>

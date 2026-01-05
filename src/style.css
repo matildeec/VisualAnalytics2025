@@ -1,47 +1,22 @@
-/* CSS Variables for Color Palette */
 :root {
 	--main-deep-blue: #092C4C;
-	--main-dark: #403233;
-	--main-dark-grey: #677F90;
-	--main-white: #ffffff;
-	--main-smoke-white: #F5F5F5;
 
-  --plot-blue-shade-1: #023E8A;
-  --plot-blue-shade-2: #0077B6;
-  --plot-blue-shade-3: #0096C7;
-  --plot-blue-shade-4: #00B4D8;
-  --plot-blue-shade-5: #48CAE4;
-  --plot-blue-shade-6: #90E0EF;
-
-  --plot-red-shade-1: #9D0208;
-  --plot-red-shade-2: #D00000;
-  --plot-red-shade-3: #DC2F02;
-  --plot-red-shade-4: #E85D04;
-  --plot-red-shade-5: #F48C06;
-  --plot-red-shade-6: #FAA307;
-
-  /* MAP ZONE COLORS */
-  /* Categories - Island */
+  /* Map Zones Colors */
   --zone-island-bg: #dcd5c5;
   --zone-island-border: #9a8c73;
 
-  /* Categories - Fishing */
   --zone-fishing-bg: #3b82f6;
   --zone-fishing-border: #1d4ed8;
 
-  /* Categories - Preserve */
   --zone-preserve-bg: #10b981;
   --zone-preserve-border: #047857;
 
-  /* Categories - Buoy */
   --zone-buoy-bg: #f97316;
   --zone-buoy-border: #c2410c;
 
-  /* Categories - City */
   --zone-city-bg: #94a3b8;
   --zone-city-border: #64748b;
 
-  /* Fallback */
   --zone-default-bg: #94a3b8;
   --zone-default-border: #64748b;
 
@@ -51,30 +26,20 @@
   --state-selected-border: #f59e0b;
 
   /* Vessel Types Colors */
-  --chart-vessel-cargo: #ba9efc;
+  --chart-vessel-cargo: #9a76ec;
   --chart-vessel-fishing: #3b82f6;
   --chart-vessel-ferry-cargo: #64748b;
-  --chart-vessel-ferry-passenger: #ec4899;
+  --chart-vessel-ferry-passenger: #ec48ad;
   --chart-vessel-tour: #10b981;
   --chart-vessel-research: #f5a70b;
-  --chart-vessel-other: #423b3b;
+  --chart-vessel-other: #373232;
 
   /* Commodity Colors */
   --commodity-illegal: #ef4444;
   --commodity-legal: #10b981;
   --commodity-suspect: #f59e0b;
 
-  /* Row Backgrounds & Interaction */
-  --chart-row-priority-bg: #fefce8;     /* Light Yellow */
-  --chart-row-priority-hover: #fef9c3;  /* Darker Yellow */
-  --chart-row-hover: #f8fafc;           /* Light Gray */
-
-  /* Text Colors */
-  --chart-text-main: #1e293b;
-  --chart-text-priority: #0f172a;
-  --chart-text-muted: #94a3b8;
-
-    /* General Chart Colors */
+  /* Chart Colors */
   --chart-bg-default: transparent;
   --chart-bg-pinned: #f8fafc;
   
@@ -86,14 +51,17 @@
   --chart-text-pinned: #94a3b8;
 
   --chart-axis-line: #727880;
-  --chart-ping-neutral: #848687;
+  --chart-ping-neutral: #5a6971;
   
-  /* Highlight Colors (SouthSeafood) */
-  --chart-row-highlight-bg: #fffbeb; /* Amber 50 */
-  --chart-row-highlight-hover: #fef3c7; /* Amber 100 */
-  --chart-text-highlight: #b45309; /* Amber 700 */
-  --chart-text-highlight-dark: #78350f; /* Amber 900 */
+  /* Highlight Colors */
+  --chart-row-highlight-bg: #fffbeb;
+  --chart-row-highlight-hover: #fef3c7;
+  --chart-text-highlight: #b45309;
+  --chart-text-highlight-dark: #78350f;
 
+  /* Row Backgrounds */
+  --chart-row-priority-bg: #fefce8;
+  --chart-row-priority-hover: #fef9c3;
 }
 
 h1, h2 {

@@ -147,61 +147,95 @@ onMounted(async () => {
 <template>
   <div class="h-full flex flex-col overflow-hidden bg-gray-50">
     
-    <div class="mx-8 mt-4 pb-4 border-b-2 border-gray-200 shrink-0 flex flex-col gap-4">
+    <div class="mx-8 mt-4 shrink-0 flex flex-col gap-4">
       <div class="flex justify-between lg:flex-row items-start lg:items-center gap-2">
         <div class="flex flex-row gap-2">
           <h1 class="text-lg font-bold tracking-tight uppercase">Harbor Activity</h1>
           <div class="flex items-center text-xs text-gray-400 gap-2">
             <img src="../assets/icon-info.svg" alt="info" class="w-4 h-4" />
-            <span>Daily cargo departure and vessel arrivals. Shift+Drag to zoom.</span>
+            <span>Daily cargo exports and vessel arrivals. Shift+Drag to zoom in time.</span>
           </div>
         </div>
 
-        <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-3xl shadow-sm border border-gray-200 h-8">
-          <label class="text-[12px] font-bold uppercase text-gray-400 whitespace-nowrap">Harbor</label>
-          <select v-model="selectedHarbor" class="text-[14px] font-medium bg-transparent border-none focus:ring-0 cursor-pointer min-w-[200px] text-slate-700">
-            <option disabled value="">Choose a location...</option>
-            <option v-for="h in availableHarbors" :key="h" :value="h">{{ h }}</option>
-          </select>
+        <div class="flex items-center bg-gray-100/80 p-1 rounded-full border border-gray-200">
+          <button 
+            v-for="h in availableHarbors" 
+            :key="h"
+            @click="selectedHarbor = h"
+            class="px-3 py-1 rounded-full text-[11px] font-bold uppercase transition-all duration-200 whitespace-nowrap select-none"
+            :class="selectedHarbor === h 
+              ? 'bg-white text-blue-700 shadow-sm ring-1 ring-black/5' 
+              : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'"
+          >
+            {{ h }}
+          </button>
         </div>
       </div>
     </div>
 
-    <div class="mx-8 my-4 min-h-[70px] shrink-0">
-      <div v-if="rawData.ready" class="flex flex-col gap-2">
+    <div class="mx-8 mt-4 mb-3 shrink-0">
+      <div v-if="rawData.ready" class="bg-white rounded-2xl shadow-sm px-3 py-2 flex flex-col gap-2">
         
-        <div class="flex items-start gap-2">
-            <span class="text-[10px] font-bold text-slate-600 uppercase tracking-wide mt-1.5 min-w-[60px]">Cargo:</span>
-            <div class="flex flex-wrap gap-1.5 max-h-[60px] overflow-y-auto no-scrollbar">
-                
-                <button v-for="id in rawData.commodities" :key="id" @click="toggleCommodity(id)"
-                    class="group flex items-center gap-1.5 px-2 py-1 rounded-md border text-[9px] font-bold uppercase transition-all duration-150 select-none"
-                    :class="getCommodityButtonClasses(id)">
-                    
-                    <img 
-                        :src="`../src/assets/${getFishIcon(id)}`" 
-                        alt="fish"
-                        class="w-3.5 h-3.5 object-contain"
-                        :class="{ 'opacity-50': hiddenCommodities.has(id) }"
-                    />
-                    
-                    <span>
-                        {{ rawData.commodityNames[id] || id }}
-                    </span>
-                </button>
-            </div>
+        <div class="flex items-start gap-3">
+          <div class="mt-1.5 flex items-center gap-1.5 min-w-[70px] text-gray-600">
+            <span class="text-[10px] font-bold uppercase tracking-wider">Cargo</span>
+          </div>
+
+          <div class="flex flex-wrap gap-1.5">
+            <button 
+              v-for="id in rawData.commodities" 
+              :key="id" 
+              @click="toggleCommodity(id)"
+              class="group flex items-center gap-2 pl-1 pr-2.5 py-0.5 rounded-full text-[10px] font-bold transition-all duration-200 select-none border"
+              :class="[
+                hiddenCommodities.has(id) 
+                  ? 'bg-slate-50 border-slate-100 text-slate-400 hover:bg-slate-100 grayscale opacity-70' 
+                  : 'bg-white border-slate-200 text-slate-700 shadow-sm hover:border-blue-300 ring-1 ring-transparent hover:ring-blue-100'
+              ]"
+            >
+              <div 
+                class="w-5 h-5 rounded-full flex items-center justify-center border transition-colors shrink-0"
+                :class="getCommodityButtonClasses(id)"
+              >
+                <img 
+                  :src="`../src/assets/${getFishIcon(id)}`" 
+                  alt="fish"
+                  class="w-3 h-3 object-contain"
+                />
+              </div>
+              
+              <span>{{ rawData.commodityNames[id] || id }}</span>
+              
+            </button>
+          </div>
         </div>
 
-        <div class="flex items-center gap-2">
-            <span class="text-[10px] font-bold text-slate-600 uppercase tracking-wide min-w-[60px]">Vessels:</span>
-            <div class="flex flex-wrap gap-1.5">
-                <button v-for="type in rawData.vesselTypes" :key="type" @click="toggleVesselType(type)"
-                    class="group flex items-center gap-1.5 px-2 py-1 rounded-md border text-[9px] font-bold uppercase transition-all duration-150 select-none"
-                    :class="[ hiddenVesselTypes.has(type) ? 'bg-slate-100 border-transparent text-slate-400 opacity-60 hover:opacity-100' : 'bg-white border-slate-200 text-slate-700 shadow-sm hover:border-blue-300 hover:shadow-md' ]">
-                    <span class="w-1.5 h-1.5 rounded-full" :style="{ backgroundColor: rawData.vesselColorMap[type] }"></span>
-                    <span>{{ type }}</span>
-                </button>
-            </div>
+        <div class="h-px w-full bg-gray-100"></div>
+
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1.5 min-w-[70px] text-gray-600">
+            <span class="text-[10px] font-bold uppercase tracking-wider">Vessels</span>
+          </div>
+
+          <div class="flex flex-wrap gap-1.5">
+            <button 
+              v-for="type in rawData.vesselTypes" 
+              :key="type" 
+              @click="toggleVesselType(type)"
+              class="flex items-center gap-2 px-3 py-1 rounded-full border text-[10px] font-bold uppercase transition-all duration-200 select-none"
+              :class="[ 
+                hiddenVesselTypes.has(type) 
+                  ? 'bg-slate-50 border-slate-100 text-slate-400 hover:bg-slate-100' 
+                  : 'bg-white border-slate-200 text-slate-700 shadow-sm hover:border-blue-300' 
+              ]"
+            >
+              <span 
+                class="w-2 h-2 rounded-full shadow-sm ring-1 ring-black/5" 
+                :style="{ backgroundColor: hiddenVesselTypes.has(type) ? '#cbd5e1' : rawData.vesselColorMap[type] }"
+              ></span>
+              <span>{{ type }}</span>
+            </button>
+          </div>
         </div>
 
       </div>
@@ -249,6 +283,16 @@ onMounted(async () => {
                       <span class="text-[10px] font-bold text-slate-800 truncate" :class="{ 'text-red-700': illegalCommodities.has(cargo.commodity) }">
                         {{ rawData.commodityNames[cargo.commodity] || cargo.commodity }}
                       </span>
+                      <div 
+                        class="w-4 h-4 m-0.5 rounded-full flex items-center justify-center border transition-colors shrink-0"
+                        :class="getCommodityButtonClasses(cargo.commodity)"
+                      >
+                        <img 
+                          :src="`../src/assets/${getFishIcon(cargo.commodity)}`" 
+                          alt="fish"
+                          class="w-3 h-3 object-contain"
+                        />
+                      </div>
                     </div>
                     <span class="text-[8px] font-mono text-slate-400 shrink-0">{{ cargo.date.toLocaleDateString() }}</span>
                   </div>

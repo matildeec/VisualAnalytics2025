@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { getCommodityStatus, getFishIcon, commodityStyles } from './d3/utils.js';
 
 const props = defineProps({
-    vessel: { type: String, required: true },
+    zone: { type: String, required: true },
     kind: { type: String, default: '' },
     description: { type: String, default: '' },
     activities: { type: Array, default: () => [] },
@@ -48,9 +48,9 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="w-full font-sans text-slate-800">
+    <div class="w-full font-sans text-[var(--main-deep-blue)]">
         <div class="mb-2 border-b border-slate-200 pb-1">
-            <h3 class="text-sm font-black uppercase leading-tight">{{ vessel }}</h3>
+            <h3 class="text-sm font-bold uppercase">{{ zone }}</h3>
             <span v-if="kind" class="text-[9px] font-bold text-blue-500 uppercase tracking-widest">{{ kind }}</span>
         </div>
 
