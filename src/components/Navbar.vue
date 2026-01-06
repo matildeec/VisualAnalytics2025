@@ -8,7 +8,7 @@ import Button from './Button.vue'
         <div class="flex items-center select-none">
             <router-link to="/" class="inline-flex items-center gap-3 group focus:outline-none">
                 <img 
-                    src="../assets/fisheye-icon.svg" 
+                    src="/assets/fisheye-icon.svg" 
                     alt='FishEye icon' 
                     class="w-8 h-8 group-hover:scale-110 transition-transform duration-300" 
                 />
@@ -27,19 +27,19 @@ import Button from './Button.vue'
         <div class="flex items-center gap-3">
             <Button
                 to="/"
-                icon="/src/assets/map-icon.svg"
+                icon="/assets/map-icon.svg"
                 label="Traffic Explorer"
             />
 
             <Button
                 to="/inspectharbor"
-                icon="/src/assets/anchor-icon.svg"
+                icon="/assets/anchor-icon.svg"
                 label="Inspect Harbor"
             />
             
             <Button
                 to="/comparetrajectories"
-                icon="/src/assets/compare-vessel-icon.svg"
+                icon="/assets/compare-vessel-icon.svg"
                 label="Compare Trajectories"
             />
         </div>

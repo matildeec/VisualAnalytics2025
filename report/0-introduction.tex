@@ -33,27 +33,15 @@ More specifically, the mini-challenge requires to address the following research
 Answers are available at Section~\ref{research-questions}.
 
 %---------------------------------------------------------------
-\subsection{Repository and Resources}
+\subsection{Project Repository and Implementation}
 
-The full implementation is publicly available in the GitHub repository:
-\begin{quote}
-\url{https://github.com/matildeec/VisualAnalytics2025}
-\end{quote}
+The full implementation of the visual analytics dashboard is publicly available in the GitHub repository:
+\url{https://github.com/matildeec/VisualAnalytics2025}. This includes:
 
-The repository includes:
 \begin{itemize}
-    \item \texttt{data-understanding/} – Notebook-based data inspection and cleaning scripts
-    \item \texttt{platform/} – Visualization platform built with D3.js and Altair
-    \item \texttt{notebooks/} – Exploratory and analytical notebooks addressing each research question
-    \item \texttt{data/} – Cleaned and raw JSON graph files
+    \item \texttt{DataPreprocessing/} – Jupyter Notebooks and Python scripts for data cleaning and inspection of the VAST Challenge datasets    
+    \item \texttt{src/} – The source code of the web application, developed using Vue.js, D3.js, and TailwindCSS
+    \item \texttt{data/} – The processed datasets (in JSON format) optimized for usage within the visualization platform.
 \end{itemize}
 
-To install, clone the repository and install the required dependencies:
-
-\begin{verbatim}
-git clone https://github.com/matildeec/VisualAnalytics2025.git
-cd VisualAnalytics2025
-pip install -r requirements.txt
-\end{verbatim}
-
-\noindent The project is fully reproducible and structured for modular exploration and extension.
+To install and run the dashboard locally, please refer to the instructions provided in the \texttt{README.md} file of the repository.

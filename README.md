@@ -59,8 +59,8 @@ This repository includes:
 
 ## Requirements
 
-- Node.js (v18+ recommended)
-- npm (v9+ recommended)
+- Node.js (built with v22.19.0)
+- npm (built with v10.9.3)
 - Modern browser (for the dashboard)
-- Python 3.10+ (for data preprocessing, if needed)
+- Python 3.11.5 (for data preprocessing, if needed)
 - Jupyter (for running notebooks in `/DataPreprocessing`)

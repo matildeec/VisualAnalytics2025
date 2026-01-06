@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, computed, ref, shallowRef } from 'vue'
+import { getTrajectories, getVessels, getHarborReports, getTransactions, getDocuments } from '../dataManager'
 import VesselFilters from '../components/VesselFilters.vue'
 import TrajectoryPlot from '../components/d3/TrajectoryPlot.vue'
 
@@ -47,11 +48,11 @@ onMounted(async () => {
   isLoading.value = true
   try {
     const [traj, reports, trans, docs, vessels] = await Promise.all([
-      fetch('/data/trajectories.json').then(res => res.json()),
-      fetch('/data/harbor_reports.json').then(res => res.json()),
-      fetch('/data/transactions.json').then(res => res.json()),
-      fetch('/data/documents.json').then(res => res.json()),
-      fetch('/data/vessels.json').then(res => res.json()) // Utile per i filtri
+      getTrajectories(),
+      getHarborReports(),
+      getTransactions(),
+      getDocuments(),
+      getVessels()
     ])
 
     // Pre-processing Lookup Maps
@@ -78,7 +79,7 @@ onMounted(async () => {
     <div class="m-8 mt-4 flex-col flex lg:flex-row items-start lg:items-center gap-2 mb-2">
         <h1 class="text-lg font-bold tracking-tight uppercase">Compare Trajectories</h1>
         <span class="flex text-xs text-gray-400 gap-2 flex-end">
-            <img src="../assets/icon-info.svg" alt="info" class="w-4 h-4 inline-block" />
+            <img src="/assets/icon-info.svg" alt="info" class="w-4 h-4 inline-block" />
             Select two vessels to compare their trajectories over time.
         </span>
     </div>

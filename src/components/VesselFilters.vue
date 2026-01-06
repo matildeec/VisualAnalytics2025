@@ -1,5 +1,6 @@
 <script setup>
 import { ref, reactive, onMounted, computed, watch } from 'vue'
+import { getVessels } from '../dataManager'
 
 const props = defineProps({
   index: { type: [Number, String], required: true }
@@ -68,8 +69,7 @@ watch(() => [filters.company, filters.type, filters.tonnage], updateOptions)
 
 onMounted(async () => {
   try {
-    const res = await fetch('/data/vessels.json')
-    allVessels.value = await res.json()
+    allVessels.value = await getVessels()
     updateOptions()
   } catch (e) { console.error(e) }
 })
@@ -85,7 +85,7 @@ onMounted(async () => {
           {{ index }}
         </div>
 
-        <img src="../assets/vessel-icon.svg" class="w-5 h-5 shrink-0" />
+        <img src="/assets/vessel-icon.svg" class="w-5 h-5 shrink-0" />
 
         <div v-if="selectedVesselDetails" class="flex flex-col overflow-hidden">
           <h3 class="text-sm font-bold text-[var(--main-deep-blue)] uppercase truncate leading-tight">

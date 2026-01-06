@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { getGeoData } from '../dataManager'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
@@ -114,8 +115,8 @@ async function initMap() {
     }
 
     try {
-        const response = await fetch('/data/oceanus.geojson');
-        const geojsonData = await response.json();
+
+        const geojsonData = await getGeoData();
 
         geoJsonLayer = L.geoJSON(geojsonData, {
             style: getRegionStyle,

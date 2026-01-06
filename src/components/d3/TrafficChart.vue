@@ -1,9 +1,10 @@
 <script setup>
 import * as d3 from 'd3'
 import { ref, onMounted, watch, nextTick, onUnmounted } from 'vue'
+import { getLocations, getVessels } from '../../dataManager'
+import { getVesselColor, showTooltip, hideTooltip, getZoneFill } from './utils'
 import Tooltip from '../Tooltip.vue'
 import LoadingOverlay from '../LoadingOverlay.vue'
-import { getVesselColor, showTooltip, hideTooltip, getZoneFill } from './utils'
 
 const props = defineProps({
     data: Array
@@ -391,8 +392,8 @@ onMounted(async () => {
     try {
 
         const [vesselsList, locs] = await Promise.all([
-            fetch('/data/vessels.json').then(res => res.json()),
-            fetch('/data/locations.json').then(res => res.json())
+            getVessels(),
+            getLocations()
         ]);
         
         // Build vessel registry for lookup

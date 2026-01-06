@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { getCommodities } from '../dataManager.js';
 import { getCommodityStatus, getFishIcon, commodityStyles } from './d3/utils.js';
 
 const props = defineProps({
@@ -25,8 +26,8 @@ const getStatusClasses = (speciesName) => {
 
 onMounted(async () => {
     try {
-        const response = await fetch('/data/commodities.json')
-        const allCommodities = await response.json()
+
+        const allCommodities = await getCommodities();
 
         const map = new Map();
         
@@ -74,7 +75,7 @@ onMounted(async () => {
                     :class="getStatusClasses(s)"
                 >
                     <img 
-                        :src="`../src/assets/${getSpeciesData(s).icon}`" 
+                        :src="`/assets/${getSpeciesData(s).icon}`" 
                         alt="fish"
                         class="w-3.5 h-3.5 object-contain opacity-80"
                     />

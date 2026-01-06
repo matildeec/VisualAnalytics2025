@@ -1,7 +1,8 @@
 <script setup>
 import * as d3 from 'd3'
 import { ref, reactive, onMounted, onUnmounted, watch, nextTick } from 'vue'
-import { fishIcons, getCommodityStatus, getCommodityColor, getZoneFill, getZoneBorder, showTooltip, hideTooltip } from './utils.js'
+import { getCommodities, getLocations } from '../../dataManager.js'
+import { fishIcons, getCommodityStatus, getZoneFill, getZoneBorder, showTooltip, hideTooltip } from './utils.js'
 import Tooltip from '../Tooltip.vue'
 import LoadingOverlay from '../LoadingOverlay.vue'
 
@@ -253,7 +254,7 @@ const renderChart = async () => {
       .attr('width', 24).attr('height', 24)
       .attr('y', t => yScale(t.target) + yScale.bandwidth()/2 - 12)
       .attr('x', t => xScale(t.date) - 12) // Initial Position
-      .attr('href', t => `/src/assets/${fishIcons[t.commodityId] || fishIcons['default']}`)
+      .attr('href', t => `/assets/${fishIcons[t.commodityId] || fishIcons['default']}`)
       .on('mouseenter', (e, t) => {
         const status = getCommodityStatus(t.commodityId);
         showTooltip(e, {
@@ -329,8 +330,8 @@ onMounted(async () => {
   try {
 
     const [commList, locs] = await Promise.all([
-      fetch('/data/commodities.json').then(res => res.json()),
-      fetch('/data/locations.json').then(res => res.json())
+      getCommodities(),
+      getLocations()
     ])
 
     // Map commodity list to a lookup object for direct access

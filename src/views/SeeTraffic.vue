@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
+import { getPings } from '../dataManager'
 import Map from '../components/Map.vue'
 import TrafficChart from '../components/d3/TrafficChart.vue'
 import InfoCard from '../components/InfoCard.vue'
@@ -93,8 +94,7 @@ const uniqueVesselCount = computed(() => {
 // Fetches the traffic data JSON when the component is mounted
 onMounted(async () => {
     try {
-        const res = await fetch('/data/transponder_pings.json')
-        allPings.value = await res.json()
+        allPings.value = await getPings()
     } catch (e) { 
         console.error('Error fetching data: ' , e) 
     }
@@ -107,7 +107,7 @@ onMounted(async () => {
         <div class="m-8 mt-4 flex-col flex lg:flex-row items-start lg:items-center gap-2 mb-2">
             <h1 class="text-lg font-bold tracking-tight uppercase">Traffic Explorer</h1>
             <span class="flex text-xs text-gray-400 gap-2 flex-end">
-                <img src="../assets/icon-info.svg" alt="info" class="w-4 h-4 inline-block" />
+                <img src="/assets/icon-info.svg" alt="info" class="w-4 h-4 inline-block" />
                 Explore global vessel movements and zone traffic through an interactive map interface. Filter by time of day to analyze patterns and anomalies in maritime activity.
             </span>
         </div>

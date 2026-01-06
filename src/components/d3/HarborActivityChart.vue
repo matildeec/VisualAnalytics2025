@@ -171,7 +171,7 @@ const renderChart = async () => {
 
     // We match vessels according to time
     vesselStack.forEach(v => {
-        const incidents = vesselIncidentMap.get(v.source); // v.source è l'ID nave
+        const incidents = vesselIncidentMap.get(v.source);
         if (incidents) {
             // Threshold of 2 days     
             const MAX_DELAY = 2 * 24 * 60 * 60 * 1000; 
@@ -262,7 +262,7 @@ const renderChart = async () => {
             .attr('y2', halfHeight + GAP); 
     }
 
-    // Render iniziale
+    // Initial render
     updateVerticalGrid(xScale);
 
     // Draw Axes
