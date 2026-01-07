@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { getCommodities } from '../dataManager.js';
-import { getCommodityStatus, getFishIcon, commodityStyles } from './d3/utils.js';
+import { getCommodityStatus, getFishIcon, commodityStyles, getZoneFill } from './d3/utils.js';
 
 const props = defineProps({
     zone: { type: String, required: true },
@@ -52,7 +52,8 @@ onMounted(async () => {
     <div class="w-full font-sans text-[var(--main-deep-blue)]">
         <div class="mb-2 border-b border-slate-200 pb-1">
             <h3 class="text-sm font-bold uppercase">{{ zone }}</h3>
-            <span v-if="kind" class="text-[9px] font-bold text-blue-500 uppercase tracking-widest">{{ kind }}</span>
+            <span v-if="kind" class="text-[9px] font-bold uppercase tracking-widest" 
+            :style="{ color: getZoneFill(props.kind)}">{{ kind }}</span>
         </div>
 
         <p v-if="description" class="text-[11px] text-slate-600 leading-snug mb-3 italic">{{ description }}</p>

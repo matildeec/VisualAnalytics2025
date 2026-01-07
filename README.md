@@ -19,16 +19,9 @@ The objective is to investigate the behavior of vessels operating within the Oce
 
 This repository includes:
 - **Data Preprocessing**: Jupyter notebooks and Python scripts for data cleaning, inspection, and transformation.
-- **Interactive Visualization**: Modern web dashboard built with Vue 3, Vite, D3.js, and TailwindCSS with visual tools to explore vessel trajectories, harbor events, and suspicious cargo transactions.
+- **Visual Analytics Application**: The visual analytics application built with Vue 3, Vite, D3.js, and TailwindCSS to explore vessel trajectories, harbor events, and suspicious cargo transactions.
 
-## Project Structure
-
-- `/src` — Vue components, views, and routing.
-- `/data` — All input datasets (JSON format).
-- `/DataPreprocessing` — Jupyter notebooks and scripts for data cleaning and transformation.
-- `.gitignore` — Ignores `node_modules`, build artifacts, logs, and local config.
-
-## Installation & Usage
+## Installation & Local Usage of the VA App
 
 1. **Clone (or download) the repository**
    ```sh
@@ -41,26 +34,17 @@ This repository includes:
    npm install
    ```
 
-3. **Run the development server**
+3. **Run in Development Mode**
    ```sh
    npm run dev
    ```
-   The app will be available at [http://localhost:5173](http://localhost:5173) (default Vite port).
 
-4. **Build for production**
+4. **Build and Preview Production Version**
    ```sh
    npm run build
-   ```
-
-5. **Preview the production build**
-   ```sh
    npm run preview
    ```
 
 ## Requirements
-
-- Node.js (built with v22.19.0)
-- npm (built with v10.9.3)
-- Modern browser (for the dashboard)
-- Python 3.11.5 (for data preprocessing, if needed)
-- Jupyter (for running notebooks in `/DataPreprocessing`)
+- **Node.js** (v22.19.0 recommended)
+- **npm** (v10.9.3 recommended)

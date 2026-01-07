@@ -5,9 +5,8 @@
 \usepackage{geometry}
 \usepackage{amsmath}
 \usepackage{makecell}
-\usepackage{xcolor}
 \usepackage[table]{xcolor}
-\usepackage{color}
+\usepackage[export]{adjustbox}
 \usepackage{amssymb}
 \usepackage{soul}
 \usepackage{multirow}
@@ -38,6 +37,54 @@
  top=26mm,
  bottom=26mm
  }
+
+% --- CSS Palette in LaTeX ---
+\definecolor{deepBlue}{HTML}{092C4C}
+
+\definecolor{zoneIslandBg}{HTML}{DCD5C5}
+\definecolor{zoneIslandBorder}{HTML}{9A8C73}
+
+\definecolor{zoneFishingBg}{HTML}{3B82F6}
+\definecolor{zoneFishingBorder}{HTML}{1D4ED8}
+
+\definecolor{zonePreserveBg}{HTML}{0C875E}
+\definecolor{zonePreserveBorder}{HTML}{044431}
+
+\definecolor{zoneBuoyBg}{HTML}{A94700}
+\definecolor{zoneBuoyBorder}{HTML}{732100}
+
+\definecolor{zoneCityBg}{HTML}{575F6C}
+\definecolor{zoneCityBorder}{HTML}{2D3642}
+
+\definecolor{stateSelectedBg}{HTML}{FBBF24}
+\definecolor{stateSelectedBorder}{HTML}{F59E0B}
+
+\definecolor{commodityIllegal}{HTML}{EF4444}
+\definecolor{commodityLegal}{HTML}{10B981}
+\definecolor{commoditySuspect}{HTML}{F59E0B}
+
+\definecolor{vesselCargo}{HTML}{6366F1}
+\definecolor{vesselFishing}{HTML}{06B6D4}
+\definecolor{vesselFerryCargo}{HTML}{8B5CF6}
+\definecolor{vesselFerryPax}{HTML}{D946EF} 
+\definecolor{vesselTour}{HTML}{FB7185} 
+\definecolor{vesselResearch}{HTML}{84CC16}
+\definecolor{vesselOther}{HTML}{334155}
+
+% Usage: \colorswatch{FillColor}{BorderColor}
+\newcommand{\colorswatch}[2]{%
+    \tikz[baseline=-0.6ex]{
+        \node[
+            rectangle, 
+            fill=#1, 
+            draw=#2, 
+            line width=1.5pt, 
+            minimum width=2.5em, 
+            minimum height=1.2em, 
+            rounded corners=2pt
+        ] {};
+    }%
+}
  
 \begin{document}
 \pagenumbering{gobble}

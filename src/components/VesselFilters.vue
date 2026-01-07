@@ -119,7 +119,7 @@ onMounted(async () => {
 
       <button 
         @click="isExpanded = !isExpanded"
-        class="text-[10px] uppercase font-bold px-3 py-1 rounded-full border transition-all"
+        class="cursor-pointer text-[10px] uppercase font-bold px-3 py-1 rounded-full border transition-all"
         :class="isExpanded ? 'bg-slate-200 text-slate-500 border-slate-300' : 'bg-white text-slate-600 border-slate-200 shadow-sm hover:shadow'"
       >
         {{ isExpanded ? 'Close Filters' : 'Change Vessel' }}
@@ -153,7 +153,7 @@ onMounted(async () => {
       </div>
 
       <div class="flex items-end">
-        <button @click="clearSelection" class="w-full h-[26px] mb-[1px] text-[10px] font-bold text-slate-400 uppercase bg-slate-50 hover:bg-red-50 hover:text-red-500 border border-slate-200 rounded transition-colors">
+        <button @click="clearSelection" class="cursor-pointer w-full h-[26px] mb-[1px] text-[10px] font-bold text-slate-400 uppercase bg-slate-50 hover:bg-red-50 hover:text-red-500 border border-slate-200 rounded transition-colors">
           Clear
         </button>
       </div>

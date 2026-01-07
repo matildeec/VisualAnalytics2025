@@ -8,14 +8,14 @@
   --zone-fishing-bg: #3b82f6;
   --zone-fishing-border: #1d4ed8;
 
-  --zone-preserve-bg: #10b981;
-  --zone-preserve-border: #047857;
+  --zone-preserve-bg: #0c875e;
+  --zone-preserve-border: #044431;
 
-  --zone-buoy-bg: #f97316;
-  --zone-buoy-border: #c2410c;
+  --zone-buoy-bg: #a94700;
+  --zone-buoy-border: #732100;
 
-  --zone-city-bg: #94a3b8;
-  --zone-city-border: #64748b;
+  --zone-city-bg: #575f6c;
+  --zone-city-border: #2d3642;
 
   --zone-default-bg: #94a3b8;
   --zone-default-border: #64748b;
@@ -26,13 +26,13 @@
   --state-selected-border: #f59e0b;
 
   /* Vessel Types Colors */
-  --chart-vessel-cargo: #9a76ec;
-  --chart-vessel-fishing: #3b82f6;
-  --chart-vessel-ferry-cargo: #64748b;
-  --chart-vessel-ferry-passenger: #ec48ad;
-  --chart-vessel-tour: #10b981;
-  --chart-vessel-research: #f5a70b;
-  --chart-vessel-other: #373232;
+  --chart-vessel-cargo: #6366f1;   
+  --chart-vessel-fishing: #06b6d4;   
+  --chart-vessel-ferry-cargo: #8b5cf6; 
+  --chart-vessel-ferry-passenger: #d946ef; 
+  --chart-vessel-tour: #fb7185; 
+  --chart-vessel-research: #84cc16; 
+  --chart-vessel-other: #334155;
 
   /* Commodity Colors */
   --commodity-illegal: #ef4444;

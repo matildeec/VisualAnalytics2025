@@ -9,7 +9,7 @@ import LoadingOverlay from '../LoadingOverlay.vue'
 const props = defineProps({
     data: Array
 })
-console.log(props.data)
+
 // Emit event when a vessel is selected to pin it
 const emit = defineEmits(['vessel-selected'])
 

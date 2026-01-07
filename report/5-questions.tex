@@ -1,15 +1,80 @@
 %---------------------------------------------------------------
 \section{Research Questions}\label{research-questions}
-List the specific research questions you are addressing from the MiniChallenge. For each question, include a short description of how you plan to approach it.
 
-\begin{quote}
-    FishEye analysts need your help to perform geographic and temporal analysis of the CatchNet data so they can prevent illegal fishing from happening again. Your task is to develop new visual analytics tools and workflows that can be used to discover and understand signatures of different types of behavior. Can you use your tool to visualize a signature of SouthSeafood Express Corp’s illegal behavior? FishEye needs your help to develop a workflow to find other instances of illegal behavior.
+%Note: the VAST challenge is focused on visual analytics and graphical figures should be included with your response to each question. Please include a reasonable number of figures for each question (no more than about 6) and keep written responses as brief as possible (around 250 words per question). Participants are encouraged to new visual representations rather than relying on traditional or existing approaches.
 
-\begin{enumerate}
-    \item FishEye analysts have long wanted to better understand the flow of commercially caught fish through Oceanus’s many ports. But as they were loading data into CatchNet, they discovered they had purchased the wrong port records. They wanted to get the ship off-load records, but they instead got the port-exit records (essentially trucks/trains leaving the port area). Port exit records do not include which vessel that delivered the products. Given this limitation, develop a visualization system to associate vessels with their probable cargos. Which vessels deliver which products and when? What are the seasonal trends and anomalies in the port exit records?\\
-    \item Develop visualizations that illustrate the inappropriate behavior of SouthSeafood Express Corp vessels. How do their movement and catch contents compare to other fishing vessels? When and where did SouthSeafood Express Corp vessels perform their illegal fishing? How many different types of suspicious behaviors are observed? Use visual evidence to justify your conclusions.\\
-    \item To support further Fisheye investigations, develop visual analytics workflows that allow you to discover other vessels engaging in behaviors similar to SouthSeafood Express Corp’s illegal activities? Provide visual evidence of the similarities.\\
-    \item How did fishing activity change after SouthSeafood Express Corp was caught? What new behaviors in the Oceanus commercial fishing community are most suspicious and why?
-\end{enumerate}
-    Note: the VAST challenge is focused on visual analytics and graphical figures should be included with your response to each question. Please include a reasonable number of figures for each question (no more than about 6) and keep written responses as brief as possible (around 250 words per question). Participants are encouraged to new visual representations rather than relying on traditional or existing approaches.
-\end{quote}
+% Question 1
+\vspace{1em}
+\noindent\textbf{Question 1:} \textit{FishEye analysts have long wanted to better understand the flow of commercially caught fish through Oceanus’s many ports. But as they were loading data into CatchNet, they discovered they had purchased the wrong port records. They wanted to get the ship off-load records, but they instead got the port-exit records (essentially trucks/trains leaving the port area). Port exit records do not include which vessel that delivered the products. Given this limitation, develop a visualization system to associate vessels with their probable cargos. Which vessels deliver which products and when? What are the seasonal trends and anomalies in the port exit records?}
+
+\subsubsection*{Answer}
+% Write your answer here (approx 250 words)
+
+% To overcome the lack of direct off-load records, we developed the **Harbor Activity** visualization. This system utilizes a **"Mirror Plot"** to probabilistically associate vessels with cargo. The top axis visualizes daily port-exit records (stacked bars color-coded by species), while the bottom axis displays vessel arrivals (inverted lollipop chart by tonnage). By vertically aligning these timelines, analysts can correlate a specific export spike with the immediately preceding arrival of vessels possessing sufficient tonnage.
+
+% \paragraph{Vessel-Product Associations}
+% The system reveals distinct operational profiles. At **Himark**, the data shows a dominance of *Wrasse/Labridae* (orange bars). These massive bulk exports consistently align with the arrival of heavy transport vessels (blue dots,  tons), such as the *Trans Atlantic 4*, suggesting Himark acts as a consolidation hub for this specific species. Conversely, **Haacklee** displays a more heterogeneous mix of *Cod* and *Salmon*, delivered by a high frequency of smaller fishing vessels (teal dots).
+
+% \paragraph{Seasonal Trends and Anomalies}
+% A unified seasonal rhythm governs Oceanus. The months of March through June are relatively dormant across all harbors. Activity sharply accelerates in July, culminating in a region-wide peak in **October and November**.
+% Two key anomalies stand out:
+% \begin{itemize}
+% \item Lomark Surge: In late October, **Lomark** experiences an extreme, isolated spike in *Cod* exports (green bars) that is disproportionate to its usual traffic.
+% \item Himark Volume: The sheer scale of tonnage at Himark, combined with the presence of multiple "suspect" flags (red circles around vessel dots), indicates potential "laundering" or mixing of illicit catch into bulk legal shipments.
+% \end{itemize}
+
+% Example Figure Placeholder for Q1
+\begin{figure}[h!]
+    \centering
+    % \includegraphics[width=\linewidth]{figures/q1_analysis.png} 
+    \caption{Visual analysis of seasonal trends and vessel-cargo associations.}
+    \label{fig:q1_analysis}
+\end{figure}
+
+% Question 2
+\vspace{1em}
+\noindent\textbf{Question 2:} \textit{Develop visualizations that illustrate the inappropriate behavior of SouthSeafood Express Corp vessels. How do their movement and catch contents compare to other fishing vessels? When and where did SouthSeafood Express Corp vessels perform their illegal fishing? How many different types of suspicious behaviors are observed? Use visual evidence to justify your conclusions.}
+
+\subsubsection*{Answer}
+% Write your answer here (approx 250 words)
+[Insert your analysis for Question 2 here...]
+
+% Example Figure Placeholder for Q2
+\begin{figure}[h!]
+    \centering
+    % \includegraphics[width=\linewidth]{figures/q2_behavior.png} 
+    \caption{Comparison of SouthSeafood Express Corp movements against compliant vessels.}
+    \label{fig:q2_behavior}
+\end{figure}
+
+% Question 3
+\vspace{1em}
+\noindent\textbf{Question 3:} \textit{To support further Fisheye investigations, develop visual analytics workflows that allow you to discover other vessels engaging in behaviors similar to SouthSeafood Express Corp’s illegal activities? Provide visual evidence of the similarities.}
+
+\subsubsection*{Answer}
+% Write your answer here (approx 250 words)
+[Insert your analysis for Question 3 here...]
+
+% Example Figure Placeholder for Q3
+\begin{figure}[h!]
+    \centering
+    % \includegraphics[width=\linewidth]{figures/q3_workflow.png} 
+    \caption{Visual analytics workflow identifying similar illegal patterns.}
+    \label{fig:q3_workflow}
+\end{figure}
+
+% Question 4
+\vspace{1em}
+\noindent\textbf{Question 4:} \textit{How did fishing activity change after SouthSeafood Express Corp was caught? What new behaviors in the Oceanus commercial fishing community are most suspicious and why?}
+
+\subsubsection*{Answer}
+% Write your answer here (approx 250 words)
+[Insert your analysis for Question 4 here...]
+
+% Example Figure Placeholder for Q4
+\begin{figure}[h!]
+    \centering
+    % \includegraphics[width=\linewidth]{figures/q4_changes.png} 
+    \caption{Temporal analysis of fishing activity changes post-interdiction.}
+    \label{fig:q4_changes}
+\end{figure}

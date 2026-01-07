@@ -40,17 +40,17 @@ export const commodityStyles = {
 };
 
 export const fishIcons = {
-  'gadusnspecificatae4ba': 'fish-icon-default.svg',
+  'gadusnspecificatae4ba': 'fish-icon-green.svg',
   'piscesfrigus900': 'fish-icon-amber.svg',
   'piscesfoetidaae7': 'fish-icon-red.svg',
   'labridaenrefert9be': 'fish-icon-amber.svg',
   'habeaspisces4eb': 'fish-icon-amber.svg',
-  'piscissapidum9b7': 'fish-icon-default.svg',
+  'piscissapidum9b7': 'fish-icon-green.svg',
   'thunnininveradb7': 'fish-icon-amber.svg',
   'piscisosseusb6d': 'fish-icon-red.svg',
-  'oncorhynchusrosea790': 'fish-icon-default.svg',
+  'oncorhynchusrosea790': 'fish-icon-green.svg',
   'piscessatisb87': 'fish-icon-red.svg',
-  'default': 'fish-icon-default.svg'
+  'default': 'fish-icon-green.svg'
 };
 
 export const getCommodityStatus = (id) => {

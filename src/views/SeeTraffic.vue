@@ -201,7 +201,7 @@ onMounted(async () => {
                     <div class="flex items-center border-l border-gray-100 pl-6 h-full">
                         <button 
                             @click="applyFilters"
-                            class="text-[10px] uppercase font-bold px-3 py-1 rounded-full border transition-all bg-white text-slate-600 border-slate-200 shadow-sm hover:shadow-md"
+                            class="cursor-pointer text-[10px] uppercase font-bold px-3 py-1 rounded-full border transition-all bg-white text-slate-600 border-slate-200 shadow-sm hover:shadow-md"
                         >
                             Update Map
                         </button>

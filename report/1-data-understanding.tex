@@ -39,18 +39,35 @@ A summary table of the cleaned data files intended for use in the JavaScript imp
 
 The knowledge graph contains a diverse set of node types. Table~\ref{tab:nodes} summarizes the most relevant node types by category, showing the number of instances and representative attributes retained after cleaning.
 
-\begin{table}[H]
-\centering
-\small
-\renewcommand{\arraystretch}{1.15}
-\setlength{\tabcolsep}{6pt}
-\begin{tabular}{@{}l >{\raggedright\arraybackslash}p{5.2cm} c >{\raggedright\arraybackslash}p{6.2cm}@{}}
+{ \small
+\begin{longtable}{@{}l >{\raggedright\arraybackslash}p{5.2cm} c >{\raggedright\arraybackslash}p{6.2cm}@{}}
+\caption{Updated Node Types with Attributes in the Knowledge Graph} \label{tab:nodes} \\
+
+% --- Header first page ---
 \toprule
 \textbf{Category} & \textbf{Node Type} & \textbf{Count} & \textbf{Attributes} \\
 \midrule
+\endfirsthead
+
+% --- Header following pages ---
+\caption[]{Updated Node Types with Attributes in the Knowledge Graph} \\
+\toprule
+\textbf{Category} & \textbf{Node Type} & \textbf{Count} & \textbf{Attributes} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{4}{r}{\textit{Continued on next page...}} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
+% --- Table content ---
 Document
   & Entity.Document.DeliveryReport & 5307 & \texttt{qty\_tons}, \texttt{date} \\
 \midrule
+
 \multirow{7}{*}{Vessel}
   & Entity.Vessel.FishingVessel     & 178 & \texttt{name}, \texttt{flag\_country}, \texttt{company}, \texttt{tonnage}, \texttt{length\_overall} \\
   & Entity.Vessel.CargoVessel       & 100 & \texttt{name}, \texttt{flag\_country}, \texttt{company}, \texttt{tonnage}, \texttt{length\_overall} \\
@@ -60,18 +77,18 @@ Document
   & Entity.Vessel.Research          & 2   & \texttt{name}, \texttt{flag\_country} \\
   & Entity.Vessel.Other             & 5   & \texttt{name}, \texttt{flag\_country}, \texttt{length\_overall} \\
 \midrule
+
 \multirow{3}{*}{Location}
   & Entity.Location.Point           & 12  & \texttt{name}, \texttt{description}, \texttt{activities}, \texttt{kind} \\
   & Entity.Location.City            & 6   & \texttt{name}, \texttt{activities}, \texttt{kind} \\
   & Entity.Location.Region          & 6   & \texttt{name}, \texttt{description}, \texttt{activities}, \texttt{kind}, \texttt{fish\_species\_present} \\
 \midrule
+
 Commodity
   & Entity.Commodity.Fish           & 10  & \texttt{name} \\
-\bottomrule
-\end{tabular}
-\caption{Updated Node Types with Attributes in the Knowledge Graph}
-\label{tab:nodes}
-\end{table}
+
+\end{longtable}
+}
 
 \subsubsection{Edge Types and Event Semantics}
 
@@ -101,7 +118,7 @@ Event.HarborReport                   & 2,487  & Entity.Vessel  & Entity.Location
 \end{table}
 
 From here, two critical issues become apparent that affect readability and understanding of the data.  
-First, for \textbf{Event.HarborReport}, the edge direction is counterintuitive: while the information originates from portmasters, the current structure connects vessels (sources) to ports (targets). Reversing this direction would better reflect data provenance and better match with \textbf{Event.TransportEvent.TransponderPing}.  
+First, for \textbf{Event.HarborReport}, the edge direction is counterintuitive: while the information originates from portmasters, the current structure connects vessels (sources) to ports (targets). Reversing this direction would better reflect data provenance and better match with \textbf{Event.TransportEvent. \allowbreak TransponderPing}.  
 Second, \textbf{Event.Transaction} edges are redundant: each delivery report is linked to both a location and a commodity via two separate edges, resulting in duplication and unnecessary complexity.
 
 To address these issues, we redesigned the schema. Information about commodities, including species and quantities, has been moved into the delivery report entity itself, while \textbf{Event.Transaction} edges now exclusively connect delivery reports (sources) to locations (targets).  

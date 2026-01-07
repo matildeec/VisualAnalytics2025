@@ -4,7 +4,7 @@ We conducted an initial exploratory data analysis (EDA) on the cleaned data usin
 
 \subsection{Analytical Analysis of vessel activity}
 
-To effectively interpret vessel behavior, it was first necessary to understand the geographical context of the dataset. Certain regions are in fact designated as ecological preserves, where fishing activity is strictly prohibited. Vessels, however, were observed operating across both legal fishing grounds and these protected zones. Additionally, the dataset provides the list of species present in every region, allowing us to identify which species are exclusive to protected preserves. Using this information, we derived an analytical classification of \emph{illegal species}, defined as those found exclusively within protected preserves. Table~\ref{tab:species-matrix} summarizes this mapping: species highlighted in red appear only in illegal zones and therefore serve as indicators of potential illegal fishing activity. 
+To effectively interpret vessel behavior, it was first necessary to understand the geographical context of the dataset. Certain regions are in fact designated as ecological preserves, where fishing activity is strictly prohibited. Vessels, however, were observed operating across both legal fishing grounds and these protected zones. Additionally, the dataset provides the list of species present in every region, allowing us to identify which species are exclusive to protected preserves. Using this information, we derived an analytical classification of \emph{illegal species}, defined as those found exclusively within protected preserves, and \emph{suspect} ones, which appear in both legal and illegal zones. Table~\ref{tab:species-matrix} summarizes this mapping: species highlighted in red appear only in illegal zones and therefore serve as indicators of potential illegal fishing activity, while those in yellow are considered suspect due to their presence in both legal and illegal areas. 
 
 \begin{table}[H]
 \centering
@@ -15,12 +15,12 @@ To effectively interpret vessel behavior, it was first necessary to understand t
 \hline
 \textbf{Fish Species} & Cod Table & Wrasse Beds & Tuna Shelf & Ghoti Preserve & Nemo Reef & Don Limpet Preserve \\ \hline
 \texttt{gadusnspecificatae4ba}   & \checkmark &  &  &  &  &  \\ \hline
-\texttt{piscesfrigus900}         & \checkmark & \checkmark & \checkmark &  & \checkmark & \checkmark \\ \hline
-\texttt{habeaspisces4eb}         & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\ \hline
-\texttt{labridaenrefert9be}      &  & \checkmark &  & \checkmark & \checkmark &  \\ \hline
+\rowcolor{yellow!15} \texttt{piscesfrigus900}         & \checkmark & \checkmark & \checkmark &  & \checkmark & \checkmark \\ \hline
+\rowcolor{yellow!15} \texttt{habeaspisces4eb}         & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\ \hline
+\rowcolor{yellow!15} \texttt{labridaenrefert9be}      &  & \checkmark &  & \checkmark & \checkmark &  \\ \hline
 \rowcolor{red!15} \texttt{piscessatisb87}   &  &  &  & \checkmark & \checkmark & \checkmark \\ \hline
 \rowcolor{red!15} \texttt{piscisosseusb6d}  &  &  &  & \checkmark &  &  \\ \hline
-\texttt{thunnininveradb7}        &  &  & \checkmark &  & \checkmark & \checkmark \\ \hline
+\rowcolor{yellow!15} \texttt{thunnininveradb7}        &  &  & \checkmark &  & \checkmark & \checkmark \\ \hline
 \rowcolor{red!15} \texttt{piscesfoetidaae7} &  &  &  &  &  & \checkmark \\ \hline
 \texttt{piscissapidum9b7}        &  &  & \checkmark &  &  &  \\ \hline
 \end{tabular}
@@ -47,7 +47,7 @@ The boxplots make clear that vessels indeed lingered significantly longer at cer
 \subsection{Temporal Analysis of Fish Deliveries}
 To better grasp the scale of fish deliveries, we aggregated transaction records to track quantities over time. This allowed us to identify seasonal dynamics, peak transaction periods, and potential export trends as requested in Q1. Figure~\ref{fig:transaction-volume} illustrates total transaction volumes for South Paackland as an example case. Noticeable spikes suggest periods of heightened demand, which may align with peak fishing activity or, in some cases, potential illegal operations.
 
-In the visualization, illegal fish species are highlighted in shades of red, while legal species are shown in shades of blue, enabling a direct comparison of their relative contribution to overall trade flows. This perspective not only informed our analysis but also shaped the subsequent design of our visualization approach.
+In the visualization, illegal fish species are highlighted in shades of red, while legal (including suspect) species are shown in shades of blue, enabling a direct comparison of their relative contribution to overall trade flows. This perspective not only informed our analysis but also shaped the subsequent design of our visualization approach.
 
 \begin{figure}[h]
     \centering
@@ -83,7 +83,7 @@ Similarly, in the analysis of ping gaps, Snapper Snatcher ranked 173rd and Roach
 
 More interesting insights emerged from examining vessel routes based on transponder pings. Snapper Snatcher made multiple visits to \textit{Exit East}, a region designated for deep-sea fishing. While this does not immediately stand out compared to general vessel activity, it raises questions about whether this route reflects typical operational behavior or unusual activity. Further investigation, particularly with complete route visualizations, will help clarify these patterns.  
 
-While detailed considerations of vessel behavior will be presented later as the full visualizations are presented, we provide the initial Altair plot that was generated to explore these routes.
+While detailed considerations of vessel behavior will be presented later as the full visualizations are presented, we provide the initial plot that was generated using Altair to explore these routes.
 
 \begin{figure}[H]
     \centering

@@ -152,18 +152,21 @@ onMounted(async () => {
           </div>
         </div>
 
-        <div class="flex items-center bg-gray-100/80 p-1 rounded-full border border-gray-200">
-          <button 
-            v-for="h in availableHarbors" 
-            :key="h"
-            @click="selectedHarbor = h"
-            class="px-3 py-1 rounded-full text-[11px] font-bold uppercase transition-all duration-200 whitespace-nowrap select-none"
-            :class="selectedHarbor === h 
-              ? 'bg-white text-blue-700 shadow-sm ring-1 ring-black/5' 
-              : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'"
-          >
-            {{ h }}
-          </button>
+        <div class="flex flex-row gap-3 items-center">
+          <span class="text-gray-500 text-[10px] font-bold uppercase tracking-wider">Harbor</span>
+          <div class="flex items-center bg-gray-100/80 p-1 rounded-full border border-gray-200">
+            <button 
+              v-for="h in availableHarbors" 
+              :key="h"
+              @click="selectedHarbor = h"
+              class="px-3 py-1 rounded-full text-[11px] font-bold uppercase transition-all duration-200 whitespace-nowrap select-none cursor-pointer"
+              :class="selectedHarbor === h 
+                ? 'bg-white text-blue-700 shadow-sm ring-1 ring-black/5' 
+                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'"
+            >
+              {{ h }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -181,21 +184,27 @@ onMounted(async () => {
               v-for="id in rawData.commodities" 
               :key="id" 
               @click="toggleCommodity(id)"
+              :disabled="!selectedHarbor"
               class="group flex items-center gap-2 pl-1 pr-2.5 py-0.5 rounded-full text-[10px] font-bold transition-all duration-200 select-none border"
               :class="[
-                hiddenCommodities.has(id) 
-                  ? 'bg-slate-50 border-slate-100 text-slate-400 hover:bg-slate-100 grayscale opacity-70' 
-                  : 'bg-white border-slate-200 text-slate-700 shadow-sm hover:border-blue-300 ring-1 ring-transparent hover:ring-blue-100'
+                !selectedHarbor
+                  ? 'bg-slate-50 border-slate-100 text-slate-300 opacity-50 cursor-not-allowed' 
+                  : hiddenCommodities.has(id) 
+                    ? 'bg-slate-50 border-slate-100 text-slate-400 hover:bg-slate-100 grayscale opacity-70' 
+                    : 'bg-white border-slate-200 text-slate-700 shadow-sm hover:border-blue-300 ring-1 ring-transparent hover:ring-blue-100'
               ]"
             >
               <div 
                 class="w-5 h-5 rounded-full flex items-center justify-center border transition-colors shrink-0"
-                :class="getCommodityButtonClasses(id)"
+                :class="[
+                   !selectedHarbor ? 'border-slate-100 grayscale' : getCommodityButtonClasses(id)
+                ]"
               >
                 <img 
                   :src="`/assets/${getFishIcon(id)}`" 
                   alt="fish"
                   class="w-3 h-3 object-contain"
+                  :class="{ 'opacity-50': !selectedHarbor }"
                 />
               </div>
               
@@ -217,16 +226,19 @@ onMounted(async () => {
               v-for="type in rawData.vesselTypes" 
               :key="type" 
               @click="toggleVesselType(type)"
+              :disabled="!selectedHarbor"
               class="flex items-center gap-2 px-3 py-1 rounded-full border text-[10px] font-bold uppercase transition-all duration-200 select-none"
-              :class="[ 
-                hiddenVesselTypes.has(type) 
-                  ? 'bg-slate-50 border-slate-100 text-slate-400 hover:bg-slate-100' 
-                  : 'bg-white border-slate-200 text-slate-700 shadow-sm hover:border-blue-300' 
+              :class="[
+                !selectedHarbor
+                  ? 'bg-slate-50 border-slate-100 text-slate-300 opacity-50 cursor-not-allowed' 
+                  : hiddenVesselTypes.has(type) 
+                    ? 'bg-slate-50 border-slate-100 text-slate-400 hover:bg-slate-100' 
+                    : 'bg-white border-slate-200 text-slate-700 shadow-sm hover:border-blue-300' 
               ]"
             >
               <span 
                 class="w-2 h-2 rounded-full shadow-sm ring-1 ring-black/5" 
-                :style="{ backgroundColor: hiddenVesselTypes.has(type) ? '#cbd5e1' : rawData.vesselColorMap[type] }"
+                :style="{ backgroundColor: (!selectedHarbor || hiddenVesselTypes.has(type)) ? '#cbd5e1' : rawData.vesselColorMap[type] }"
               ></span>
               <span>{{ type }}</span>
             </button>

@@ -109,8 +109,6 @@ const renderChart = async () => {
       end_time: new Date(new Date(t.time).getTime() + (Number(t.dwell) || 0) * 1000)
     }))
 
-    console.log(reports);
-
     const vesselReports = reports.map(r => {
       const [day_start, day_end] = getDayRange(new Date(r.date))
       return {
