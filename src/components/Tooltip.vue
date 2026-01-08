@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 
 const props = defineProps({
   x: Number,
@@ -13,12 +13,64 @@ const props = defineProps({
   }
 })
 
+// DOM reference
+const tooltipRef = ref(null)
+
+// Logical position after adjustments
+const adjustedPos = ref({ x: 0, y: 0 })
+
+// Offset configuration
+const OFFSET = 15
+const PADDING = 10
+
+const calculatePosition = async () => {
+  await nextTick()
+
+  if (!props.visible || !tooltipRef.value) return  
+
+  const el = tooltipRef.value
+  const rect = el.getBoundingClientRect()
+  
+  const winW = window.innerWidth
+  const winH = window.innerHeight
+
+  // Default position (bottom-right of cursor)
+  let left = props.x + OFFSET
+  let top = props.y + OFFSET
+
+  // --- LOGICA "SMART" ---
+  
+  // If it goes BEYOND the RIGHT edge, place it to the LEFT of the cursor
+  if (left + rect.width > winW - PADDING) {
+    left = props.x - rect.width - OFFSET
+  }
+
+  // If it goes BEYOND the BOTTOM, place it above the cursor
+  if (top + rect.height > winH - PADDING) {
+    top = props.y - rect.height - OFFSET
+  }
+
+  // Never go beyond the window edges
+  if (left < PADDING) left = PADDING
+  if (top < PADDING) top = PADDING
+
+  adjustedPos.value = { x: left, y: top }
+}
+
+// Calculates position on prop changes
+watch(
+  () => [props.x, props.y, props.visible, props.contentDict], 
+  calculatePosition,
+  { immediate: true }
+)
+
+// Stile dinamico basato sulle coordinate calcolate
 const positionStyle = computed(() => ({
   position: 'fixed',
-  left: props.x + 'px',
-  top: props.y + 'px',
+  left: `${adjustedPos.value.x}px`,
+  top: `${adjustedPos.value.y}px`,
   zIndex: 9999,
-  pointerEvents: 'none'
+  pointerEvents: 'none' // Avoids flickering
 }))
 
 const variantClass = computed(() => `tooltip-${props.variant}`)
@@ -26,7 +78,13 @@ const variantClass = computed(() => `tooltip-${props.variant}`)
 
 <template>
   <transition name="fade">
-    <div v-if="visible" :style="positionStyle" class="tooltip-box" :class="variantClass">
+    <div 
+      v-if="visible" 
+      ref="tooltipRef" 
+      :style="positionStyle" 
+      class="tooltip-box" 
+      :class="variantClass"
+    >
       <table v-if="contentDict">
         <tr v-for="(value, key) in contentDict" :key="key">
           <td class="tooltip-key">{{ key }}</td>
@@ -45,7 +103,7 @@ const variantClass = computed(() => `tooltip-${props.variant}`)
   padding: 8px 12px;
   font-size: 0.75rem;
   white-space: nowrap;
-  transition: opacity 0.2s ease, transform 0.1s ease;
+  transition: opacity 0.1s ease; 
 }
 
 /* --- Default Theme (White/Blue) --- */
@@ -55,14 +113,14 @@ const variantClass = computed(() => `tooltip-${props.variant}`)
   color: #333;
 }
 .tooltip-default .tooltip-key {
-  color: var(--main-deep-blue, #0056b3); /* Fallback color added */
+  color: var(--main-deep-blue, #0056b3);
 }
 
 /* --- warning Theme (Yellow) --- */
 .tooltip-warning {
-  background: #fffbeb; /* Very light yellow background */
-  border: 2px solid #f59e0b; /* Strong yellow border */
-  color: #78350f; /* Dark yellow text */
+  background: #fffbeb;
+  border: 2px solid #f59e0b;
+  color: #78350f;
 }
 .tooltip-warning .tooltip-key {
   color: #d97706; 
@@ -70,9 +128,9 @@ const variantClass = computed(() => `tooltip-${props.variant}`)
 
 /* --- Danger Theme (Red) --- */
 .tooltip-danger {
-  background: #fef2f2; /* Very light red background */
-  border: 2px solid #ef4444; /* Strong red border */
-  color: #7f1d1d; /* Dark red text */
+  background: #fef2f2;
+  border: 2px solid #ef4444;
+  color: #7f1d1d;
 }
 .tooltip-danger .tooltip-key {
   color: #dc2626; 

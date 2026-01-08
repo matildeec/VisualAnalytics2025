@@ -107,44 +107,18 @@ export const getZoneBorder = (kind) => {
     }
 };
 
-const calculateTooltipPosition = (event) => {
-    const tooltipWidth = 140; // Approximate width
-    const tooltipHeight = 90; // Approximate height
-    const padding = 15;
-
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-
-    let x = event.clientX + padding;
-    let y = event.clientY + padding;
-
-    // Check Right Edge
-    if (x + tooltipWidth > windowWidth) {
-        x = event.clientX - tooltipWidth - padding;
-    }
-
-    // Check Bottom Edge
-    if (y + tooltipHeight > windowHeight) {
-        y = event.clientY - tooltipHeight - padding;
-    }
-
-    // Check Left Edge
-    if (x < 0) x = padding;
-
-    return { x, y };
-};
-
 export const showTooltip = (event, contentDict, tooltipRef, variant) => {
-    const { x, y } = calculateTooltipPosition(event);
     tooltipRef.value = {
         visible: true,
-        x: x,
-        y: y,
+        x: event.clientX,
+        y: event.clientY,
         contentDict: contentDict,
         variant: variant || 'default'
     };
 };
 
 export const hideTooltip = (tooltipRef) => {
-    tooltipRef.value.visible = false;
+    if (tooltipRef.value) {
+        tooltipRef.value.visible = false;
+    }
 };

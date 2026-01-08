@@ -29,10 +29,15 @@ function getVesselData(vesselId) {
 
   const vesselTrans = d.transactions
     .filter(t => t.suspected_vessels?.includes(vesselId))
-    .map(t => ({
-       ...t,
-       commodityId: d.documentsMap[t.source]?.commodity || 'unknown'
-    }))
+    .map(t => {
+       const doc = d.documentsMap[t.source]; 
+       
+       return {
+          ...t,
+          commodityId: doc?.commodity || 'unknown',
+          qty: doc?.qty_tons ? parseFloat(doc.qty_tons) : 0 
+       };
+    })
 
   return {
     trajectory: vesselTraj,

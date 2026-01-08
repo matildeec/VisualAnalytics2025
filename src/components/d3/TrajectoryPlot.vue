@@ -19,6 +19,9 @@ const currentTransform = ref(d3.zoomIdentity)
 const MARGIN = { top: 20, right: 40, bottom: 40, left: 120 }
 const HIGHLIGHT_DATE = new Date('2035-05-14')
 
+const ICON_SIZE = 24;
+const ICON_SPACING = 10;
+
 // Layer visibility states are reactive because we want to watch them for changes
 const layers = reactive({
   pings: true,
@@ -118,11 +121,45 @@ const renderChart = async () => {
       }
     })
 
-    const vesselTransactions = transactions.map(t => ({
-      ...t,
-      date: new Date(t.date),
-      commodityName: contextData.commodityNames[t.commodityId] || 'Unknown Commodity'
-    }))
+    // Group transactions by (date, location)
+    const groupedTransactionsMap = new Map();
+
+    transactions.forEach(t => {
+      // Same day and same location as key
+      const key = `${new Date(t.date).toDateString()}-${t.target}`;
+      
+      if (!groupedTransactionsMap.has(key)) {
+        groupedTransactionsMap.set(key, {
+          date: new Date(t.date),
+          target: t.target,
+          items: [] // contains all transactions for this group
+        });
+      }
+      
+      // Add transaction to the appropriate group
+      groupedTransactionsMap.get(key).items.push({
+        ...t,
+        commodityName: contextData.commodityNames[t.commodityId] || 'Unknown',
+        status: getCommodityStatus(t.commodityId)
+      });
+    });
+
+    // For each group, determine the main representative icon and sort items
+    const groupedTransactions = Array.from(groupedTransactionsMap.values()).map(group => {
+      
+      // Sorting: first by status, then by quantity
+      group.items.sort((a, b) => {
+        const scoreA = (a.status === 'illegal' ? 100 : 0) + (a.status === 'suspect' ? 50 : 0);
+        const scoreB = (b.status === 'illegal' ? 100 : 0) + (b.status === 'suspect' ? 50 : 0);
+        if (scoreA !== scoreB) return scoreB - scoreA; // Status
+        return (b.qty || 0) - (a.qty || 0); // Quantity
+      });
+
+      // The first item after sorting is the main representative icon
+      group.mainItem = group.items[0];
+      
+      return group;
+    });
 
     // SVG Setup
     const svg = d3.select(chartContainer.value).append('svg')
@@ -246,23 +283,60 @@ const renderChart = async () => {
       .on('mouseleave', () => hideTooltip(tooltip))
 
     // Transaction Icons
-    const transIcons = cargoGroup.selectAll('.icon')
-      .data(vesselTransactions).enter().append('image')
-      .attr('class', 'icon')
+    const iconGroups = cargoGroup.selectAll('.trans-group')
+      .data(groupedTransactions)
+      .join('g')
+      .attr('class', 'trans-group')
+      .attr('transform', d => `translate(${xScale(d.date) - 12}, ${yScale(d.target) + yScale.bandwidth()/2 - 12})`);
+
+    // Icon Image
+    iconGroups.append('image')
       .attr('width', 24).attr('height', 24)
-      .attr('y', t => yScale(t.target) + yScale.bandwidth()/2 - 12)
-      .attr('x', t => xScale(t.date) - 12) // Initial Position
-      .attr('href', t => `/assets/${fishIcons[t.commodityId] || fishIcons['default']}`)
-      .on('mouseenter', (e, t) => {
-        const status = getCommodityStatus(t.commodityId);
-        showTooltip(e, {
-          'Transaction': t.target, 'Commodity': t.commodityName, 
-          'Status': status,
-          'Date': t.date.toLocaleDateString()
-        }, tooltip, status == 'illegal' ? 'danger' : 
-                    status == 'suspect' ? 'warning' : 'default')
+      .attr('href', d => `/assets/${fishIcons[d.mainItem.commodityId] || fishIcons['default']}`);
+
+    // If more than one item, draw badge
+    const badgeGroup = iconGroups.filter(d => d.items.length > 1)
+      .append('g')
+      .attr('transform', 'translate(18, -4)'); // In alto a destra dell'icona
+
+    // Badge circle
+    badgeGroup.append('circle')
+      .attr('r', 7)
+      .attr('fill', '#ef4444')
+      .attr('stroke', 'white').attr('stroke-width', 1.5);
+
+    // Badge number
+    badgeGroup.append('text')
+      .text(d => d.items.length)
+      .attr('dy', 2.8) // Vertical centering
+      .attr('text-anchor', 'middle')
+      .style('font-size', '9px')
+      .style('font-weight', 'bold')
+      .style('fill', 'white');
+
+    // Tooltip interactions
+    iconGroups
+      .on('mouseenter', (e, d) => {
+        // Create content dictionary for tooltip
+        const content = {
+          'Location': d.target,
+          'Date': d.date.toLocaleDateString()
+        };
+
+        // Add each cargo item as separate entry
+        d.items.forEach((item, idx) => {
+            const key = `Cargo #${idx + 1}`;
+            const val = `${item.commodityName} ${item.status === 'illegal' ? '⚠️' : ''} (${item.qty || '?'}t)`;
+            content[key] = val;
+        });
+
+        // Determines tooltip variant based on worst status
+        const worstStatus = d.items.some(i => i.status === 'illegal') ? 'danger' :
+                            d.items.some(i => i.status === 'suspect') ? 'warning' : 'default';
+
+        showTooltip(e, content, tooltip, worstStatus);
       })
-      .on('mouseleave', () => hideTooltip(tooltip))
+      .on('mouseleave', () => hideTooltip(tooltip));
 
     // Market Exclusion Zone
     highZoneGroup = gChart.append('g').attr('class', 'exclusion-zone')
@@ -304,10 +378,12 @@ const renderChart = async () => {
       bLeft.attr('x1', newXScale(exStart)).attr('x2', newXScale(exStart))
       bRight.attr('x1', newXScale(exEnd)).attr('x2', newXScale(exEnd))
 
-      // Update Data Elements (Minimal attributes update)
+      // Update Data Elements
       dwellBars.attr('x', d => newXScale(d.time)).attr('width', d => newXScale(d.end_time) - newXScale(d.time))
       reportBars.attr('x', r => newXScale(r.day_start)).attr('width', r => newXScale(r.day_end) - newXScale(r.day_start))
-      transIcons.attr('x', t => newXScale(t.date) - 12)
+      iconGroups.attr('transform', d => 
+        `translate(${newXScale(d.date) - 12}, ${yScale(d.target) + yScale.bandwidth()/2 - 12})`
+      );
     }
 
     const zoom = d3.zoom().scaleExtent([1, 100]).on('zoom', handleZoom)
