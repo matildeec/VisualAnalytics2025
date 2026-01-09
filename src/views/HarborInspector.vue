@@ -24,7 +24,7 @@ const topBoxHeight = ref(50);
 const isResizing = ref(false);
 const expandedCargoId = ref(null);
 
-// --- Handlers ---
+// Handlers
 const handleViewUpdate = (payload) => {
   viewData.cargo = payload.cargo || []
   viewData.vessels = payload.vessels || []

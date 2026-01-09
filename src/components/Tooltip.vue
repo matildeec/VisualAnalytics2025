@@ -37,8 +37,6 @@ const calculatePosition = async () => {
   // Default position (bottom-right of cursor)
   let left = props.x + OFFSET
   let top = props.y + OFFSET
-
-  // --- LOGICA "SMART" ---
   
   // If it goes BEYOND the RIGHT edge, place it to the LEFT of the cursor
   if (left + rect.width > winW - PADDING) {

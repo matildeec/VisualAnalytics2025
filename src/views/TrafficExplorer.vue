@@ -5,7 +5,6 @@ import Map from '../components/Map.vue'
 import TrafficChart from '../components/d3/TrafficChart.vue'
 import InfoCard from '../components/InfoCard.vue'
 
-// References to reactive variables
 const selectedFeature = ref(null)
 const allPings = ref([])
 
