@@ -25,9 +25,11 @@ Rather than forcing an incomplete or misleading geographic reconstruction of exa
 
 To manage the complexity of the data and the multi-faceted research questions, we adopted a multi-page architecture. The application is structured into three distinct views: \textbf{Traffic Explorer}, \textbf{Harbor Inspector}, and \textbf{Trajectory Analyzer}. Each view serves a distinct stage in the analytical pipeline, progressively revealing deeper insights. We provide a brief overview of each page below.
 
-As a design choice, we adopted a \textbf{reader-driven narrative visualization} paradigm, empowering users to explore data at their own pace while providing \textbf{author-driven} entry points (such as pre-selected filters for known violators like SouthSeafood Express Corp) to jumpstart the investigation.
+As a design choice, we adopted a \emph{reader-driven narrative visualization} paradigm, empowering users to explore data at their own pace while providing \emph{author-driven} entry points (such as pre-selected filters for known violators like SouthSeafood Express Corp) to jumpstart the investigation.
 
 A consistent global navigation bar allows seamless switching between views. To support deep investigation, the interface integrates interactive techniques including \textbf{zooming}, \textbf{brushing}, and "details-on-demand" \textbf{tooltips}, enabling micro-level analysis without cluttering the macro-level visualizations.
+
+Finally, specific attention was paid to system status visibility to manage the latency inherent in processing large datasets in the browser. A unified \textbf{loading spinner} provides immediate feedback during data fetching and processing, ensuring the user is aware of the system's active state and preventing uncertainty during initialization, filtering, or view transitions.
 
 \subsubsection{Traffic Explorer}
 \label{sec:traffic_explorer}
@@ -201,11 +203,11 @@ The interaface was designed with a focus on clarity, usability, and effective co
 
 \subsubsection{Overall Aesthetic and Color Palette}
 
-The interface background and layout were designed to minimize visual clutter and enhance focus on data visualizations. The primary background color is a \textbf{clean white} (\texttt{\#FFFFFF}), chosen to maximize contrast and maintain a neutral canvas for complex data visualizations. This design choice minimizes visual noise, ensuring that chromatic encodings for data variables remain the focal point. To establish a strong visual hierarchy, the top navigation bar (Figure~\ref{fig:nav_bar}) utilizes a \textbf{dark blue} (\texttt{\#092C4C}) anchor, which contrasts effectively with the lighter content areas. Dark blue was selected for its associations with trustworthiness and professionalism, aligning with the investigative nature of the application, as well as its thematic connection to maritime contexts.
+The interface background and layout were designed to minimize visual clutter and enhance focus on data visualizations. The primary background color is a clean white (\texttt{\#FFFFFF}), chosen to maximize contrast and maintain a neutral canvas for complex data visualizations. This design choice minimizes visual noise, ensuring that chromatic encodings for data variables remain the focal point. To establish a strong visual hierarchy, the top navigation bar (Figure~\ref{fig:nav_bar}) utilizes a dark blue (\texttt{\#092C4C}) anchor, which contrasts effectively with the lighter content areas. Dark blue was selected for its associations with trustworthiness and professionalism, aligning with the investigative nature of the application, as well as its thematic connection to maritime contexts.
 
 The navigation controls incorporate a semi-transparent "glassmorphism" effect, allowing the background to subtly show through; this adds a modern aesthetic while highlighting the navigation elements without overwhelming the user.
 
-Consistent with this philosophy, buttons and controls throughout the remainder of the interface adhere to a \textbf{minimalist, white-on-white aesthetic}. By keeping these secondary interactive elements subtle, we prevent them from competing for visual attention, ensuring that the user's focus remains fixed on the high-contrast data visualizations.
+Consistent with this philosophy, buttons and controls throughout the remainder of the interface adhere to a minimalist, white-on-white aesthetic. By keeping these secondary interactive elements subtle, we prevent them from competing for visual attention, ensuring that the user's focus remains fixed on the high-contrast data visualizations.
 
 \begin{figure}[H]
     \centering
@@ -247,9 +249,9 @@ Commodities are encoded primarily through color and iconography to facilitate ra
 \subsubsection{Map Zones}
 \label{sec:zones_encoding}
 
-To reduce cognitive load, the geographic zones within the Oceanus map employ a \textbf{semantic color mapping} strategy. This approach aligns visual encoding with the user's natural mental model of the environment, enabling intuitive recognition without constant reference to a legend. For example, a vessel crossing into a ``green'' zone instinctively signals entry into a protected nature preserve, while a ``blue'' zone implies standard fishing grounds.
+To reduce cognitive load, the geographic zones within the Oceanus map employ a semantic color mapping strategy. This approach aligns visual encoding with the user's natural mental model of the environment, enabling intuitive recognition without constant reference to a legend. For example, a vessel crossing into a ``green'' zone instinctively signals entry into a protected nature preserve, while a ``blue'' zone implies standard fishing grounds.
 
-Crucially, the palette was calibrated to ensure high contrast against the white background of the \textbf{Trajectory Analyzer} page. To distinguish the active focus during analysis, selected zones are highlighted in a warm amber, providing immediate visual feedback against the cool tones of the base map.
+Crucially, the palette was calibrated to ensure high contrast against the white background of the Trajectory Analyzer page. To distinguish the active focus during analysis, selected zones are highlighted in a warm amber, providing immediate visual feedback against the cool tones of the base map.
 
 \begin{table}[h!]
     \small
@@ -294,7 +296,7 @@ Crucially, the palette was calibrated to ensure high contrast against the white 
 
 \subsubsection{Vessel Types}
 
-A categorical color scheme was employed to differentiate between vessel types. The primary design constraint for this variable was to ensure distinctness from the commodity palette used in the \textbf{Harbor Inspector} page to avoid visual confusion. Consequently, we selected a set of high-contrast hues that are visually separable from the red-orange-green spectrum used for fish species, ensuring that vessel types remain easily distinguishable even when overlaid with cargo data. The assigned colors are as follows:
+A categorical color scheme was employed to differentiate between vessel types. The primary design constraint for this variable was to ensure distinctness from the commodity palette used in the Harbor Inspector page to avoid visual confusion. Consequently, we selected a set of high-contrast hues that are visually separable from the red-orange-green spectrum used for fish species, ensuring that vessel types remain easily distinguishable even when overlaid with cargo data. The assigned colors are as follows:
 
 \begin{table}[H]
     \small

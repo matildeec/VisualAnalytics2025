@@ -35,7 +35,7 @@ To analyze the behavior of SouthSeafood Express Corp vessels, we utilized the Tr
 
 While the automated cargo attribution did not flag SouthSeafood vessels as prominently as other illicit actors, a manual inspection of their trajectories reveals distinct suspicious behaviors when compared to compliant vessels. We premise our analysis on the baseline that compliant fishing vessels generally maintain direct routes, avoiding restricted areas unless strictly necessary for transit.
 
-\textbf{Snapper Snatcher} clearly breaks this compliant pattern. As illustrated in Figure~\ref{fig:snapper_comparison}, unlike the control vessel (\textit{Whiting Wrangler}), Snapper Snatcher records confirmed presence within the Ghoti Preserve (indicated by the distinct green markers in February and March). Furthermore, the vessel displays erratic routing, abruptly switching fishing grounds from the Cod Table to Wrasse Beds and making unusually extended stops at the ``Exit East'' buoy. These deviations are inconsistent with standard fishing operations and suggest potential poaching or transshipment activities.
+\emph{Snapper Snatcher} clearly breaks this compliant pattern. As illustrated in Figure~\ref{fig:snapper_comparison}, unlike the control vessel (\textit{Whiting Wrangler}), Snapper Snatcher records confirmed presence within the Ghoti Preserve (indicated by the distinct green markers in February and March). Furthermore, the vessel displays erratic routing, abruptly switching fishing grounds from the Cod Table to Wrasse Beds and making unusually extended stops at the ``Exit East'' buoy. These deviations are inconsistent with standard fishing operations and suggest potential poaching or transshipment activities.
 
 \begin{figure}[h] 
     \centering 
@@ -43,7 +43,7 @@ While the automated cargo attribution did not flag SouthSeafood vessels as promi
     \caption{Comparison of Snapper Snatcher (SouthSeafood Express Corp) showing incursions into Ghoti Preserve vs. the compliant Whiting Wrangler.} \label{fig:snapper_comparison} 
 \end{figure}
 
-\textbf{Roach Robber} presents a more subtle case (Figure~\ref{fig:roach_comparison}). While its route appears more predictable than the one of Snapper Snatcher, it exhibits suspicious loitering at Nav 1, a buoy situated directly over the Gothi Preserve. A compliant vessel (e.g., \textit{Tiger Muskellunge Master}) typically bypasses such markers or adheres to standard navigation channels (e.g., Nav C). This proximity to the preserve boundary, combined with the lack of clear fishing activity elsewhere during those windows, could indicate ``edge-fishing'' or coordination with others vessels operating inside the restricted zone.
+\emph{Roach Robber} presents a more subtle case (Figure~\ref{fig:roach_comparison}). While its route appears more predictable than the one of Snapper Snatcher, it exhibits suspicious loitering at Nav 1, a buoy situated directly over the Gothi Preserve. A compliant vessel (e.g., \textit{Tiger Muskellunge Master}) typically bypasses such markers or adheres to standard navigation channels (e.g., Nav C). This proximity to the preserve boundary, combined with the lack of clear fishing activity elsewhere during those windows, could indicate ``edge-fishing'' or coordination with others vessels operating inside the restricted zone.
 
 \begin{figure}[h] 
     \centering 
@@ -62,7 +62,7 @@ Although the lack of granular catch data prevents a direct comparison of the car
 % Write your answer here (approx 250 words)
 To discover other vessels mimicking SouthSeafood Express Corp’s illicit strategies, we developed a behavioral profiling workflow based on the "signatures" identified in Question 2: (1) direct incursions into restricted zones (Ghoti Preserve) and (2) non-transit loitering at specific buoys (Exit East).
 
-As a first step, we employed the Traffic Explorer to filter the fleet for vessels exhibiting spatial overlaps with the known SouthSeafood offenders. By pinning the \textbf{Snapper Snatcher} as a reference (Figure~\ref{fig:traffic_filtering}), we visually scanned for vessels that frequented the same sectors during identical timeframes. This broad filtering process highlighted the \textbf{Catfish Capturer} as a high-priority suspect due to its overlapping presence in both the Ghoti Preserve and Exit East buoy areas.
+As a first step, we employed the Traffic Explorer to filter the fleet for vessels exhibiting spatial overlaps with the known SouthSeafood offenders. By pinning the \emph{Snapper Snatcher} as a reference (Figure~\ref{fig:traffic_filtering}), we visually scanned for vessels that frequented the same sectors during identical timeframes. This broad filtering process highlighted the \emph{Catfish Capturer} as a high-priority suspect due to its overlapping presence in both the Ghoti Preserve and Exit East buoy areas.
 
 \begin{figure}[h] 
     \centering 
@@ -91,7 +91,7 @@ Finally, we examined post-interdiction behavior to assess the impact of enforcem
 
 The Trajectory Analyzer view enables a temporal analysis of fishing activity before and after the interdiction of SouthSeafood Express Corp (marked by the vertical red dotted line). Post-interdiction, we observe a notable shift in fishing patterns across the Oceanus fleet. Several vessels exhibited increased caution, avoiding previously frequented areas such as the Ghoti Preserve. However, traffic in the broader region did not diminish; instead, it redistributed, suggesting that illegal activities persisted and adapted to the new enforcement landscape. Two primary suspicious behaviors emerged: displacement to less-monitored protected areas and the adoption of ``edge-fishing'' tactics.
 
-As shown in Figure~\ref{fig:displacement}, vessels that previously ignored the Ghoti Preserve suddenly began targeting the Nemo Reef Ecological Preserve immediately after the crackdown. The \textbf{White Marlin Master} (Figure~\ref{fig:displacement}, left) and the \textbf{Marlin Master} (Figure~\ref{fig:edge_fishing}, right) both show a distinct lack of preserve activity prior to the event, followed by repeated incursions into Nemo Reef afterward. This suggests a coordinated shift to exploit a less-monitored protected area.
+As shown in Figure~\ref{fig:displacement}, vessels that previously ignored the Ghoti Preserve suddenly began targeting the Nemo Reef Ecological Preserve immediately after the crackdown. The \emph{White Marlin Master} (Figure~\ref{fig:displacement}, left) and the \emph{Marlin Master} (Figure~\ref{fig:edge_fishing}, right) both show a distinct lack of preserve activity prior to the event, followed by repeated incursions into Nemo Reef afterward. This suggests a coordinated shift to exploit a less-monitored protected area.
 
 \begin{figure}[h] 
     \centering 
@@ -100,9 +100,9 @@ As shown in Figure~\ref{fig:displacement}, vessels that previously ignored the G
     \label{fig:displacement} 
 \end{figure}
 
-Other vessels adopted tactics to avoid inspection. The \textbf{Blue Marlin Bandit} (Figure~\ref{fig:displacement}, right) completely ceased docking at ports (Himark/Haacklee) after the interdiction. Instead, it shifted to the Wrasse Beds and began loitering at Nav C, likely awaiting transshipment vessels to offload catch without entering a harbor.
+Other vessels adopted tactics to avoid inspection. The \emph{Blue Marlin Bandit} (Figure~\ref{fig:displacement}, right) completely ceased docking at ports (Himark/Haacklee) after the interdiction. Instead, it shifted to the Wrasse Beds and began loitering at Nav C, likely awaiting transshipment vessels to offload catch without entering a harbor.
 
-Similarly, the \textbf{Bluefin Tuna Bandit} (Figure~\ref{fig:edge_fishing}, left) adopted "edge fishing" tactics. After the crackdown, it began frequenting Nav 1, a buoy positioned directly on the boundary of the Ghoti Preserve. This suggests the vessel is skimming the edge of the restricted zone, dipping in only briefly or luring fish out, essentially testing the limits of the new enforcement protocols.
+Similarly, the \emph{Bluefin Tuna Bandit} (Figure~\ref{fig:edge_fishing}, left) adopted "edge fishing" tactics. After the crackdown, it began frequenting Nav 1, a buoy positioned directly on the boundary of the Ghoti Preserve. This suggests the vessel is skimming the edge of the restricted zone, dipping in only briefly or luring fish out, essentially testing the limits of the new enforcement protocols.
 
 \begin{figure}[h] 
     \centering \includegraphics[width=0.9\linewidth]{img/bluefin_marlinmaster.png} \caption{Evasive tactics. Left: Bluefin Tuna Bandit begins ``edge fishing'' at Nav 1 (boundary of Ghoti Preserve). Right: Marlin Master confirms the fleet-wide shift to poaching in Nemo Reef.} 

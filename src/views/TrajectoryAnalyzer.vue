@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, computed, ref, shallowRef } from 'vue'
-import { getTrajectories, getVessels, getHarborReports, getTransactions, getDocuments } from '../dataManager'
+import { getTrajectories, getVessels, getHarborReports, getTransactions, getDocuments, getAssetPath } from '../dataManager'
 import VesselFilters from '../components/VesselFilters.vue'
 import TrajectoryPlot from '../components/d3/TrajectoryPlot.vue'
 
@@ -84,7 +84,7 @@ onMounted(async () => {
     <div class="m-8 mt-4 flex-col flex lg:flex-row items-start lg:items-center gap-2 mb-2">
         <h1 class="text-lg font-bold tracking-tight uppercase">Trajectory Analyzer</h1>
         <span class="flex text-xs text-gray-400 gap-2 flex-end">
-            <img src="/assets/icon-info.svg" alt="info" class="w-4 h-4 inline-block" />
+            <img :src="getAssetPath('icon-info.svg')" alt="info" class="w-4 h-4 inline-block" />
             Select two vessels to compare their trajectories over time.
         </span>
     </div>

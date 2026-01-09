@@ -2,7 +2,7 @@
 import { ref, reactive, onMounted, computed, shallowRef } from 'vue'
 import HarborActivityChart from '../components/d3/HarborActivityChart.vue'
 import { getVesselColor, getCommodityStatus, getFishIcon, commodityStyles, illegalCommodities } from '../components/d3/utils.js'
-import { getCommodities, getTransactions, getDocuments, getVessels, getHarborReports } from '../dataManager.js';
+import { getCommodities, getTransactions, getDocuments, getVessels, getHarborReports, getAssetPath } from '../dataManager.js';
 
 const cargoData = ref([]);
 const vesselData = ref([]);
@@ -148,7 +148,7 @@ onMounted(async () => {
         <div class="flex flex-row gap-2">
           <h1 class="text-lg font-bold tracking-tight uppercase">Harbor Inspector</h1>
           <div class="flex items-center text-xs text-gray-400 gap-2">
-            <img src="/assets/icon-info.svg" alt="info" class="w-4 h-4" />
+            <img :src="getAssetPath('icon-info.svg')" alt="info" class="w-4 h-4" />
             <span>Select a harbor to view activity. Shift+Drag to analyze a specific time window.</span>
           </div>
         </div>
@@ -202,7 +202,7 @@ onMounted(async () => {
                 ]"
               >
                 <img 
-                  :src="`/assets/${getFishIcon(id)}`" 
+                  :src="getAssetPath(getFishIcon(id))" 
                   alt="fish"
                   class="w-3 h-3 object-contain"
                   :class="{ 'opacity-50': !selectedHarbor }"
@@ -296,7 +296,7 @@ onMounted(async () => {
                         :class="getCommodityButtonClasses(cargo.commodity)"
                       >
                         <img 
-                          :src="`/assets/${getFishIcon(cargo.commodity)}`" 
+                          :src="getAssetPath(getFishIcon(cargo.commodity))" 
                           alt="fish"
                           class="w-3 h-3 object-contain"
                         />

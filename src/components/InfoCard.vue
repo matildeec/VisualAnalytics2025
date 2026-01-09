@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { getCommodities } from '../dataManager.js';
+import { getAssetPath, getCommodities } from '../dataManager.js';
 import { getCommodityStatus, getFishIcon, commodityStyles, getZoneFill } from './d3/utils.js';
 
 const props = defineProps({
@@ -76,7 +76,7 @@ onMounted(async () => {
                     :class="getStatusClasses(s)"
                 >
                     <img 
-                        :src="`/assets/${getSpeciesData(s).icon}`" 
+                        :src="getAssetPath(getSpeciesData(s).icon)" 
                         alt="fish"
                         class="w-3.5 h-3.5 object-contain opacity-80"
                     />

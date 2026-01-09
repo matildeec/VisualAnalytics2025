@@ -1,7 +1,7 @@
 <script setup>
 import * as d3 from 'd3'
 import { ref, reactive, onMounted, onUnmounted, watch, nextTick } from 'vue'
-import { getCommodities, getLocations } from '../../dataManager.js'
+import { getAssetPath, getCommodities, getLocations } from '../../dataManager.js'
 import { fishIcons, getCommodityStatus, getZoneFill, getZoneBorder, showTooltip, hideTooltip } from './utils.js'
 import Tooltip from '../Tooltip.vue'
 import LoadingOverlay from '../LoadingOverlay.vue'
@@ -292,7 +292,7 @@ const renderChart = async () => {
     // Icon Image
     iconGroups.append('image')
       .attr('width', 24).attr('height', 24)
-      .attr('href', d => `/assets/${fishIcons[d.mainItem.commodityId] || fishIcons['default']}`);
+      .attr('href', d => getAssetPath(fishIcons[d.mainItem.commodityId] || fishIcons['default']));
 
     // If more than one item, draw badge
     const badgeGroup = iconGroups.filter(d => d.items.length > 1)

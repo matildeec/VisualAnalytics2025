@@ -1,5 +1,6 @@
 <script setup>
 import Button from './Button.vue'
+import { getAssetPath } from '../dataManager';
 </script>
 
 <template>
@@ -8,7 +9,7 @@ import Button from './Button.vue'
         <div class="flex items-center select-none">
             <router-link to="/" class="inline-flex items-center gap-3 group focus:outline-none">
                 <img 
-                    src="/assets/fisheye-icon.svg" 
+                    :src="getAssetPath('fisheye-icon.svg')"
                     alt='FishEye icon' 
                     class="w-8 h-8 group-hover:scale-110 transition-transform duration-300" 
                 />
@@ -27,19 +28,19 @@ import Button from './Button.vue'
         <div class="flex items-center gap-3">
             <Button
                 to="/"
-                icon="/assets/map-icon.svg"
+                :icon="getAssetPath('map-icon.svg')"
                 label="Traffic Explorer"
             />
 
             <Button
                 to="/harborinspector"
-                icon="/assets/anchor-icon.svg"
+                :icon="getAssetPath('anchor-icon.svg')"
                 label="Harbor Inspector"
             />
             
             <Button
                 to="/trajectoryanalyzer"
-                icon="/assets/compare-vessel-icon.svg"
+                :icon="getAssetPath('compare-vessel-icon.svg')"
                 label="Trajectory Analyzer"
             />
         </div>

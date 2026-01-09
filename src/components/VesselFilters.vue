@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, onMounted, computed, watch } from 'vue'
-import { getVessels } from '../dataManager'
+import { getVessels, getAssetPath } from '../dataManager'
 
 const props = defineProps({
   index: { type: [Number, String], required: true }
@@ -85,7 +85,7 @@ onMounted(async () => {
           {{ index }}
         </div>
 
-        <img src="/assets/vessel-icon.svg" class="w-5 h-5 shrink-0" />
+        <img :src="getAssetPath('vessel-icon.svg')" class="w-5 h-5 shrink-0" />
 
         <div v-if="selectedVesselDetails" class="flex flex-col overflow-hidden">
           <h3 class="text-sm font-bold text-[var(--main-deep-blue)] uppercase truncate leading-tight">
