@@ -2,6 +2,7 @@
 
 <img src="https://apre.it/wp-content/uploads/2021/01/logo_uni-pisa.png" width="200" />
 
+[![Live Demo](https://img.shields.io/badge/DEMO-LAUNCH_LIVE-success?style=for-the-badge&logo=github)](https://matildeec.github.io/VisualAnalytics2025/)
 ---
 **Developed by:** [Matilde Contestabile](https://github.com/matildeec) \
 **Academic year:** 2024/2025 \
@@ -20,6 +21,7 @@ The objective is to investigate the behavior of vessels operating within the Oce
 This repository includes:
 - **Data Preprocessing**: Jupyter notebooks and Python scripts for data cleaning, inspection, and transformation.
 - **Visual Analytics Application**: The visual analytics application built with Vue 3, Vite, D3.js, and TailwindCSS to explore vessel trajectories, harbor events, and suspicious cargo transactions.
+- **Project Report**: LaTeX source files detailing the analytical methodology, design choices, and final answers to the challenge questions.
 
 ## Installation & Local Usage of the VA App
 
