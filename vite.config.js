@@ -7,4 +7,5 @@ export default defineConfig({
     vue(),
     tailwindcss(),
   ],
+  base: '/VisualAnalytics2025/'
 })
