@@ -143,14 +143,16 @@ Event.HarborReport                  & 2,487  & Entity.Location & Entity.Vessel  
 \end{table}
 
 \subsubsection{Cargo Attribution via Suspected Vessels Tagging}
+\label{sec:cargo_attribution}
 
 To address the challenge of associating cargo deliveries with specific vessels despite missing direct identifiers in the port transaction records (see Question 1 in \ref{challenge_context}), we introduced an attribute called \texttt{suspected\_vessels} within the transactions dataset which was derived in an analytical way. This attribute records, for each transaction, a list of vessels potentially responsible for the cargo. The goal was to infer likely vessel–cargo associations based on spatiotemporal docking information and the presence of fish species in regions. The logic underlying this inference can be formalized as:
 {\small
 \[
 \begin{aligned}
-& \textit{Vessel is either `CargoVessel', `FishingVessel' or `Other' } \\
-& \wedge\ \textit{Vessel is docked in a harbor where a fish species was exported (within 1 day)} \\
-& \wedge\; \textit{The same species is present in a region earlier visited by the vessel} \\
+& \textit{Vessel Type} \in \{\text{`CargoVessel', `FishingVessel', `Other'}\} \\
+& \wedge\ \textit{Vessel docked in export harbor } (\pm 1 \text{ day}) \\
+& \wedge\ \textit{Vessel Tonnage } \geq \textit{ Cargo Weight} \\
+& \wedge\ \textit{Vessel visited species region within previous 21 days} \\
 & \implies \textit{The fish species is likely the vessel's cargo.}
 \end{aligned}
 \]
@@ -176,8 +178,8 @@ Applying this rule, we flagged transactions meeting these conditions and annotat
 % Arrows with plain text labels
 \draw[arrow] (fish) -- (harbor) node[midway, right, font=\scriptsize, fill=white]{exported from};
 \draw[arrow] (fish) -- (region) node[midway, sloped, above, font=\scriptsize, fill=white]{caught in};
-\draw[arrow] (vessel) -- (harbor) node[midway, above, font=\scriptsize, fill=white]{docked in};
-\draw[arrow] (vessel) -- (region) node[midway, left, font=\scriptsize, fill=white]{visited};
+\draw[arrow] (vessel) -- (harbor) node[midway, above, font=\scriptsize, fill=white]{docked in ($\pm$ 1 day)};
+\draw[arrow] (vessel) -- (region) node[midway, left, font=\scriptsize, fill=white]{visited (-21 days)};
 
 % Inferred diagonal arrow with plain text
 \draw[inferred] (vessel.north east) -- (fish.south west) 
@@ -185,10 +187,14 @@ Applying this rule, we flagged transactions meeting these conditions and annotat
 
 \end{tikzpicture}
 \caption{
-Flowchart showing derivation of the \texttt{suspected\_vessels} attribute.
+Flowchart showing the spatiotemporal derivation of the \texttt{suspected\_vessels} attribute.
 }
 \label{fig:suspected_vessels_flowchart}
 \end{figure}
+
+We set the detection window to 21 days (3 weeks) as a result of reasoning around vessel trip durations derived from trajectory data and the average tonnage of the fleet. The analysis of the statistical distribution of vessel trip durations revealed a highly skewed distribution: while the median trip duration is short ($\approx$ 2 days) and 95\% of trips conclude within 7.4 days, the distribution exhibits a significant ``long tail'', with the 99th percentile extending to 38.2 days. By extending the window beyond the 95th percentile, we aim to capture this specific sub-segment of long-endurance voyages where deep-sea illegal fishing is more likely to occur.
+
+This decision is further supported by the high average tonnage of the fleet (FishingVessel avg: 3,480 GT), which indicates industrial capabilities likely including onboard freezing systems. Unlike artisanal boats, such vessels can operate for weeks without risking spoilage. Furthermore, intermediate stops for logistics (e.g., bunkering, crew changes) do not necessarily imply the offloading of cargo; such behavior may instead serve as a masking strategy to obscure the true origin and timeline of the catch. Consequently, a narrower detection window (e.g., 7 days) would risk the premature exclusion of catches from earlier voyage stages that are still retained onboard.
 
 \subsection{Resulting \texttt{.json} Files}
 

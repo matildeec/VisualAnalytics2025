@@ -1,8 +1,9 @@
 \section{Design and Architecture of the Visual Analytics Interface}
 
 %\url{https://data.europa.eu/apps/data-visualisation-guide/}
+% \footnote{Wilke, C. (2019). \textit{Fundamentals of Data Visualization}. Available at \url{https://clauswilke.com/dataviz/}}
 
-The visual analytics interface was designed to support anomaly detection, pattern recognition, and hypothesis generation with the ultimate goal of answering the four research questions reported in Section~\ref{challenge_context}. Guided by established principles of visual encoding, interaction design, and narrative visualization\footnote{Wilke, C. (2019). \textit{Fundamentals of Data Visualization}. Available at \url{https://clauswilke.com/dataviz/}}, the design process consisted of three main stages.
+The visual analytics interface was designed to support anomaly detection, pattern recognition, and hypothesis generation with the ultimate goal of answering the four research questions reported in Section~\ref{challenge_context}. Guided by established principles of visual encoding, interaction design, and narrative visualization, the design process consisted of three main stages.
 First, we surveyed the state-of-the-art tools to gain inspiration for tracking fishing vessels. Next, we identified the key visual variables necessary to address the research questions posed by the VAST Challenge. Finally, these design decisions were translated into a prototype using Figma, which then served as the blueprint for the implementation of the interactive system in JavaScript.
 
 This section provides a detailed account of the resulting design choices for the visual analytics system developed. 
@@ -22,27 +23,28 @@ Rather than forcing an incomplete or misleading geographic reconstruction of exa
 
 \subsection{Interface Structure and Pattern to Communicate}
 
-To manage the complexity of the data and the multi-faceted research questions, we adopted a multi-page architecture. The application is structured into three distinct views: \textbf{Traffic Explorer}, \textbf{Harbor Activity}, and \textbf{Compare Trajectories}. Each view serves a distinct stage in the analytical pipeline, progressively revealing deeper insights. We provide a brief overview of each page below.
+To manage the complexity of the data and the multi-faceted research questions, we adopted a multi-page architecture. The application is structured into three distinct views: \textbf{Traffic Explorer}, \textbf{Harbor Inspector}, and \textbf{Trajectory Analyzer}. Each view serves a distinct stage in the analytical pipeline, progressively revealing deeper insights. We provide a brief overview of each page below.
 
 As a design choice, we adopted a \textbf{reader-driven narrative visualization} paradigm, empowering users to explore data at their own pace while providing \textbf{author-driven} entry points (such as pre-selected filters for known violators like SouthSeafood Express Corp) to jumpstart the investigation.
 
-A consistent global navigation bar allows seamless switching between views. To support deep investigation, the interface integrates interactive techniques including zooming, brushing, and "details-on-demand" tooltips, enabling micro-level analysis without cluttering the macro-level visualizations.
+A consistent global navigation bar allows seamless switching between views. To support deep investigation, the interface integrates interactive techniques including \textbf{zooming}, \textbf{brushing}, and "details-on-demand" \textbf{tooltips}, enabling micro-level analysis without cluttering the macro-level visualizations.
 
 \subsubsection{Traffic Explorer}
+\label{sec:traffic_explorer}
 
 The \textbf{Traffic Explorer} serves as the primary entry point. It fulfills a dual purpose: establishing geographical context via an \textbf{Interactive Map} and visualizing temporal patterns via a \textbf{Traffic Activity Chart}. This combination allows users to identify macroscopic anomalies in traffic density and spatial distribution.
 
 \paragraph{Interactive Map.}
-The spatial component renders the geography of Oceanus using Leaflet and the provided GeoJSON data. It visually distinguishes between functional areas, such as Ecological Preserves (green), Fishing Zones (blue), and landmasses (brown). 
+The spatial component renders the geography of Oceanus using Leaflet and the provided GeoJSON data. It visually distinguishes between functional areas, such as Ecological Preserves (green), Fishing Zones (blue), and landmasses (beige). 
 
-To assist in understanding the complex regulations of the region, the map is linked to a dynamic \textbf{Info Panel}. When a user selects a zone (e.g., \emph{Nemo Reef}), it turns ocre to indicate selection, and the panel populates with semantic metadata, including the zone type, permitted activities (e.g., Recreation, Tourism), and a list of endemic species. This context is critical for identifying illegal fishing activities in protected waters.
+To assist in understanding the complex regulations of the region, the map is linked to a dynamic \textbf{Info Panel}. When a user selects a zone (e.g., \emph{Nemo Reef}), it turns ocre to indicate selection, and the panel populates with semantic metadata, including the zone type, permitted activities (e.g., Recreation, Tourism), and a list of endemic species colored according to their legal status (see Section~\ref{sec:commodity_encoding}). This context is critical for identifying illegal fishing activities in protected waters.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=0.6\linewidth, trim=0 9cm 0 0, clip]{img/map_infobox.png}
-        \caption{Interactive Map}
+        \caption{Interactive Map with zone selection}
         \label{fig:map}
     \end{subfigure}
     \hfill
@@ -58,7 +60,7 @@ To assist in understanding the complex regulations of the region, the map is lin
 \end{figure}
 
 \paragraph{Traffic Activity Chart.}
-Upon selecting a zone, the application generates a \textbf{temporal strip plot} to visualize vessel presence over the entire dataset duration (March through November). In this visualization:
+Upon selecting a zone, the application generates a \textbf{temporal strip plot} to visualize vessel presence over the entire dataset duration. In this visualization:
 \begin{itemize}
     \item The \textbf{Y-axis} lists individual vessels.
     \item The \textbf{X-axis} represents the timeline.
@@ -70,8 +72,8 @@ Visually resembling a barcode, this density strip allows investigators to instan
 The chart is equipped with robust filtering capabilities:
 \begin{itemize}
     \item \textbf{Time-of-Day Filtering:} Recognizing that illicit activity often occurs during specific windows, a range slider allows users to filter pings by time of day (00:00--24:00). Presets for \emph{Morning}, \emph{Day}, and \emph{Night} allow for rapid comparison of diurnal vs. nocturnal traffic.
-    \item \textbf{Visual Highlighting:} To aid the narrative, vessels belonging to \emph{SouthSeafood Express Corp} are highlighted in orange by default, contrasting with the blue of general traffic.
-    \item \textbf{Pinning:} Users can "pin" specific vessels of interest, isolating their trajectories for a focused comparison against background traffic noise.
+    \item \textbf{Visual Highlighting:} To aid the narrative, vessels belonging to \emph{SouthSeafood Express Corp} are highlighted in yellow by default, contrasting with the color of general traffic (colors are assigned based on the zone selected, as explained in Section~\ref{sec:zones_encoding}). Each vessel is also annotated with its type (e.g., Fishing, Cargo) via a colored tag next to its name.
+    \item \textbf{Pinning:} Users can "pin" specific vessels of interest, isolating their trajectories for a focused comparison with others.
 \end{itemize}
 
 \begin{figure}[H]
@@ -81,26 +83,27 @@ The chart is equipped with robust filtering capabilities:
     \label{fig:traffic_chart}
 \end{figure}
 
-\subsubsection{Harbor Activity}
+\subsubsection{Harbor Inspector}
+\label{sec:harbor_activity}
 
-The \textbf{Harbor Activity} page focuses on port dynamics, enabling users to analyze cargo exports and harbor visits by specific location. This view is designed to address the core challenge of cargo attribution, which directly addresses Q1. To achieve this, we developed a composite \textbf{Dual-Axis Mirror Plot}, which visually correlates the volume of exports with vessel arrival dynamics on a shared temporal axis.
+The \textbf{Harbor Inspector} page focuses on port dynamics, enabling users to analyze cargo exports and harbor visits by specific location. This view is designed to address the core challenge of cargo attribution, which directly addresses Q1. To achieve this, we developed a composite \textbf{Dual-Axis Mirror Plot}, which visually correlates the volume of exports with vessel arrival dynamics on a shared temporal axis.
 
 \paragraph{Data Filtering.}
-To manage the high data volume, users can filter cargo by species and vessels by type. Harbors, species.
+To manage the high data volume, the interface provides a coordinated filtering system where users can refine the view by Harbor, Cargo Species, and Vessel Type. These filters operate globally, updating the Mirror Plot to help users correlate specific cargo types with relevant vessels.
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{\textwidth}
         \centering
         \includegraphics[width=0.4\linewidth]{img/harbor_select.png}
-        \caption{Harbor selection panel.}
+        \caption{Harbor selection panel}
         \label{fig:map}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{\textwidth}
         \centering
         \includegraphics[width=0.9\linewidth]{img/filter_panel.png}
-        \caption{Filter panel.}
+        \caption{Filter panel for cargo species and vessel type}
         \label{fig:chart}
     \end{subfigure}
     
@@ -112,7 +115,7 @@ To manage the high data volume, users can filter cargo by species and vessels by
 This central visualization serves as the analytical engine of the view, split into two aligned components that share a common time axis:
 \begin{itemize}
     \item \textbf{Exported Cargo (Top Half):} A \textbf{stacked bar chart} represents the daily volume of fish exports (in tons), color-coded by legal status of species. This allows analysts to instantly detect seasonal anomalies and peaks in illegal shipments.
-    \item \textbf{Docked Vessels (Bottom Half):} An \textbf{inverted lollipop chart} visualizes vessel arrivals by gross tonnage (GT) over time. Vessels are colored by type, and the dataset is filtered to include only vessels with registered gross tonnage ($>0$) to focus the analysis on significant maritime activity.
+    \item \textbf{Docked Vessels (Bottom Half):} An \textbf{inverted lollipop chart} visualizes vessel arrivals by gross tonnage (GT) over time. Vessels are colored by type, and the dataset is filtered to include only vessels with registered gross tonnage ($>0$) to focus the analysis on significant maritime activity (this excludes small boats and recreational vessels that are unlikely to carry large cargo loads like research or tour boats).
 \end{itemize}
 By vertically aligning these two datasets, the user can perform visual correlation: a spike in illegal cargo in the top chart can be vertically traced down to identify which heavy-tonnage vessels docked immediately prior to the export. Those analytically linked to illegal shipments are highlighted in red.
 
@@ -126,40 +129,39 @@ By vertically aligning these two datasets, the user can perform visual correlati
 \paragraph{Interactive Filtering and Suspect Identification.}
 To move from visual correlation to specific attribution, the interface employs a \textbf{temporal brushing} interaction. Selecting a time window on the chart updates the \textbf{Details Sidebar}, which lists:
 \begin{enumerate}
-    \item \textbf{Cargo in Range:} A list of all shipments during the brushed period. Illegal shipments are explicitly flagged with a warning icon (see Figure \ref{fig:sidebar}).
-    \item \textbf{Suspect Generation:} Expanding a specific illegal cargo entry reveals a computed list of \textbf{``suspected vessels''} (ships that were docked in the harbor within a relevant time window of the export).
-    \item \textbf{Vessels in Range:} A comprehensive list of potential carriers, providing details such as ownership and exact tonnage.
+    \item \textbf{Cargo in Range:} A list of all shipments during the brushed period. Illegal shipments are explicitly flagged with a warning icon.
+    \item \textbf{Suspect Generation:} Expanding a specific cargo entry reveals a computed list of \textbf{``suspected vessels''} (ships that were docked in the harbor within a relevant time window of the export, have sufficient tonnage to carry the cargo, and have been observed fishing in protected zones).
+    \item \textbf{Vessels in Range:} A list of all vessels docked during the brushed period, providing details such as company and exact tonnage.
 \end{enumerate}
-
-To guide the user's attention, vessels confirmed to be involved in suspicious patterns are highlighted with \textbf{red circles} in the lollipop chart (see Figure \ref{fig:harbor_overview}, bottom right), differentiating them from benign traffic.
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=0.5\linewidth]{img/sidebar.png}
-        \caption{The Harbor Activity Mirror Plot with the Details Sidebar closed.}
+        \caption{The Details Sidebar closed.}
         \label{fig:sidebar_closed}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=0.5\linewidth]{img/sidebar_open.png}
-        \caption{The Attribution Sidebar showing suspected vessels for an illegal cargo.}
+        \caption{The Details Sidebar showing suspected vessels for an illegal cargo.}
         \label{fig:sidebar_open}
     \end{subfigure}
     
-    \caption{The Attribution Sidebar.}
+    \caption{The Details Sidebar.}
     \label{fig:sidebar}
 \end{figure}
 
-\subsubsection{Compare Trajectories}
+\subsubsection{Trajectory Analyzer}
+\label{sec:compare_trajectories}
 
-Finally, the \textbf{Compare Trajectories} page enables granular comparisons between specific vessel trajectories, addressing Q2 and Q3, about illegal behavior detection and pattern matching. This view consists of a juxtaposed layout, allowing users to select any two vessels via distinct control panels and visualize their movements side-by-side.
+Finally, the \textbf{Trajectory Analyzer} page enables granular comparisons between specific vessel trajectories, addressing Q2 and Q3, about illegal behavior detection and pattern matching. This view consists of a juxtaposed layout, allowing users to select any two vessels via distinct control panels and visualize their movements side-by-side.
 
 \paragraph{Vessel select.}
 
-The vessel selection panels allow users to filter the fleet by company, type, and tonnage range. 
+The vessel selection panels allow users to filter the fleet by company, type, and tonnage. Once a vessel is selected, key metadata (e.g., company, type, tonnage) is displayed. This contextual information aids in selecting vessels of interest for comparison.
 
 \begin{figure}[H]
     \centering
@@ -169,32 +171,39 @@ The vessel selection panels allow users to filter the fleet by company, type, an
 \end{figure}
 
 \paragraph{Multi-Layered Spatiotemporal Timelines.}
-Instead of standard trajectories, we visualize movement using location-based event timelines.
+Trajectories are visualized using a location-based timeline chart, inspired by the static plots developed during EDA (see Section~\ref{eda}). This design effectively conveys complex spatiotemporal patterns while allowing for direct comparison between two vessels.
+
 \begin{itemize}
     \item The \textbf{Y-axis} lists all key locations in Oceanus (fishing grounds, ecological preserves, cities, and buoy markers).
-    \item The \textbf{X-axis} represents the shared timeline.
+    \item The \textbf{X-axis} represents the timeline.
     \item \textbf{Data Layers} are superimposed to reveal discrepancies between reported and actual behavior:
     \begin{enumerate}
-        \item \textbf{Transponder Pings (Blue Strips):} Represent the "ground truth" location of the vessel derived from raw tracking data.
-        \item \textbf{Harbor Reports (Gray Bars):} Represent self-reported presence in cities. Discrepancies between Blue Pings and Gray Reports immediately signal "dark ship" activity or falsified logs.
-        \item \textbf{Cargo Attribution (Icons):} Fish icons indicate probable cargo onboard, allowing analysts to correlate movement through protected zones with the transport of specific species.
+        \item \textbf{Transponder Pings Layer}: pings are shown in solid bars colored according to the zone type. These represent self-reported locations via AIS data.        
+        \item \textbf{Harbor Reports Layer}: harbor reports are shown as striped bars colored according to the zone type. These indicate official harbor logs of vessel presence. Discrepancies between Pings and Reports immediately signal "dark ship" activity or falsified logs.
+        \item \textbf{Cargo Attribution Layer}: cargo attribution is visualized via fish icons overlaid on the timeline at harbor locations. To handle multiple shipments associated with a single docking event, transactions are aggregated into a single representative icon featuring a red numeric badge that indicates the count of distinct cargo batches. The icon is color-coded based on the highest-risk species present (e.g., illegal), allowing analysts to instantly correlate movement through protected zones with the volume and nature of the transported catch.
     \end{enumerate}
 \end{itemize}
 
-To directly answer Q4, the timeline includes a \textbf{Contextual Event Layer}. A vertical red dashed line marks the exact date of the \textit{SouthSeafood Express Corp} ban. This visual anchor allows analysts to instantly assess whether a vessel's behavior (e.g., stopping illegal fishing) changed in response to the regulatory enforcement.
+Moreover, to directly answer Q4, the timeline includes a \textbf{Contextual Event Layer}. A vertical red dashed line marks the exact date of the \textit{SouthSeafood Express Corp} ban. This visual anchor allows analysts to instantly assess whether a vessel's behavior (e.g., stopping illegal fishing) changed in response to the regulatory enforcement.
 
 To manage visual complexity, a "Layer Control" toolbar (visible at the bottom of Figure \ref{fig:compare_traj}) allows users to toggle specific layers on or off, isolating specific variables such as cargo or location pings for clearer inspection.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{img/trajectory_charts.png}
-    \caption{The Compare Trajectories View.}
+    \caption{The Trajectory Analyzer View.}
     \label{fig:compare_traj}
 \end{figure}
 
-\subsection{Visual Encoding and Design Choices}
+\subsection{Design Choices and Visual Encoding}
 
-The interface prioritizes a \textbf{white background} to maximize contrast and maintain a neutral canvas for complex data visualizations. This design choice minimizes visual noise, ensuring that chromatic encodings for data variables remain the focal point. To establish a strong visual hierarchy, the top navigation bar (Figure~\ref{fig:nav_bar}) utilizes a \textbf{dark blue} (\texttt{\#092C4C}) anchor, which contrasts effectively with the lighter content areas. The navigation controls incorporate a semi-transparent "glassmorphism" effect, allowing the background to subtly show through; this adds a modern aesthetic while maintaining the interface's clean, uncluttered structure.
+The interaface was designed with a focus on clarity, usability, and effective communication of complex data patterns. It employs a clean, minimalist aesthetic prioritizing white space and high-contrast color encodings to enhance data legibility. To maintain a neutral and distraction-free environment, the color palette was carefully curated to ensure that visual encodings for key data variables (commodities, zones, vessel types) stand out distinctly against the background. The following sections detail the specific design choices and visual encoding strategies employed.
+
+\subsubsection{Overall Aesthetic and Color Palette}
+
+The interface background and layout were designed to minimize visual clutter and enhance focus on data visualizations. The primary background color is a \textbf{clean white} (\texttt{\#FFFFFF}), chosen to maximize contrast and maintain a neutral canvas for complex data visualizations. This design choice minimizes visual noise, ensuring that chromatic encodings for data variables remain the focal point. To establish a strong visual hierarchy, the top navigation bar (Figure~\ref{fig:nav_bar}) utilizes a \textbf{dark blue} (\texttt{\#092C4C}) anchor, which contrasts effectively with the lighter content areas. Dark blue was selected for its associations with trustworthiness and professionalism, aligning with the investigative nature of the application, as well as its thematic connection to maritime contexts.
+
+The navigation controls incorporate a semi-transparent "glassmorphism" effect, allowing the background to subtly show through; this adds a modern aesthetic while highlighting the navigation elements without overwhelming the user.
 
 Consistent with this philosophy, buttons and controls throughout the remainder of the interface adhere to a \textbf{minimalist, white-on-white aesthetic}. By keeping these secondary interactive elements subtle, we prevent them from competing for visual attention, ensuring that the user's focus remains fixed on the high-contrast data visualizations.
 
@@ -206,30 +215,29 @@ Consistent with this philosophy, buttons and controls throughout the remainder o
 \end{figure}
 
 \subsubsection{Commodities (Fish Species)}
+\label{sec:commodity_encoding}
 
-Commodities are encoded primarily through color and iconography to facilitate rapid identification. Guided by the classification established in Section~\ref{eda}, we applied a semantic color scale to the fish species: \emph{legal} species are rendered in green, \emph{suspect} in orange, and \emph{illegal} in red. This scheme leverages pre-attentive processing and common cultural associations (e.g., red for danger) to intuitively convey the risk level of a cargo. Throughout the interface, this color coding extends to specific icons, effectively distinguishing between species even in dense visualizations. The color encoding scheme is summarized below:
+Commodities are encoded primarily through color and iconography to facilitate rapid identification. Guided by the classification established in Section~\ref{eda}, we applied a semantic color scale to the fish species: \emph{legal} species are rendered in green, \emph{suspect} in orange, and \emph{illegal} in red. This scheme leverages pre-attentive processing and common cultural associations (e.g., red for danger) to intuitively convey the risk level of a cargo. Throughout the interface, this color coding extends to specific icons, effectively distinguishing between species even in dense visualizations.
 
 \begin{table}[h!]
     \centering
     \small
     \renewcommand{\arraystretch}{1.5}
-    \begin{tabular}{l c c c} 
+    \begin{tabular}{l c c} 
         \toprule
-        \textbf{Status} & \textbf{Color Encoding} & \textbf{Hex Code} & \textbf{Icon} \\
+        \textbf{Status} & \textbf{Color Encoding} & \textbf{Icon} \\
         \midrule
         Legal & 
-        \colorswatch{commodityLegal}{commodityLegal} & 
-        \texttt{\#10B981} &
+        \colorswatch{commodityLegal}{commodityLegal} (\texttt{\#10B981}) &
         \includegraphics[width=2.3em, valign=c]{img/fish-icon-green.png} \\
         
         Suspect & 
-        \colorswatch{commoditySuspect}{commoditySuspect} & 
-        \texttt{\#F59E0B} &
+        \colorswatch{commoditySuspect}{commoditySuspect} (\texttt{\#F59E0B}) &
         \includegraphics[width=2.3em, valign=c]{img/fish-icon-amber.png} \\
         
         Illegal & 
-        \colorswatch{commodityIllegal}{commodityIllegal} & 
-        \texttt{\#EF4444} &
+        \colorswatch{commodityIllegal}{commodityIllegal} 
+        (\texttt{\#EF4444}) &
         \includegraphics[width=2.3em, valign=c]{img/fish-icon-red.png} \\
         \bottomrule
     \end{tabular}
@@ -237,10 +245,11 @@ Commodities are encoded primarily through color and iconography to facilitate ra
 \end{table}
 
 \subsubsection{Map Zones}
+\label{sec:zones_encoding}
 
-To reduce cognitive load, the geographic zones within the Oceanus map employ a \textbf{semantic color mapping} strategy. This approach aligns visual encoding with the user's natural mental model of the environment, enabling intuitive recognition without constant reference to a legend. For example, a vessel crossing into a "green" zone instinctively signals entry into a protected nature preserve, while a "blue" zone implies standard fishing grounds.
+To reduce cognitive load, the geographic zones within the Oceanus map employ a \textbf{semantic color mapping} strategy. This approach aligns visual encoding with the user's natural mental model of the environment, enabling intuitive recognition without constant reference to a legend. For example, a vessel crossing into a ``green'' zone instinctively signals entry into a protected nature preserve, while a ``blue'' zone implies standard fishing grounds.
 
-Crucially, the palette was calibrated to ensure high contrast against the white background of the \textbf{Compare Trajectories} page. To distinguish the active focus during analysis, selected zones are highlighted in a warm amber, providing immediate visual feedback against the cool tones of the base map.
+Crucially, the palette was calibrated to ensure high contrast against the white background of the \textbf{Trajectory Analyzer} page. To distinguish the active focus during analysis, selected zones are highlighted in a warm amber, providing immediate visual feedback against the cool tones of the base map.
 
 \begin{table}[h!]
     \small
@@ -248,34 +257,34 @@ Crucially, the palette was calibrated to ensure high contrast against the white 
     \renewcommand{\arraystretch}{1.5} 
     \setlength{\tabcolsep}{12pt}
     
-    \begin{tabular}{l c c c} 
+    \begin{tabular}{l c} 
         \toprule
-        \textbf{Zone Type} & \textbf{Color Encoding} & \textbf{Hex Code (Fill)} & \textbf{Hex Code (Border)} \\
+        \textbf{Zone Type} & \textbf{Color Encoding} \\
         \midrule
         
         Fishing Ground & 
-        \colorswatch{zoneFishingBg}{zoneFishingBorder} &
-        \texttt{\#3B82F6} & \texttt{\#1d4ed8} \\
+        \colorswatch{zoneFishingBg}{zoneFishingBorder}
+        (fill: \texttt{\#3B82F6}, border: \texttt{\#1d4ed8}) \\
         
         Ecological Preserve & 
-        \colorswatch{zonePreserveBg}{zonePreserveBorder} &
-        \texttt{\#0C875E} & \texttt{\#044431}\\
+        \colorswatch{zonePreserveBg}{zonePreserveBorder}
+        (fill: \texttt{\#0C875E}, border: \texttt{\#044431})\\
         
         Buoy & 
-        \colorswatch{zoneBuoyBg}{zoneBuoyBorder} &
-        \texttt{\#A94700} & \texttt{\#732100}\\
+        \colorswatch{zoneBuoyBg}{zoneBuoyBorder} 
+        (fill: \texttt{\#A94700}, border: \texttt{\#732100})\\
         
         City & 
-        \colorswatch{zoneCityBg}{zoneCityBorder} &
-        \texttt{\#575F6C} & \texttt{\#2d3642}\\
+        \colorswatch{zoneCityBg}{zoneCityBorder} 
+        (fill: \texttt{\#575F6C}, border: \texttt{\#2d3642})\\
         
         Island & 
-        \colorswatch{zoneIslandBg}{zoneIslandBorder} &
-        \texttt{\#DCD5C5} & \texttt{\#9a8c73}\\
+        \colorswatch{zoneIslandBg}{zoneIslandBorder} 
+        (fill: \texttt{\#DCD5C5}, border: \texttt{\#9a8c73})\\
 
-        Selected Zone & 
-        \colorswatch{stateSelectedBg}{stateSelectedBorder} &
-        \texttt{\#fbbf24} & \texttt{\#f59e0b}\\
+        Selected Zone (on map) & 
+        \colorswatch{stateSelectedBg}{stateSelectedBorder}
+        (fill: \texttt{\#fbbf24}, border: \texttt{\#f59e0b})\\
         
         \bottomrule
     \end{tabular}
@@ -285,44 +294,44 @@ Crucially, the palette was calibrated to ensure high contrast against the white 
 
 \subsubsection{Vessel Types}
 
-A categorical color scheme was employed to differentiate between vessel types. The primary design constraint for this variable was to ensure distinctness from the commodity palette used in the \textbf{Harbor Activity} page to avoid visual confusion. Consequently, we selected a set of high-contrast hues that are visually separable from the red-orange-green spectrum used for fish species, ensuring that vessel types remain easily distinguishable even when overlaid with cargo data. The assigned colors are as follows:
+A categorical color scheme was employed to differentiate between vessel types. The primary design constraint for this variable was to ensure distinctness from the commodity palette used in the \textbf{Harbor Inspector} page to avoid visual confusion. Consequently, we selected a set of high-contrast hues that are visually separable from the red-orange-green spectrum used for fish species, ensuring that vessel types remain easily distinguishable even when overlaid with cargo data. The assigned colors are as follows:
 
 \begin{table}[H]
     \small
     \centering
     \renewcommand{\arraystretch}{1.5}
-    \begin{tabular}{l c c}
+    \begin{tabular}{l c}
         \toprule
-        \textbf{Vessel Type} & \textbf{Color Encoding} & \textbf{Hex Code} \\
+        \textbf{Vessel Type} & \textbf{Color Encoding} \\
         \midrule
         
         Cargo & 
-        \colorswatch{vesselCargo}{vesselCargo} &
-        \texttt{\#6366F1} \\
+        \colorswatch{vesselCargo}{vesselCargo}
+        (\texttt{\#6366F1}) \\
         
         Fishing & 
-        \colorswatch{vesselFishing}{vesselFishing} &
-        \texttt{\#06B6D4} \\
+        \colorswatch{vesselFishing}{vesselFishing}
+        (\texttt{\#06B6D4}) \\
         
         Ferry (Passenger) & 
-        \colorswatch{vesselFerryPax}{vesselFerryPax} &
-        \texttt{\#D946EF} \\
+        \colorswatch{vesselFerryPax}{vesselFerryPax}
+        (\texttt{\#D946EF}) \\
         
         Ferry (Cargo) & 
-        \colorswatch{vesselFerryCargo}{vesselFerryCargo} &
-        \texttt{\#8B5CF6} \\
+        \colorswatch{vesselFerryCargo}{vesselFerryCargo}
+        (\texttt{\#8B5CF6}) \\
         
         Tour & 
-        \colorswatch{vesselTour}{vesselTour} &
-        \texttt{\#FB7185} \\
+        \colorswatch{vesselTour}{vesselTour}
+        (\texttt{\#FB7185}) \\
         
         Research & 
-        \colorswatch{vesselResearch}{vesselResearch} &
-        \texttt{\#84CC16} \\
+        \colorswatch{vesselResearch}{vesselResearch}
+        (\texttt{\#84CC16}) \\
         
         Other & 
-        \colorswatch{vesselOther}{vesselOther} &
-        \texttt{\#334155} \\
+        \colorswatch{vesselOther}{vesselOther}
+        (\texttt{\#334155}) \\
         
         \bottomrule
     \end{tabular}

@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import InspectHarbor from '../views/InspectHarbor.vue'
-import CompareTrajectories from '../views/CompareTrajectories.vue'
-import SeeTraffic from '../views/SeeTraffic.vue'
+import TrafficExplorer from '../views/TrafficExplorer.vue'
+import HarborInspector from '../views/HarborInspector.vue'
+import TrajectoryAnalyzer from '../views/TrajectoryAnalyzer.vue'
 
 const routes = [
-  { path: '/', name: 'seeTraffic', component: SeeTraffic },
-  { path: '/inspectharbor', name: 'inspectHarbor', component: InspectHarbor },
-  { path: '/comparetrajectories', name: 'compareTrajectories', component: CompareTrajectories }
+  { path: '/', name: 'trafficExplorer', component: TrafficExplorer },
+  { path: '/harborinspector', name: 'harborInspector', component: HarborInspector },
+  { path: '/trajectoryanalyzer', name: 'trajectoryAnalyzer', component: TrajectoryAnalyzer },
 ]
 
 const router = createRouter({

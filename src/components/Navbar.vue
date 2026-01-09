@@ -32,15 +32,15 @@ import Button from './Button.vue'
             />
 
             <Button
-                to="/inspectharbor"
+                to="/harborinspector"
                 icon="/assets/anchor-icon.svg"
-                label="Inspect Harbor"
+                label="Harbor Inspector"
             />
             
             <Button
-                to="/comparetrajectories"
+                to="/trajectoryanalyzer"
                 icon="/assets/compare-vessel-icon.svg"
-                label="Compare Trajectories"
+                label="Trajectory Analyzer"
             />
         </div>
     </nav>

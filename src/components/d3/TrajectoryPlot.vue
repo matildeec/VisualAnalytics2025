@@ -463,19 +463,19 @@ watch(layers, () => {
        <span class="text-[9px] font-bold text-gray-400 uppercase mr-2 tracking-widest">Layers</span>
        
        <button @click="layers.pings = !layers.pings" class="layer-btn" :class="layers.pings ? 'text-blue-600 bg-blue-50 border-blue-100' : 'off'">
-         <span class="dot bg-blue-500"></span> Pings
+          Pings
        </button>
        
        <button @click="layers.reports = !layers.reports" class="layer-btn" :class="layers.reports ? 'text-slate-600 bg-slate-100 border-slate-200' : 'off'">
-         <span class="dot bg-slate-400"></span> Reports
+          Reports
        </button>
        
        <button @click="layers.cargo = !layers.cargo" class="layer-btn" :class="layers.cargo ? 'text-emerald-600 bg-emerald-50 border-emerald-100' : 'off'">
-         <span class="dot bg-emerald-500"></span> Cargo
+          Cargo
        </button>
        
        <button @click="layers.event = !layers.event" class="layer-btn" :class="layers.event ? 'text-red-600 bg-red-50 border-red-100' : 'off'">
-         <span class="dot bg-red-500"></span> Event
+          Event
        </button>
     </div>
   </div>

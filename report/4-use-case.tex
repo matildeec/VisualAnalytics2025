@@ -1,4 +1,51 @@
 %---------------------------------------------------------------
 \section{Use Case Example}
 
-This section presents a detailed use case example demonstrating how an analyst might utilize the visual analytics system to investigate illegal fishing activities. We will follow a hypothetical scenario involving the analysis of vessel behavior, cargo attribution, and anomaly detection, illustrating the practical application of the system's features.
+This section presents a detailed use case example demonstrating how an analyst might utilize the visual analytics system to investigate illegal fishing activities. Given that the starting point for analysis can vary widely based on the specific questions and hypotheses an analyst wishes to explore, we outline a hypothetical scenario that showcases the system's capabilities across all views. We address the following research question:
+
+\begin{quote} 
+    \textit{Following recent enforcement actions against known illegal fishing fleets, has the illegal fishing activity effectively ceased?} 
+\end{quote}
+
+\paragraph{Phase 1: Anomaly Detection (Harbor Inspector).} 
+The investigation begins in the \textbf{Harbor Inspector} view. By analyzing the seasonal trends in cargo exports and vessel arrivals across all harbors, the analyst notices anomalies in the export volumes of regulated fish species post-May 2035, a period following the enforcement actions against known illegal fleets (e.g., SouthSeafood Express Corp).
+
+By filtering the cargo types to focus on \textit{regulated species} (specifically \textit{Offidiaa/Pisces osseus} as shown in Figure~\ref{fig:harbor_anomaly}), the analyst observes that despite the interdiction, significant exports of these species persist. To pinpoint the source, the analyst zooms into \textbf{South Paackland}, a port historically less associated with illegal operations. Brushing over an export peak in mid-October reveals a corresponding arrival event. The \textbf{Suspected Vessels} sidebar panel immediately flags a new set of IDs associated with this high-risk cargo. The analyst selects the primary suspect from the list: the \textit{Sockeye Salmon Seeker}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{img/southpaackland_sockeye.png}
+    \caption{Harbor Inspector view for South Paackland. Filtering for regulated \textit{Offidiaa} reveals spikes in illegal exports (red bars) in late 2035. The system identifies \textit{Sockeye Salmon Seeker} as the carrier.}
+    \label{fig:harbor_anomaly}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{img/sockeye_traffic.png}
+    \caption{Traffic Explorer view, highlighting the singular and anomalous docking event of the \textit{Sockeye Salmon Seeker} vessel at South Paackland on October 17.}
+    \label{fig:traffic_sockeye}
+\end{figure}
+
+\paragraph{Phase 2: Spatial Filtering (Traffic Explorer).} 
+
+To investigate the movement patterns of the \textit{Sockeye Salmon Seeker}, the analyst switches to the \textbf{Traffic Explorer}. By pinning the vessel ID, the timeline immediately isolates a single, anomalous docking event in South Paackland on October 17 at 03:00 A.M. (Figure~\ref{fig:traffic_sockeye}).
+
+By selecting other zones on the map while keeping the vessel pinned allows to have an idea of spatial trajectory. This reveals a striking operational anomaly. While the vessel concentrates its fishing efforts in the \textbf{Cod Table}, it consistently bypasses the nearest logical ports (South Paackland or Paackland) to dock at \textbf{Lomark}, located on the opposite side of the ocean region.
+
+This route represents a significant economic inefficiency, increasing transit time and fuel costs without a clear commercial justification. Crucially, this specific trajectory forces the vessel to traverse the restricted \textbf{Ghoti Preserve}. Unlike compliant vessels that dock locally to maximize efficiency, this vessel appears to use the pretext of long-distance transit to justify its presence in the restricted zone. This hypothesis is strengthened by the data: pings inside the Ghoti Preserve cluster intensely starting in late August, suggesting that the "transit" is merely a cover for opportunistic illegal fishing during peak season.
+
+
+\paragraph{Phase 3: Behavioral Verification (Trajectory Analyzer).} 
+To distinguish navigational necessity from intentional poaching, the analyst transitions to the \textbf{Trajectory Analyzer} view. They load the \textit{Sockeye Salmon Seeker} alongside a reference compliant vessel, the \textit{Aquatic Angler}, chosen for its historically consistent and predictable navigation patterns through Cod Table and South Paackland.
+
+As illustrated in Figure~\ref{fig:compare_sockeye}, the contrast is stark. Unlike the reference vessel, which maintains a direct and predictable route between Cod Table and the nearest ports without entering restricted zones, the \textit{Sockeye Salmon Seeker} displays a recurring illicit pattern between August and November. The vessel leaves Lomark and ostensibly heads toward the Cod Table but diverts course to loiter within the \textbf{Ghoti Preserve} for days and the \textbf{Exit East} buoy. This loitering behavior mirrors the exact \textit{modus operandi} of the banned SouthSeafood Express Corp fleet. The pattern is consistent across multiple trips, confirming that the incursions are not navigational errors but calculated illegal fishing operations.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{img/sockeye_aquatic.png}
+    \caption{Trajectory Analyzer view. Left: The suspect \textit{Sockeye Salmon Seeker} shows repeated incursions into Gothi Preserve (green) and loitering at Exit East (brown). Right: The compliant \textit{Aquatic Angler} sticks strictly to the legal Cod Table fishing grounds (blue).}
+    \label{fig:compare_sockeye}
+\end{figure}
+
+\paragraph{Conclusion.} 
+By triangulating cargo attribution data in the Harbor Inspector view, spatial anomalies in the Traffic Explorer, and temporal behavioral signatures in the Trajectory Analyzer, the analyst concludes that illegal fishing has not ceased. Instead, it temporarily paused during the early summer before resuming under new vessel identities (such as the \textit{Sockeye Salmon Seeker}) during the peak autumn fishing season.
